@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "625522509179",
+    "firebase_url": "https://muhammad-be152.firebaseio.com",
+    "project_id": "muhammad-be152",
+    "storage_bucket": "muhammad-be152.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625522509179:android:a4e105dade7de2f2af29de",
+        "android_client_info": {
+          "package_name": "com.islam.muhammad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625522509179-oi1g8sas26tu1qti3fpp7h1po1itvhip.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAceIevhBMrsal36r48d2DbVBkZ8Hdz2ZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625522509179-oi1g8sas26tu1qti3fpp7h1po1itvhip.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
