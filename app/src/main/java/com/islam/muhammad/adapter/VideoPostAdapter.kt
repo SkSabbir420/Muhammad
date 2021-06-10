@@ -1,41 +1,59 @@
 package com.islam.muhammad.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.URLUtil
 import android.widget.*
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.reward.RewardItem
+import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.islam.muhammad.model.User
 import com.islam.muhammad.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.islam.muhammad.model.VideoPost
+import com.islam.muhammad.main.video_comment_activity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.video_posts_layout.view.*
 
 class VideoPostAdapter(private val mContext:Context, private val mPost: List<VideoPost>):RecyclerView.Adapter<VideoPostAdapter.ViewHolder>(){
 
     private  var firebaseUser:FirebaseUser? = null
     private var mVideoView: VideoView? = null
-    //private var mBufferingTextView: TextView? = null
 
-    inner class  ViewHolder(@NonNull itemView: View):RecyclerView.ViewHolder(itemView){
+    private  var userid:String? = null
+    private  var postKey:String? = null
+    private  var likeReference:DatabaseReference? = null
+    private  var testClick:Boolean =false
+    private lateinit var mRewardedVideoAd: RewardedVideoAd
+    var click = 0
+
+
+    inner class  ViewHolder(@NonNull itemView: View):RecyclerView.ViewHolder(itemView),
+        RewardedVideoAdListener {
         var profileImage:CircleImageView
         var description: TextView
         var postImage:VideoView
-        var likeButton:ImageView
-        var commentButton:ImageView
         var userName: TextView
-        var likes: TextView
+
+        var likeButton:ImageView
+        var likes:TextView
+
+        var commentButton:ImageView
         var comments: TextView
+        var date:TextView
+
+
+
         //var publisher: TextView
         //var saveButton:ImageView
 
@@ -43,15 +61,120 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             profileImage = itemView.findViewById(R.id.user_profile_image_post)
             description = itemView.findViewById(R.id.post_text_home)
             postImage = itemView.findViewById(R.id.post_video_video)
+            date = itemView.findViewById(R.id.txt_video_date)
             mVideoView =postImage
-            //mBufferingTextView = itemView.findViewById(R.id.buffering_textview)
-            likeButton = itemView.findViewById(R.id.post_image_like_btn)
-            commentButton = itemView.findViewById(R.id.post_image_comment_btn)
-            comments = itemView.findViewById(R.id.comments)
             userName = itemView.findViewById(R.id.user_name_post)
-            likes = itemView.findViewById(R.id.likes)
+
+            likeButton = itemView.findViewById(R.id.video_image_like_btn)
+            likes = itemView.findViewById(R.id.video_image_like_text)
+
+            //mBufferingTextView = itemView.findViewById(R.id.buffering_textview)
+            commentButton = itemView.findViewById(R.id.video_image_comment_btn)
+            comments = itemView.findViewById(R.id.video_comments)
+
+
+            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
+            mRewardedVideoAd.rewardedVideoAdListener = this
+            mRewardedVideoAd.
+            loadAd("ca-app-pub-3940256099942544/5224354917",AdRequest.Builder().build())
+
             //publisher = itemView.findViewById(R.id.publisher)
             //saveButton = itemView.findViewById(R.id.post_save_comment_btn)
+
+//            itemView.post_video_video.setOnClickListener {
+//                click++
+//                //Toast.makeText(mContext,"$click",Toast.LENGTH_SHORT).show()
+//                if(click==10 || click ==25 || click == 50){
+//                    mRewardedVideoAd.show()
+//                }
+//            }
+
+            itemView.video_image_like_btn.setOnClickListener {
+                val  position:Int = adapterPosition
+                val post = mPost[position]
+                postKey = post.getPostid()
+
+                testClick =true
+                likeReference!!.addValueEventListener(object :ValueEventListener{
+                    override fun onDataChange(p0: DataSnapshot) {
+                        if (testClick ==true){
+                            if(p0.child(postKey!!).hasChild(userid!!)){
+                                likeReference!!.child(postKey!!).child(userid!!).removeValue()
+                                testClick =false
+                            }else{
+                                likeReference!!.child(postKey!!).child(userid!!).setValue(true)
+                                testClick = false
+                            }
+
+                            /*if(p0.child(postKey!!).child("like").hasChild(userid!!)){
+                                likeReference!!.child(postKey!!).child("like").child(userid!!).removeValue()
+                                testClick =false
+                            }else{
+                                likeReference!!.child(postKey!!).child("like").child(userid!!).setValue(true)
+                                testClick = false
+                            }*/
+                        }
+                    }
+                    override fun onCancelled(p0: DatabaseError){
+
+                    }
+                })
+            }
+
+            itemView.video_image_comment_btn.setOnClickListener {
+                val  position:Int = adapterPosition
+                val post = mPost[position]
+                postKey = post.getPostid()
+                val intent = Intent(mContext, video_comment_activity::class.java)
+                intent.putExtra("key",postKey)
+                mContext.startActivity(intent)
+            }
+            itemView.video_image_share_btn.setOnClickListener {
+                val  position:Int = adapterPosition
+                val post = mPost[position]
+                val currentUrl = post.getPostimage()
+                val title = post.getDescription()
+
+                val i = Intent(Intent.ACTION_SEND)
+                i.type = "text/plain"
+                i.putExtra(Intent.EXTRA_TEXT, "Post Description:\n$title\n\nVideo Link: $currentUrl")
+                mContext.startActivity(Intent.createChooser(i, "Share this video Uri with"))
+
+            }
+
+
+        }
+
+        override fun onRewardedVideoAdLoaded() {
+
+        }
+
+        override fun onRewardedVideoAdOpened() {
+
+        }
+
+        override fun onRewardedVideoStarted() {
+
+        }
+
+        override fun onRewardedVideoAdClosed() {
+
+        }
+
+        override fun onRewarded(p0: RewardItem?) {
+
+        }
+
+        override fun onRewardedVideoAdLeftApplication() {
+
+        }
+
+        override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+
+        }
+
+        override fun onRewardedVideoCompleted() {
+
         }
     }
 
@@ -66,37 +189,53 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         firebaseUser = FirebaseAuth.getInstance().currentUser
+        userid = firebaseUser!!.uid
         val post = mPost[position]
-
-        holder.description.setText(post.getDescription())
+        postKey = post.getPostid()
 
 //            val mediaController = MediaController(mContext)
 //            mediaController.setAnchorView(holder.postImage)
-//            val onlineUri:Uri = Uri.parse(post.getPostimage())
-//            //val offlineURL:Uri = Uri.parse("android.resource://com.islam.muhammad/${R.raw.funny_video}")
+//            //val onlineUri:Uri = Uri.parse(post.getPostimage())
+//            val offlineURL:Uri = Uri.parse("android.resource://com.islam.muhammad/${R.raw.funny_video}")
 //            holder.postImage.setMediaController(mediaController)
-//            holder.postImage.setVideoURI(onlineUri)
-//            //holder.postImage.setVideoURI(offlineURL)
+//            //holder.postImage.setVideoURI(onlineUri)
+//            holder.postImage.setVideoURI(offlineURL)
 //            holder.postImage.requestFocus()
 //            //holder.postImage.start()
 
-            val controller = MediaController(mContext)
+            /*val controller = MediaController(mContext)
             controller.setMediaPlayer(mVideoView)
             mVideoView!!.setMediaController(controller)
             val mCurrentPosition = 0
             val videoUri = Uri.parse(post.getPostimage())
+            //Toast.makeText(mContext,"$videoUri",Toast.LENGTH_SHORT).show()
             mVideoView!!.setVideoURI(videoUri)
             controller.hide()
             mVideoView!!.setOnPreparedListener {
-                if (mCurrentPosition > 0) {
+                if (mCurrentPosition > 0){
                     mVideoView!!.seekTo(mCurrentPosition)
                 } else {
                     mVideoView!!.seekTo(1)
                 }
-                    //mVideoView!!.start()
-            }
+//                mVideoView!!.start()
+            }*/
+
+        val controller = MediaController(mContext)
+        controller.setMediaPlayer(mVideoView)
+        mVideoView!!.setMediaController(controller)
+        val videoUri = Uri.parse(post.getPostimage())
+        mVideoView!!.setVideoURI(videoUri)
+        //mVideoView!!.seekTo(1)
+        //controller.hide()
+
 
         publisherInfo(holder.profileImage,holder.userName,post.getPublisher())
+        holder.description.setText(post.getDescription())
+        holder.date.setText(post.getPostDate())
+        getLikeButtonStatus(postKey!!, userid!!,holder)
+        getcommentButtonStatus(postKey!!,holder)
+
+
 
 
     }
@@ -111,14 +250,59 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                     userName.text = user!!.getUsername()
                 }
             }
-
             override fun onCancelled(p0: DatabaseError) {
+            }
+        })
+    }
 
+
+    private  fun getLikeButtonStatus(postKey:String,userid:String,holder:ViewHolder){
+//        likeReference = FirebaseDatabase.getInstance().getReference("VideoPost")
+        likeReference = FirebaseDatabase.getInstance().getReference("VPLike")
+        likeReference!!.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.child(postKey).hasChild(userid)){
+                    var likeCount:Int = p0.child(postKey).childrenCount.toInt()
+                    holder.likes.setText("$likeCount likes")
+                    holder.likeButton.setImageResource(R.drawable.ic_baseline_favorite_24)
+                }else{
+                    var likeCount:Int = p0.child(postKey).childrenCount.toInt()
+                    holder.likes.setText("$likeCount likes")
+                    holder.likeButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                }
+
+                /*if (p0.child(postKey).child("like").hasChild(userid)){
+                    var likeCount:Int = p0.child(postKey).child("like").childrenCount.toInt()
+                    holder.likes.setText("$likeCount likes")
+                    holder.likeButton.setImageResource(R.drawable.ic_baseline_favorite_24)
+                }else{
+                    var likeCount:Int = p0.child(postKey).child("like").childrenCount.toInt()
+                    holder.likes.setText("$likeCount likes")
+                    holder.likeButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                }*/
+
+            }
+            override fun onCancelled(p0: DatabaseError){
             }
         })
 
+    }
+
+    private  fun getcommentButtonStatus(postkey:String,holder:ViewHolder){
+        //val commentReference = FirebaseDatabase.getInstance().reference.child("VideoPost").child(postkey).child("Comments")
+        val commentReference = FirebaseDatabase.getInstance().reference.child("VPComments").child(postkey)
+        commentReference.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                val likeCount:Int = p0.childrenCount.toInt()
+                holder.comments.setText("$likeCount comments")
+            }
+            override fun onCancelled(p0: DatabaseError){
+            }
+        })
 
     }
+
 
 
 }

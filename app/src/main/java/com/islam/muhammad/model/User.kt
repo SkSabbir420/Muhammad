@@ -12,8 +12,7 @@ class User
     constructor()
 
 
-    constructor(username: String, fullname: String, bio: String, image: String, uid: String)
-    {
+    constructor(username: String, fullname: String, bio: String, image: String, uid: String) {
         this.username = username
         this.fullname = fullname
         this.bio = bio

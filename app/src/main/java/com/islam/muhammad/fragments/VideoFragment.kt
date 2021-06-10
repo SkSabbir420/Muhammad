@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +18,10 @@ import com.google.firebase.database.ValueEventListener
 import com.islam.muhammad.R
 import com.islam.muhammad.adapter.VideoPostAdapter
 import com.islam.muhammad.model.VideoPost
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.shimmerFrameLayout_home
+import kotlinx.android.synthetic.main.fragment_video.*
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,6 +58,15 @@ class NotificationsFragment : Fragment() {
 
         return view
     }
+    override fun onResume() {
+        super.onResume()
+        shimmerFrameLayout_video.startShimmerAnimation()
+    }
+
+    override fun onPause() {
+        shimmerFrameLayout_video.stopShimmerAnimation()
+        super.onPause()
+    }
 
     private fun checkFollowings() {
         followingList = ArrayList()
@@ -80,11 +94,15 @@ class NotificationsFragment : Fragment() {
         val postsRef = FirebaseDatabase.getInstance().reference.child("VideoPost")
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                postList?.clear()
+                //postList?.clear()
                 for (snapshot in p0.children ){
                     val post = snapshot.getValue(VideoPost::class.java)
                     for (id in (followingList as ArrayList<String>)){
                         if (post!!.getPublisher() == id){
+                            shimmerFrameLayout_video.stopShimmerAnimation()
+                            shimmerFrameLayout_video.visibility = View.GONE
+                            recycler_view_video.visibility = View.VISIBLE
+//                            Toast.makeText(context,"retrieve post",Toast.LENGTH_SHORT).show()
                             postList!!.add(post)
                         }
                         postAdapter!!.notifyDataSetChanged()

@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.islam.muhammad.adapter.PostAdapter
 import com.islam.muhammad.model.Post
 import com.islam.muhammad.R
@@ -20,6 +22,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.islam.muhammad.main.NotificationActivity
 import com.islam.muhammad.main.SearchActivity
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.fragment_top__view.*
+import java.util.*
 
 
 //private const val ARG_PARAM1 = "param1"
@@ -35,41 +41,61 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+        try{
+            MobileAds.initialize(context)
+            val adRequest = AdRequest.Builder().build()
+            view.adView.loadAd(adRequest)
+        }catch (ex:Exception){
+
+        }
+
         val searchButton= view.findViewById<ImageView>(R.id.people_search)
-        searchButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view:View?) {
-                val intent= Intent(activity, SearchActivity::class.java)
-                activity?.startActivity(intent)
-                //activity?.finish()
-            }
-        })
+        searchButton.setOnClickListener {
+            val intent = Intent(activity, SearchActivity::class.java)
+            activity?.startActivity(intent)
+            //activity?.finish()
+        }
 
         val notificationButton= view.findViewById<ImageView>(R.id.notifications)
-        notificationButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view:View?) {
-                val intent= Intent(activity, NotificationActivity::class.java)
-                activity?.startActivity(intent)
-                //activity?.finish()
-            }
-        })
+        notificationButton.setOnClickListener {
+            val intent = Intent(activity, NotificationActivity::class.java)
+            activity?.startActivity(intent)
+            //activity?.finish()
+        }
 
-        
+
+
         var recyclerView:RecyclerView? = null
         recyclerView = view.findViewById(R.id.recycler_view_home)
         val linearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager.reverseLayout = true
         linearLayoutManager.stackFromEnd =true
         recyclerView.layoutManager = linearLayoutManager
-
         postList = ArrayList()
-        postAdapter = context?.let { PostAdapter(it, postList as ArrayList<Post>) }
+
+//        val options = FirebaseRecyclerOptions.Builder<Post>().setQuery(query,Post::class.java).build()
+//        postAdapter = PostAdapter(options,context!!,postList!!)
+
+        postAdapter = context?.let {
+            PostAdapter(it, postList as ArrayList<Post>)
+        }
         recyclerView.adapter =postAdapter
+
 
         checkFollowings()
 
 
 
         return view
+    }
+    override fun onResume() {
+        super.onResume()
+        shimmerFrameLayout_home.startShimmerAnimation()
+    }
+
+    override fun onPause() {
+        shimmerFrameLayout_home.stopShimmerAnimation()
+        super.onPause()
     }
 
     private fun checkFollowings() {
@@ -97,17 +123,23 @@ class HomeFragment : Fragment() {
     private fun retrievePosts() {
         val postsRef = FirebaseDatabase.getInstance().reference.child("Post")
         postsRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(p0: DataSnapshot) {
-                postList?.clear()
+            override fun onDataChange(p0: DataSnapshot){
+
+                //postList?.clear()
                 for (snapshot in p0.children) {
                     val post = snapshot.getValue(Post::class.java)
                     for (id in (followingList as ArrayList<String>)) {
                         if (post!!.getPublisher() == id) {
+                            shimmerFrameLayout_home.stopShimmerAnimation()
+                            shimmerFrameLayout_home.visibility = View.GONE
+                            adView.visibility = View.VISIBLE
+                            recycler_view_home.visibility = View.VISIBLE
                             postList!!.add(post)
                         }
                         postAdapter!!.notifyDataSetChanged()
                     }
                 }
+
 
             }
 

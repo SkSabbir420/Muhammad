@@ -26,4 +26,5 @@
     <color name="lowDarkfont"  >#5D070E07</color>
     <color name="whiteback"  >#f9f9f9</color>
     <color name="whitebackground"  >#d4d3d3</color>
+    <color name="colorGrey">#dddddd</color>
 </resources>
