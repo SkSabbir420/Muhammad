@@ -33,7 +33,7 @@ tools:context=".main.SearchActivity">
                 android:id="@+id/search_fragment_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/search"
+                android:src="@drawable/ic_baseline_search_24"
                 />
 
             <EditText
@@ -59,9 +59,7 @@ tools:context=".main.SearchActivity">
     android:id="@+id/recycler_view_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
-    android:layout_below="@+id/app_bar_layout_search"
-    >
+    android:layout_below="@+id/app_bar_layout_search">
 </androidx.recyclerview.widget.RecyclerView>
 
 

@@ -1,8 +1,9 @@
 package com.islam.muhammad.splashScreen
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+
 import com.islam.muhammad.login.Login
 import com.islam.muhammad.R
 
@@ -19,7 +20,7 @@ class SplashScreen : AppCompatActivity() {
         val splashScreen = object:Thread(){
             override fun run(){
                 try {
-                    sleep(1000)
+                    sleep(2500)
                     val intent = Intent(baseContext, Login::class.java)
                     startActivity(intent)
                     finish()

@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener
 import com.islam.muhammad.R
 import com.islam.muhammad.adapter.VideoPostAdapter
 import com.islam.muhammad.model.VideoPost
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,7 +48,12 @@ class NotificationsFragment : Fragment() {
         postAdapter = context?.let { VideoPostAdapter(it,postList as ArrayList<VideoPost>) }
         recyclerView.adapter =postAdapter
 
-        checkFollowings()
+//        checkFollowings()
+        try{
+            retrievePosts()
+        }catch (ex:Exception){
+
+        }
 
 
 
@@ -77,18 +83,18 @@ class NotificationsFragment : Fragment() {
     }
 
     private fun retrievePosts() {
-        val postsRef = FirebaseDatabase.getInstance().reference.child("VideoPost")
+        val postsRef = FirebaseDatabase.getInstance().reference.child("VideoPostTemp")
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 postList?.clear()
                 for (snapshot in p0.children ){
                     val post = snapshot.getValue(VideoPost::class.java)
-                    for (id in (followingList as ArrayList<String>)){
-                        if (post!!.getPublisher() == id){
-                            postList!!.add(post)
-                        }
+//                    for (id in (followingList as ArrayList<String>)){
+//                        if (post!!.getPublisher() == id){
+                            postList!!.add(post!!)
+//                        }
                         postAdapter!!.notifyDataSetChanged()
-                    }
+//                    }
                 }
 
             }

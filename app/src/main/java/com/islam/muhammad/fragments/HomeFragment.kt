@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.islam.muhammad.adapter.PostAdapter
 import com.islam.muhammad.model.Post
 import com.islam.muhammad.R
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.islam.muhammad.main.NotificationActivity
 import com.islam.muhammad.main.SearchActivity
+import java.util.*
 
 
 //private const val ARG_PARAM1 = "param1"
@@ -36,36 +38,41 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         val searchButton= view.findViewById<ImageView>(R.id.people_search)
-        searchButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view:View?) {
-                val intent= Intent(activity, SearchActivity::class.java)
-                activity?.startActivity(intent)
-                //activity?.finish()
-            }
-        })
+        searchButton.setOnClickListener {
+            val intent = Intent(activity, SearchActivity::class.java)
+            activity?.startActivity(intent)
+            //activity?.finish()
+        }
 
         val notificationButton= view.findViewById<ImageView>(R.id.notifications)
-        notificationButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view:View?) {
-                val intent= Intent(activity, NotificationActivity::class.java)
-                activity?.startActivity(intent)
-                //activity?.finish()
-            }
-        })
+        notificationButton.setOnClickListener {
+            val intent = Intent(activity, NotificationActivity::class.java)
+            activity?.startActivity(intent)
+            //activity?.finish()
+        }
 
-        
+
         var recyclerView:RecyclerView? = null
         recyclerView = view.findViewById(R.id.recycler_view_home)
         val linearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager.reverseLayout = true
         linearLayoutManager.stackFromEnd =true
         recyclerView.layoutManager = linearLayoutManager
-
         postList = ArrayList()
+
+//        val options = FirebaseRecyclerOptions.Builder<Post>().setQuery(query,Post::class.java).build()
+//        postAdapter = PostAdapter(options,context!!,postList!!)
+
         postAdapter = context?.let { PostAdapter(it, postList as ArrayList<Post>) }
         recyclerView.adapter =postAdapter
 
-        checkFollowings()
+
+//        checkFollowings()
+        try{
+            retrievePosts()
+        }catch (ex:Exception){
+
+        }
 
 
 
@@ -95,18 +102,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun retrievePosts() {
-        val postsRef = FirebaseDatabase.getInstance().reference.child("Post")
+        val postsRef = FirebaseDatabase.getInstance().reference.child("PostTemp")
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 postList?.clear()
                 for (snapshot in p0.children) {
                     val post = snapshot.getValue(Post::class.java)
-                    for (id in (followingList as ArrayList<String>)) {
-                        if (post!!.getPublisher() == id) {
-                            postList!!.add(post)
-                        }
+//                    for (id in (followingList as ArrayList<String>)) {
+//                        if (post!!.getPublisher() == id) {
+                            postList!!.add(post!!)
+//                        }
                         postAdapter!!.notifyDataSetChanged()
-                    }
+//                    }
                 }
 
             }

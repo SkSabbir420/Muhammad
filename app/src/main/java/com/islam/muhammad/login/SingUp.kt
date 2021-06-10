@@ -1,49 +1,60 @@
 package com.islam.muhammad.login
 
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Patterns
-import android.widget.Toast
+import android.content.Intent
 import androidx.core.app.ActivityCompat
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import android.util.Patterns
+import android.view.View
+import android.widget.RadioButton
+import android.widget.Toast
+import java.text.SimpleDateFormat
 import com.islam.muhammad.R
 import kotlinx.android.synthetic.main.activity_account_settings.*
 import kotlinx.android.synthetic.main.activity_sing_up.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 
 class SingUp : AppCompatActivity(){
 
     private var currentUser: FirebaseUser? = null
-    private var myAuth: FirebaseAuth=FirebaseAuth.getInstance()
-    private var myRef= FirebaseDatabase.getInstance().reference
+    private var myAuth:FirebaseAuth = FirebaseAuth.getInstance()
+    private var myRef = FirebaseDatabase.getInstance().reference
     private var selectedImage: Uri? = null
+    //private var gender:String? = "custom"
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sing_up)
 
-        ivImagePerson.setOnClickListener{
-            checkPermission()
-        }
-        buLogin.setOnClickListener {
-            SingUpUser()
-        }
         close_sing_up_btn.setOnClickListener {
             super.onBackPressed()
             finish()
         }
+
+        add_profile_pic_btn.setOnClickListener{
+            checkPermission()
+        }
+        buLogin.setOnClickListener {
+            //gender = onRadioButtonClicked(it)
+            //Toast.makeText(this,gender,Toast.LENGTH_SHORT).show()
+            SingUpUser()
+
+
+        }
+
 
     }//first curly.
 
@@ -72,7 +83,7 @@ class SingUp : AppCompatActivity(){
     }
     val PICK_IMAGE_CODE=123
     fun loadImage(){
-        var intent= Intent(
+        val intent= Intent(
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent,PICK_IMAGE_CODE)
@@ -101,6 +112,11 @@ class SingUp : AppCompatActivity(){
         if(dateOfBirth.text.toString().isEmpty()){
             dateOfBirth.error="Please Enter Your Date of birth."
             dateOfBirth.requestFocus()
+            return
+        }
+        if(gender_editText.text.toString().isEmpty()){
+            gender_editText.error="Please Enter Your Gender."
+            gender_editText.requestFocus()
             return
         }
         if(etEmail.text.toString().isEmpty()){
@@ -144,8 +160,8 @@ class SingUp : AppCompatActivity(){
         val storgaRef=storage.getReferenceFromUrl("gs://muhammad-be152.appspot.com")
         val df= SimpleDateFormat("ddMMyyHHmmss")
         val dataobj= Date()
-        val imagePath= SplitString(email) + "_"+ df.format(dataobj)+ ".jpg"
-        val ImageRef=storgaRef.child("images/"+imagePath )
+        val imagePath= currentUser!!.uid + ".jpg"
+        val ImageRef=storgaRef.child("profileImages/"+imagePath )
         ImageRef.putFile(selectedImage!!).addOnSuccessListener {
             ImageRef.downloadUrl.addOnSuccessListener { uri ->
                 val imagestore = FirebaseDatabase.getInstance().reference.child("Users").child(currentUser!!.uid)
@@ -154,9 +170,13 @@ class SingUp : AppCompatActivity(){
                 imagestore.setValue(hashMap).addOnSuccessListener {
                 }
                 myRef.child("Users").child(currentUser!!.uid).child("email").setValue(currentUser!!.email)
-                myRef.child("Users").child(currentUser!!.uid).child("name").setValue(personName.text.toString())
+                myRef.child("Users").child(currentUser!!.uid).child("uid").setValue(currentUser!!.uid)
+                myRef.child("Users").child(currentUser!!.uid).child("bio").setValue("Edit Profile and Enter your Bio.")
+                myRef.child("Users").child(currentUser!!.uid).child("username").setValue(personName.text.toString().toLowerCase())
+                myRef.child("Users").child(currentUser!!.uid).child("fullname").setValue(personName.text.toString().toLowerCase())
                 myRef.child("Users").child(currentUser!!.uid).child("dateOfBirth").setValue(dateOfBirth.text.toString())
                 myRef.child("Users").child(currentUser!!.uid).child("password").setValue(etPassword.text.toString())
+                myRef.child("Users").child(currentUser!!.uid).child("gender").setValue(gender_editText.text.toString())
                 LoadTweets()
             }
         }
@@ -178,5 +198,30 @@ class SingUp : AppCompatActivity(){
             startActivity(intent)
         }
     }
+
+//    fun onRadioButtonClicked(view: View):String? {
+//        var result:String? = null
+//        if (view is RadioButton) {
+//            // Is the button now checked?
+//            val checked = view.isChecked
+//
+//            // Check which radio button was clicked
+//            when (view.getId()) {
+//                R.id.radio_male ->
+//                    if (checked) {
+//                        result ="male"
+//                        // Pirates are the best
+//
+//                    }
+//                R.id.radio_female ->
+//                    if (checked) {
+//                        result = "female"
+//                        //myRef.child("Users").child(currentUser!!.uid).child("gender").setValue("female")
+//                        // Ninjas rule
+//                    }
+//            }
+//        }
+//        return result
+//    }
 
 }//last curly.

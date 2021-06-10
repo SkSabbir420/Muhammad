@@ -5,13 +5,17 @@ class VideoPost {
     private var postimage:String = ""
     private var publisher:String = ""
     private var description:String = ""
+    private var postDate:String = ""
+    private var postTime:String = ""
     constructor()
 
-    constructor(postid: String, postimage: String, publisher: String, description: String) {
+    constructor(postid: String, postimage: String, publisher: String, description: String,postDate:String,postTime:String) {
         this.postid = postid
         this.postimage = postimage
         this.publisher = publisher
         this.description = description
+        this.postDate =postDate
+        this.postTime = postTime
     }
     fun getPostid():String{
         return postid
@@ -24,6 +28,18 @@ class VideoPost {
     }
     fun getDescription():String{
         return description
+    }
+    fun getPostDate():String{
+        return postDate
+    }
+    fun getPostTime():String{
+        return postTime
+    }
+    fun setPostTime(postTime: String){
+        this.postTime = postTime
+    }
+    fun setPostDate(postDate: String){
+        this.postDate = postDate
     }
     fun setPostid(postid:String){
         this.postid =postid

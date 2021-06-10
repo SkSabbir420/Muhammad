@@ -6,8 +6,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="100dp"
-        android:background="@drawable/button_black_background"
->
+        android:background="@drawable/button_black_background">
 
     <RelativeLayout
             android:layout_width="wrap_content"
@@ -52,16 +51,18 @@
 
 
         <Button
-                android:id="@+id/follow_btn_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_full_name_search"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/button_black_background"
-                android:text="Follow"
-                android:textAllCaps="false"
-                android:layout_margin="10dp"
-        />
+            android:id="@+id/follow_btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_full_name_search"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_black_background"
+            android:text="Follow"
+            android:textAllCaps="false" />
 
 
     </RelativeLayout>
