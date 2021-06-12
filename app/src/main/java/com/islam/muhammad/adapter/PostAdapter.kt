@@ -2,7 +2,10 @@ package com.islam.muhammad.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +33,14 @@ import com.islam.muhammad.main.PostCommentActivity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.posts_layout.view.*
-import kotlinx.android.synthetic.main.posts_layout.*
+import android.graphics.drawable.BitmapDrawable
+import android.util.Log
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 
 class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
     RecyclerView.Adapter<PostAdapter.ViewHolder>(){
@@ -40,6 +50,8 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
     private  var postKey:String? = null
     private  var likeReference:DatabaseReference? = null
     private  var testClick:Boolean =false
+    private var hashMap:HashMap<String,Bitmap> = HashMap<String,Bitmap>()
+    private var bitmap: Bitmap? = null
 
 
     inner class  ViewHolder(@NonNull itemView:View):RecyclerView.ViewHolder(itemView){
@@ -154,11 +166,9 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
         val post = mPost[position]
         postKey = post.getPostid()
 //        Toast.makeText(mContext,"$position",Toast.LENGTH_SHORT).show()
-//        holder.post_progress_bar.visibility = View.VISIBLE
         publisherInfo(holder.profileImage,holder.userName,post.getPublisher())
-        holder.description.setText(post.getDescription())
         holder.date.setText(post.getPostDate())
-
+        holder.description.setText(post.getDescription())
         //Picasso.get().load(post.getPostimage()).into(holder.postImage)
         Glide.with(mContext).load(post.getPostimage()).listener(object: RequestListener<Drawable>{
             override fun onLoadFailed(
@@ -182,14 +192,31 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
                 return false
             }
         }).into(holder.postImage)
-
         getLikeButtonStatus(postKey!!, userid!!,holder)
         getcommentButtonStatus(postKey!!,holder)
+
+//        val urlString:String = post.getPostimage()
+//        try{
+//                if(hashMap.containsKey(urlString)){
+//                    holder.post_progress_bar.visibility = View.GONE
+//                    holder.postImage.setImageBitmap(hashMap.get(urlString))
+//                    Log.d("TAG", "Load from HashMap :: " + hashMap.get(urlString).toString())
+//                }else{
+//                    GlobalScope.launch {
+//                        val bitImage = urlToBitmap(urlString)
+//                        hashMap.put(urlString,bitImage)
+//                    }
+//                    holder.post_progress_bar.visibility = View.GONE
+//                    holder.postImage.setImageBitmap(hashMap.get(urlString))
+//                    Log.d("TAG", "Store in HashMap :: " + hashMap.get(urlString).toString())
+//                }
+//        }catch (e:Exception){ }
 
 //        MobileAds.initialize(mContext)
 //        val adRequest = AdRequest.Builder().build()
 //        //Picasso.get().load(adRequest!!).into(holder.adView)
 //        holder.adView.loadAd(adRequest)
+
 
     }
 
@@ -256,7 +283,12 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
 
     }
 
-
+     suspend fun urlToBitmap(url:String):Bitmap{
+        val loading = ImageLoader(mContext)
+        val request = ImageRequest.Builder(mContext).data(url).build()
+        val result = (loading.execute(request) as SuccessResult).drawable
+        return  (result as BitmapDrawable).bitmap
+    }
 
 
 }

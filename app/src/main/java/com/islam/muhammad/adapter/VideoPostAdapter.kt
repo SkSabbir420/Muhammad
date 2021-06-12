@@ -3,6 +3,7 @@ package com.islam.muhammad.adapter
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.islam.muhammad.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.islam.muhammad.main.VideoPlayActivity
 import com.islam.muhammad.model.VideoPost
 import com.islam.muhammad.main.video_comment_activity
 import com.squareup.picasso.Picasso
@@ -129,6 +131,15 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 intent.putExtra("key",postKey)
                 mContext.startActivity(intent)
             }
+            itemView.post_video_video.setOnClickListener {
+                val  position:Int = adapterPosition
+                val post = mPost[position]
+                val videoUri = post.getPostimage()
+                val intent = Intent(mContext, VideoPlayActivity::class.java)
+                intent.putExtra("keyv",videoUri)
+                mContext.startActivity(intent)
+            }
+
             itemView.video_image_share_btn.setOnClickListener {
                 val  position:Int = adapterPosition
                 val post = mPost[position]
@@ -220,13 +231,13 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 //                mVideoView!!.start()
             }*/
 
-        val controller = MediaController(mContext)
-        controller.setMediaPlayer(mVideoView)
-        mVideoView!!.setMediaController(controller)
-        val videoUri = Uri.parse(post.getPostimage())
-        mVideoView!!.setVideoURI(videoUri)
-        //mVideoView!!.seekTo(1)
-        //controller.hide()
+//        val controller = MediaController(mContext)
+//        controller.setMediaPlayer(mVideoView)
+//        mVideoView!!.setMediaController(controller)
+//        val videoUri = Uri.parse(post.getPostimage())
+//        mVideoView!!.setVideoURI(videoUri)
+//        //mVideoView!!.seekTo(1)
+//        //controller.hide()
 
 
         publisherInfo(holder.profileImage,holder.userName,post.getPublisher())
