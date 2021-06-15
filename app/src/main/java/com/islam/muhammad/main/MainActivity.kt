@@ -41,9 +41,11 @@ class MainActivity : AppCompatActivity(){
                         //startActivity(Intent(this@MainActivity, AddPostActivity::class.java))
                         startActivity(Intent(this@MainActivity, post_main_activity::class.java))
                         return@OnNavigationItemSelectedListener true
-                    }else{
+                    }else if(checkMembership == null){
                         //Toast.makeText(this, "You don't have premium membership.", Toast.LENGTH_SHORT).show()
                         Toast.makeText(this, "Your Don't Have Premium Membership", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this, "Check your Internet Connection", Toast.LENGTH_SHORT).show()
                     }
 
                 }

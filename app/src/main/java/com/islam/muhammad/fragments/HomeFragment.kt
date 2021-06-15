@@ -41,13 +41,13 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        try{
-            MobileAds.initialize(context)
-            val adRequest = AdRequest.Builder().build()
-            view.adView.loadAd(adRequest)
-        }catch (ex:Exception){
-
-        }
+//        try{
+//            MobileAds.initialize(context)
+//            val adRequest = AdRequest.Builder().build()
+//            view.adView.loadAd(adRequest)
+//        }catch (ex:Exception){
+//
+//        }
 
         val searchButton= view.findViewById<ImageView>(R.id.people_search)
         searchButton.setOnClickListener {
@@ -132,7 +132,7 @@ class HomeFragment : Fragment() {
                         if (post!!.getPublisher() == id) {
                             shimmerFrameLayout_home.stopShimmerAnimation()
                             shimmerFrameLayout_home.visibility = View.GONE
-                            adView.visibility = View.VISIBLE
+//                            adView.visibility = View.VISIBLE
                             recycler_view_home.visibility = View.VISIBLE
                             postList!!.add(post)
                         }

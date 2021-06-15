@@ -4,35 +4,30 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
 import androidx.core.app.ActivityCompat
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
 import android.util.Patterns
-import android.view.View
-import android.widget.RadioButton
 import android.widget.Toast
-import java.text.SimpleDateFormat
 import com.islam.muhammad.R
-import kotlinx.android.synthetic.main.activity_account_settings.*
 import kotlinx.android.synthetic.main.activity_sing_up.*
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 class SingUp : AppCompatActivity(){
 
     private var currentUser: FirebaseUser? = null
+    private var selectedImage: Uri? = null
     private var myAuth:FirebaseAuth = FirebaseAuth.getInstance()
     private var myRef = FirebaseDatabase.getInstance().reference
-    private var selectedImage: Uri? = null
-    //private var gender:String? = "custom"
 
 
     override fun onCreate(savedInstanceState: Bundle?){
@@ -47,12 +42,9 @@ class SingUp : AppCompatActivity(){
         add_profile_pic_btn.setOnClickListener{
             checkPermission()
         }
+
         buLogin.setOnClickListener {
-            //gender = onRadioButtonClicked(it)
-            //Toast.makeText(this,gender,Toast.LENGTH_SHORT).show()
             SingUpUser()
-
-
         }
 
 
@@ -72,12 +64,10 @@ class SingUp : AppCompatActivity(){
     }
     val READIMAGE:Int=253
     fun checkPermission(){
-        if(Build.VERSION.SDK_INT>=23){
-            if(ActivityCompat.checkSelfPermission(this,
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-                requestPermissions(arrayOf( android.Manifest.permission.READ_EXTERNAL_STORAGE),READIMAGE)
-                return
-            }
+        if(ActivityCompat.checkSelfPermission(this,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+            requestPermissions(arrayOf( android.Manifest.permission.READ_EXTERNAL_STORAGE),READIMAGE)
+            return
         }
         loadImage()
     }
@@ -104,13 +94,17 @@ class SingUp : AppCompatActivity(){
 
 
     private fun SingUpUser(){
+        if(selectedImage == null){
+            Toast.makeText(this, "Please Add Your Profile Picture", Toast.LENGTH_LONG).show()
+            return
+        }
         if(personName.text.toString().isEmpty()){
-            personName.error="Please Enter Your Name."
+            personName.error="Please Enter Your Name"
             personName.requestFocus()
             return
         }
         if(dateOfBirth.text.toString().isEmpty()){
-            dateOfBirth.error="Please Enter Your Date of birth."
+            dateOfBirth.error="Please Enter Your Date of Birth"
             dateOfBirth.requestFocus()
             return
         }
@@ -120,17 +114,17 @@ class SingUp : AppCompatActivity(){
             return
         }
         if(etEmail.text.toString().isEmpty()){
-            etEmail.error="Please Enter Your Email."
+            etEmail.error="Please Enter Your Email Address"
             etEmail.requestFocus()
             return
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(etEmail.text.toString()).matches()){
-            etEmail.error="Please Enter Valid Email."
+            etEmail.error="Please Enter Valid Email Address"
             etEmail.requestFocus()
             return
         }
         if(etPassword.text.toString().isEmpty()){
-            etPassword.error="Please Enter Your Email."
+            etPassword.error="Please Enter Your Password"
             etPassword.requestFocus()
             return
         }
@@ -144,84 +138,55 @@ class SingUp : AppCompatActivity(){
                                         SaveImageInFirebase()
                                         startActivity(Intent(this, Login::class.java))
                                         finish()
+                                    }else{
+                                        Toast.makeText(baseContext,"Please Check your Internet connection and Try again", Toast.LENGTH_SHORT).show()
                                     }
                                 }
 
                     } else {
-                        Toast.makeText(baseContext,"singup faild.try after sumtime", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(baseContext,"Sing-Up failed.\nPlease Try again", Toast.LENGTH_SHORT).show()
                     }
                 }
 
     }
+
     fun SaveImageInFirebase(){
+
         currentUser =myAuth.currentUser
-        val email:String=currentUser!!.email.toString()
         val storage= FirebaseStorage.getInstance()
         val storgaRef=storage.getReferenceFromUrl("gs://muhammad-be152.appspot.com")
-        val df= SimpleDateFormat("ddMMyyHHmmss")
-        val dataobj= Date()
         val imagePath= currentUser!!.uid + ".jpg"
         val ImageRef=storgaRef.child("profileImages/"+imagePath )
+        val localdate = LocalDate.now()
+        val localtime  = LocalTime.now()
+        val date = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localdate).toString()
+        val time = DateTimeFormatter.ofPattern("HH:mm:ss").format(localtime).toString()
+
         ImageRef.putFile(selectedImage!!).addOnSuccessListener {
             ImageRef.downloadUrl.addOnSuccessListener { uri ->
-                val imagestore = FirebaseDatabase.getInstance().reference.child("Users").child(currentUser!!.uid)
-                val hashMap = HashMap<String, String>()
-                hashMap["image"] = uri.toString()
-                imagestore.setValue(hashMap).addOnSuccessListener {
-                }
-                myRef.child("Users").child(currentUser!!.uid).child("email").setValue(currentUser!!.email)
-                myRef.child("Users").child(currentUser!!.uid).child("uid").setValue(currentUser!!.uid)
-                myRef.child("Users").child(currentUser!!.uid).child("bio").setValue("Edit Profile and Enter your Bio.")
-                myRef.child("Users").child(currentUser!!.uid).child("username").setValue(personName.text.toString().toLowerCase())
-                myRef.child("Users").child(currentUser!!.uid).child("fullname").setValue(personName.text.toString().toLowerCase())
-                myRef.child("Users").child(currentUser!!.uid).child("dateOfBirth").setValue(dateOfBirth.text.toString())
-                myRef.child("Users").child(currentUser!!.uid).child("password").setValue(etPassword.text.toString())
-                myRef.child("Users").child(currentUser!!.uid).child("gender").setValue(gender_editText.text.toString())
+                val singupMap = HashMap<String, Any>()
+                singupMap["uid"] = currentUser!!.uid
+                singupMap["email"] = currentUser!!.email!!
+                singupMap["password"] = etPassword.text.toString()
+                singupMap["image"] = uri.toString()
+                singupMap["username"] = personName.text.toString().lowercase()
+                singupMap["dateOfBirth"] = dateOfBirth.text.toString()
+                singupMap["gender"] = gender_editText.text.toString()
+                singupMap["createDate"] = date
+                singupMap["createTime"] = time
+                singupMap["bio"] = "Edit Profile and Enter your Bio"
+                myRef.child("Users").child(currentUser!!.uid).updateChildren(singupMap)
                 LoadTweets()
             }
         }
     }
-    fun SplitString(email:String):String{
-        val split= email.split("@")
-        return split[0]
-    }
-//    override fun onStart() {
-//        super.onStart()
-//        LoadTweets()
-//    }
     fun LoadTweets(){
-        var currentUser =myAuth.currentUser
+        val currentUser =myAuth.currentUser
         if(currentUser!=null) {
-            var intent = Intent(this, Login::class.java)
+            val intent = Intent(this, Login::class.java)
             intent.putExtra("email", currentUser.email)
             intent.putExtra("uid", currentUser.uid)
             startActivity(intent)
         }
     }
-
-//    fun onRadioButtonClicked(view: View):String? {
-//        var result:String? = null
-//        if (view is RadioButton) {
-//            // Is the button now checked?
-//            val checked = view.isChecked
-//
-//            // Check which radio button was clicked
-//            when (view.getId()) {
-//                R.id.radio_male ->
-//                    if (checked) {
-//                        result ="male"
-//                        // Pirates are the best
-//
-//                    }
-//                R.id.radio_female ->
-//                    if (checked) {
-//                        result = "female"
-//                        //myRef.child("Users").child(currentUser!!.uid).child("gender").setValue("female")
-//                        // Ninjas rule
-//                    }
-//            }
-//        }
-//        return result
-//    }
-
 }//last curly.

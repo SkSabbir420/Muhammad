@@ -36,7 +36,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:gravity="center"
-                    android:text="VIDEO"
+                    android:text="Video"
                     android:textAlignment="center"
                     android:textColor="#3DAA31"
                     android:textSize="20dp"

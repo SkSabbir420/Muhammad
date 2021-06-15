@@ -1,5 +1,6 @@
 package com.islam.muhammad.main
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
@@ -19,6 +20,10 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.islam.muhammad.R
+import com.islam.muhammad.fragments.NotificationsFragment
+import com.theartofdev.edmodo.cropper.CropImage
+import kotlinx.android.synthetic.main.activity_account_settings.*
+import kotlinx.android.synthetic.main.activity_add_post_photo.*
 import kotlinx.android.synthetic.main.activity_add_post_video.*
 import java.time.LocalDate
 import java.time.LocalTime
@@ -29,7 +34,9 @@ import kotlin.collections.HashMap
 class AddPostVideoActivity : AppCompatActivity() {
 
     private var myUrl = ""
+    private var myUrlPhoto = ""
     private var imageUri: Uri? = null
+    private var imageUriframe: Uri? = null
     private var storagePostPicRef: StorageReference? = null
 
 
@@ -45,6 +52,12 @@ class AddPostVideoActivity : AppCompatActivity() {
         close_add_post_video_btn.setOnClickListener {
             super.onBackPressed()
             finish()
+        }
+        video_post_frame.setOnClickListener {
+            CropImage.activity()
+                .setAspectRatio(16, 9)
+                .start(this@AddPostVideoActivity)
+
         }
 
 
@@ -63,6 +76,8 @@ class AddPostVideoActivity : AppCompatActivity() {
     }
 
 
+
+
 //}//extra
 
     //Load video
@@ -78,29 +93,62 @@ class AddPostVideoActivity : AppCompatActivity() {
         if(requestCode==PICK_IMAGE_CODE  && data!=null && resultCode == RESULT_OK){
             imageUri =data.data
         }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE  &&  resultCode == Activity.RESULT_OK  &&  data != null)
+        {
+            val result = CropImage.getActivityResult(data)
+            imageUriframe = result.uri
+//            video_post_frame.setImageURI(imageUriframe)
+        }
     }
 
     private fun uploadImage(){
-        when{
-            imageUri == null -> Toast.makeText(this, "Please select image first.", Toast.LENGTH_LONG).show()
+        if(description_post_video.text.toString().isEmpty()){
+            description_post_video.error="Please Write your description"
+            description_post_video.requestFocus()
+            return
+        }else if (imageUriframe == null){
+            Toast.makeText(this, "Please add your cover photo", Toast.LENGTH_LONG).show()
+            return
+        }else if(imageUri ==null){
+            Toast.makeText(this, "Please add your video", Toast.LENGTH_LONG).show()
+            return
+        }else{
 
-            TextUtils.isEmpty(description_post_video.text.toString()) -> Toast.makeText(this, "Please write description first.", Toast.LENGTH_LONG).show()
-            else ->{
-
-                val intent = Intent(this@AddPostVideoActivity, MainActivity::class.java)
-                startActivity(intent)
-                Toast.makeText(this, "Adding new Post", Toast.LENGTH_LONG).show()
-//                val progressDialog = ProgressDialog(this)
-//                progressDialog.setTitle("Adding new Post")
-//                progressDialog.setMessage("Please wait, we are adding your post...")
-//                progressDialog.show()
-                val ref = FirebaseDatabase.getInstance().reference.child("VideoPostTemp")
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setTitle("Adding your Post")
+            progressDialog.setMessage("Please wait...")
+            progressDialog.show()
+                //val ref = FirebaseDatabase.getInstance().reference.child("VideoPostTemp")
+                val ref = FirebaseDatabase.getInstance().reference.child("VideoPost")
                 val postId = ref.push().key
                 ///val fileRef = storagePostPicRef!!.child(System.currentTimeMillis().toString() + ".jpg")
                 val fileRef = storagePostPicRef!!.child(postId.toString() + ".mp4")
+                val fileRefPhoto = storagePostPicRef!!.child(postId.toString() + ".jpg")
 
                 var uploadTask: StorageTask<*>
+                var uploadTaskPhoto:StorageTask<*>
                 uploadTask = fileRef.putFile(imageUri!!)
+                uploadTaskPhoto = fileRefPhoto.putFile(imageUriframe!!)
+
+                uploadTaskPhoto.continueWithTask(Continuation <UploadTask.TaskSnapshot, Task<Uri>>{ task ->
+                    if (!task.isSuccessful){
+                        task.exception?.let {
+                            throw it
+                        }
+                    }
+                    return@Continuation fileRefPhoto.downloadUrl
+                }).addOnCompleteListener (OnCompleteListener<Uri> { task ->
+                    if (task.isSuccessful)
+                    {
+                        val downloadUrl = task.result
+                        myUrlPhoto = downloadUrl.toString()
+                        //Toast.makeText(this,myUrlPhoto,Toast.LENGTH_SHORT).show()
+
+                    }
+                } )
+
+
+
                 uploadTask.continueWithTask(Continuation <UploadTask.TaskSnapshot, Task<Uri>>{ task ->
                     if (!task.isSuccessful)
                     {
@@ -132,21 +180,21 @@ class AddPostVideoActivity : AppCompatActivity() {
                         postMap["postimage"] = myUrl
                         postMap["postDate"] = date
                         postMap["postTime"] = time
+                        postMap["coverPhoto"] = myUrlPhoto
 
                         ref.child(postId).updateChildren(postMap)
 
-                        Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
-
-//                        val intent = Intent(this@AddPostVideoActivity, MainActivity::class.java)
-//                        startActivity(intent)
+                        progressDialog.dismiss()
+                        //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
+                        super.onBackPressed()
                         finish()
-//                        progressDialog.dismiss()
                     }else{
                         Toast.makeText(this,"Post upload Unsuccessfully.", Toast.LENGTH_LONG).show()
-//                        progressDialog.dismiss()
+                        super.onBackPressed()
+                        progressDialog.dismiss()
                     }
                 } )
-            }
         }
     }
 }

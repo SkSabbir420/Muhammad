@@ -50,8 +50,8 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
     private  var postKey:String? = null
     private  var likeReference:DatabaseReference? = null
     private  var testClick:Boolean =false
-    private var hashMap:HashMap<String,Bitmap> = HashMap<String,Bitmap>()
-    private var bitmap: Bitmap? = null
+//    private var hashMap:HashMap<String,Bitmap> = HashMap<String,Bitmap>()
+//    private var bitmap: Bitmap? = null
 
 
     inner class  ViewHolder(@NonNull itemView:View):RecyclerView.ViewHolder(itemView){
