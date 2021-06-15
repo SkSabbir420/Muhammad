@@ -15,12 +15,12 @@ class post_main_activity : AppCompatActivity() {
         chose_photo_post_id.setOnClickListener {
             val intent = Intent(this, AddPostPhotoActivity::class.java)
             startActivity(intent)
-            finish()
+//            finish()
         }
         chose_video_post_id.setOnClickListener {
             val intent = Intent(this, AddPostVideoActivity::class.java)
             startActivity(intent)
-            finish()
+//            finish()
         }
     }
 }

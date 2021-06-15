@@ -3,9 +3,7 @@ package com.islam.muhammad.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
 import android.util.Patterns
-
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -36,17 +34,17 @@ class Login : AppCompatActivity() {
 
     private fun doLogin() {
         if (email_log_in.text.toString().isEmpty()) {
-            email_log_in.error = "Please Enter Your Email."
+            email_log_in.error = "Please Enter Your Email"
             email_log_in.requestFocus()
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email_log_in.text.toString()).matches()) {
-            email_log_in.error = "Please Enter Valid Email."
+            email_log_in.error = "Please Enter Valid Email Address"
             email_log_in.requestFocus()
             return
         }
         if (password_log_in.text.toString().isEmpty()) {
-            password_log_in.error = "Please Enter Your Email."
+            password_log_in.error = "Please Enter Your Password"
             password_log_in.requestFocus()
             return
         }
@@ -56,7 +54,8 @@ class Login : AppCompatActivity() {
                     val user = mAuth.currentUser
                     updateUI(user)
                 } else {
-                    updateUI(null)
+                    Toast.makeText(this,
+                        "Please Check your Email Address or Password \n\t\t\tor Internet Connection",Toast.LENGTH_LONG).show()
                 }
             }
     }

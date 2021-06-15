@@ -62,12 +62,18 @@
             android:layout_margin="5dp"
             android:maxLines="6"
             android:hint="Write something about your post" />
-
-
-        <VideoView
-            android:layout_width="wrap_content"
-            android:layout_height="250dp"
-            android:id="@+id/video_post"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/video_post_frame"
+            android:text="Add Cover Photo"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/video_post"
+            android:text="Add Your Video"
+            />
     </LinearLayout>
 
 </RelativeLayout>

@@ -102,14 +102,12 @@ class AccountSettingsActivity : AppCompatActivity()
     private fun updateUserInfoOnly()
     {
         when {
-            TextUtils.isEmpty(full_name_profile_frag.text.toString()) -> Toast.makeText(this, "Please write full name first.", Toast.LENGTH_LONG).show()
             username_profile_frag.text.toString() == "" -> Toast.makeText(this, "Please write user name first.", Toast.LENGTH_LONG).show()
             bio_profile_frag.text.toString() == "" -> Toast.makeText(this, "Please write your bio first.", Toast.LENGTH_LONG).show()
             else -> {
                 val usersRef = FirebaseDatabase.getInstance().reference.child("Users")
 
                 val userMap = HashMap<String, Any>()
-                userMap["fullname"] = full_name_profile_frag.text.toString().toLowerCase()
                 userMap["username"] = username_profile_frag.text.toString().toLowerCase()
                 userMap["bio"] = bio_profile_frag.text.toString().toLowerCase()
 
@@ -140,7 +138,6 @@ class AccountSettingsActivity : AppCompatActivity()
 
                     Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(profile_image_view_profile_frag)
                     username_profile_frag.setText(user!!.getUsername())
-                    full_name_profile_frag.setText(user!!.getFullname())
                     bio_profile_frag.setText(user!!.getBio())
                 }
             }
@@ -157,7 +154,6 @@ class AccountSettingsActivity : AppCompatActivity()
         when
         {
             imageUri == null -> Toast.makeText(this, "Please select image first.", Toast.LENGTH_LONG).show()
-            TextUtils.isEmpty(full_name_profile_frag.text.toString()) -> Toast.makeText(this, "Please write full name first.", Toast.LENGTH_LONG).show()
             username_profile_frag.text.toString() == "" -> Toast.makeText(this, "Please write user name first.", Toast.LENGTH_LONG).show()
             bio_profile_frag.text.toString() == "" -> Toast.makeText(this, "Please write your bio first.", Toast.LENGTH_LONG).show()
 
@@ -190,7 +186,6 @@ class AccountSettingsActivity : AppCompatActivity()
                         val ref = FirebaseDatabase.getInstance().reference.child("Users")
 
                         val userMap = HashMap<String, Any>()
-                        userMap["fullname"] = full_name_profile_frag.text.toString().toLowerCase()
                         userMap["username"] = username_profile_frag.text.toString().toLowerCase()
                         userMap["bio"] = bio_profile_frag.text.toString().toLowerCase()
                         userMap["image"] = myUrl

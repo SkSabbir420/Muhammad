@@ -24,27 +24,26 @@ import com.islam.muhammad.main.VideoPlayActivity
 import com.islam.muhammad.model.VideoPost
 import com.islam.muhammad.main.video_comment_activity
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.RequestCreator
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.video_posts_layout.view.*
 
 class VideoPostAdapter(private val mContext:Context, private val mPost: List<VideoPost>):RecyclerView.Adapter<VideoPostAdapter.ViewHolder>(){
 
     private  var firebaseUser:FirebaseUser? = null
-    private var mVideoView: VideoView? = null
+    //private var mVideoView: VideoView? = null
 
     private  var userid:String? = null
     private  var postKey:String? = null
     private  var likeReference:DatabaseReference? = null
     private  var testClick:Boolean =false
-    private lateinit var mRewardedVideoAd: RewardedVideoAd
-    var click = 0
+//    private lateinit var mRewardedVideoAd: RewardedVideoAd
 
 
-    inner class  ViewHolder(@NonNull itemView: View):RecyclerView.ViewHolder(itemView),
-        RewardedVideoAdListener {
+    inner class  ViewHolder(@NonNull itemView: View):RecyclerView.ViewHolder(itemView){
         var profileImage:CircleImageView
         var description: TextView
-        var postImage:VideoView
+        var postImage:ImageView
         var userName: TextView
 
         var likeButton:ImageView
@@ -64,7 +63,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             description = itemView.findViewById(R.id.post_text_home)
             postImage = itemView.findViewById(R.id.post_video_video)
             date = itemView.findViewById(R.id.txt_video_date)
-            mVideoView =postImage
+           // mVideoView =postImage
             userName = itemView.findViewById(R.id.user_name_post)
 
             likeButton = itemView.findViewById(R.id.video_image_like_btn)
@@ -75,21 +74,16 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             comments = itemView.findViewById(R.id.video_comments)
 
 
-            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
-            mRewardedVideoAd.rewardedVideoAdListener = this
-            mRewardedVideoAd.
-            loadAd("ca-app-pub-3940256099942544/5224354917",AdRequest.Builder().build())
+//            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
+//            mRewardedVideoAd.rewardedVideoAdListener = this
+//            mRewardedVideoAd.
+//            loadAd("ca-app-pub-3940256099942544/5224354917",AdRequest.Builder().build())
+//            mRewardedVideoAd.show()
 
             //publisher = itemView.findViewById(R.id.publisher)
             //saveButton = itemView.findViewById(R.id.post_save_comment_btn)
 
-//            itemView.post_video_video.setOnClickListener {
-//                click++
-//                //Toast.makeText(mContext,"$click",Toast.LENGTH_SHORT).show()
-//                if(click==10 || click ==25 || click == 50){
-//                    mRewardedVideoAd.show()
-//                }
-//            }
+
 
             itemView.video_image_like_btn.setOnClickListener {
                 val  position:Int = adapterPosition
@@ -138,6 +132,8 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 val intent = Intent(mContext, VideoPlayActivity::class.java)
                 intent.putExtra("keyv",videoUri)
                 mContext.startActivity(intent)
+
+
             }
 
             itemView.video_image_share_btn.setOnClickListener {
@@ -156,37 +152,37 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 
         }
 
-        override fun onRewardedVideoAdLoaded() {
-
-        }
-
-        override fun onRewardedVideoAdOpened() {
-
-        }
-
-        override fun onRewardedVideoStarted() {
-
-        }
-
-        override fun onRewardedVideoAdClosed() {
-
-        }
-
-        override fun onRewarded(p0: RewardItem?) {
-
-        }
-
-        override fun onRewardedVideoAdLeftApplication() {
-
-        }
-
-        override fun onRewardedVideoAdFailedToLoad(p0: Int) {
-
-        }
-
-        override fun onRewardedVideoCompleted() {
-
-        }
+//        override fun onRewardedVideoAdLoaded() {
+//
+//        }
+//
+//        override fun onRewardedVideoAdOpened() {
+//
+//        }
+//
+//        override fun onRewardedVideoStarted() {
+//
+//        }
+//
+//        override fun onRewardedVideoAdClosed() {
+//
+//        }
+//
+//        override fun onRewarded(p0: RewardItem?) {
+//
+//        }
+//
+//        override fun onRewardedVideoAdLeftApplication() {
+//
+//        }
+//
+//        override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+//
+//        }
+//
+//        override fun onRewardedVideoCompleted() {
+//
+//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -231,17 +227,9 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 //                mVideoView!!.start()
             }*/
 
-//        val controller = MediaController(mContext)
-//        controller.setMediaPlayer(mVideoView)
-//        mVideoView!!.setMediaController(controller)
-//        val videoUri = Uri.parse(post.getPostimage())
-//        mVideoView!!.setVideoURI(videoUri)
-//        //mVideoView!!.seekTo(1)
-//        //controller.hide()
-
-
         publisherInfo(holder.profileImage,holder.userName,post.getPublisher())
-        holder.description.setText(post.getDescription())
+        Picasso.get().load(post.getCoverPhoto()).into(holder.postImage)
+        holder.description.text = post.getDescription()
         holder.date.setText(post.getPostDate())
         getLikeButtonStatus(postKey!!, userid!!,holder)
         getcommentButtonStatus(postKey!!,holder)
@@ -315,5 +303,9 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
     }
 
 
+
+}
+
+private fun RequestCreator.into(postImage: VideoView) {
 
 }

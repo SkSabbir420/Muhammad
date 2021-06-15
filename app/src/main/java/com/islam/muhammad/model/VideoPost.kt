@@ -3,14 +3,16 @@ package com.islam.muhammad.model
 class VideoPost {
     private var postid:String = ""
     private var postimage:String = ""
+    private var coverPhoto:String = ""
     private var publisher:String = ""
     private var description:String = ""
     private var postDate:String = ""
     constructor()
 
-    constructor(postid: String, postimage: String, publisher: String, description: String,postDate:String) {
+    constructor(postid: String, postimage: String,coverPhoto: String, publisher: String, description: String,postDate:String) {
         this.postid = postid
         this.postimage = postimage
+        this.coverPhoto = coverPhoto
         this.publisher = publisher
         this.description = description
         this.postDate =postDate
@@ -20,6 +22,9 @@ class VideoPost {
     }
     fun getPostimage():String{
         return postimage
+    }
+    fun getCoverPhoto():String{
+        return coverPhoto
     }
     fun getPublisher():String{
         return publisher
@@ -44,6 +49,9 @@ class VideoPost {
     }
     fun setDescription(description:String){
         this.description =description
+    }
+    fun setCoverPhoto(coverPhoto: String){
+        this.coverPhoto = coverPhoto
     }
 
 }

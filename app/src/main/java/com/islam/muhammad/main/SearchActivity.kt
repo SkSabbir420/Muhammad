@@ -60,7 +60,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchUser(inputName: String){
         val query = FirebaseDatabase.getInstance().getReference()
-                    .child("Users").orderByChild("fullname")
+                    .child("Users").orderByChild("username")
                     .startAt(inputName).endAt(inputName + "\uf8ff")
 
         query.addValueEventListener(object : ValueEventListener{

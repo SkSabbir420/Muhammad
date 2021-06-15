@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".login.Login">
 
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="260dp"
@@ -15,69 +14,59 @@
         android:layout_marginTop="75dp"
         android:layout_marginEnd="90dp"
         android:gravity="center"
-        android:text="MUHAMMAD"
-        android:textColor="#3DAA31"
-        android:textSize="20dp"
+        android:text="@string/app_name"
+        android:textColor="@color/love"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/password_log_in"
-        android:layout_width="260dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="25dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/email_log_in"
-        app:layout_constraintStart_toStartOf="@+id/email_log_in"
-        app:layout_constraintTop_toBottomOf="@+id/email_log_in" />
 
     <EditText
         android:id="@+id/email_log_in"
         android:layout_width="260dp"
         android:layout_height="55dp"
         android:layout_marginTop="25dp"
-        android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email_hint"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        android:autofillHints="" />
+    <EditText
+        android:id="@+id/password_log_in"
+        android:layout_width="260dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="25dp"
+        android:hint="@string/password_hint"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/email_log_in"
+        app:layout_constraintStart_toStartOf="@+id/email_log_in"
+        app:layout_constraintTop_toBottomOf="@+id/email_log_in"
+        android:autofillHints="" />
+
 
     <Button
         android:id="@+id/save_log_in"
         android:layout_width="260dp"
         android:layout_height="55dp"
         android:layout_marginTop="25dp"
-        android:text="Login"
+        android:text="@string/login_button"
         app:layout_constraintEnd_toEndOf="@+id/password_log_in"
         app:layout_constraintStart_toStartOf="@+id/password_log_in"
         app:layout_constraintTop_toBottomOf="@+id/password_log_in" />
 
-    <Button
-        android:id="@+id/sing_log_in"
-        android:layout_width="260dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="25dp"
-        android:text="Create New Account"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-
-    <Button
+    <!--<Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Forgot Password"
+        android:text="@string/password_forget_button"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/save_log_in"
         app:layout_constraintStart_toStartOf="@+id/save_log_in"
-        app:layout_constraintTop_toBottomOf="@+id/save_log_in" />
+        app:layout_constraintTop_toBottomOf="@+id/save_log_in" />-->
 
     <TextView
         android:id="@+id/textView"
@@ -85,12 +74,22 @@
         android:layout_height="55dp"
         android:layout_marginTop="25dp"
         android:gravity="center"
-        android:text="OR"
-        android:textColor="#3DAA31"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        android:text="@string/or_text"
+        android:textColor="@color/love"
+        app:layout_constraintEnd_toEndOf="@+id/save_log_in"
+        app:layout_constraintStart_toStartOf="@+id/save_log_in"
+        app:layout_constraintTop_toBottomOf="@+id/save_log_in" />
+
+    <Button
+        android:id="@+id/sing_log_in"
+        android:layout_width="260dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="25dp"
+        android:text="@string/account_button"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

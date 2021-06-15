@@ -213,7 +213,7 @@ class ProfileFragment : Fragment() {
                     }
                         //Picasso.get().load(mytweet.tweetImageURL).into(myView.tweet_picture)
 //                    view?.profile_fragment_username?.text = user!!.getUsername()
-                    view?.full_name_profile_frag?.text = user!!.getFullname()
+                    view?.full_name_profile_frag?.text = user!!.getUsername()
                     view?.bio_profile_frag?.text = user!!.getBio()
                 }
             }
