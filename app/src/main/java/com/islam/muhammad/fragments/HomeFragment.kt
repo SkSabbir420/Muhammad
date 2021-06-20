@@ -130,10 +130,14 @@ class HomeFragment : Fragment() {
                     val post = snapshot.getValue(Post::class.java)
                     for (id in (followingList as ArrayList<String>)) {
                         if (post!!.getPublisher() == id) {
-                            shimmerFrameLayout_home.stopShimmerAnimation()
-                            shimmerFrameLayout_home.visibility = View.GONE
-//                            adView.visibility = View.VISIBLE
-                            recycler_view_home.visibility = View.VISIBLE
+                            try {
+                                shimmerFrameLayout_home.stopShimmerAnimation()
+                                shimmerFrameLayout_home.visibility = View.GONE
+//                               adView.visibility = View.VISIBLE
+                                recycler_view_home.visibility = View.VISIBLE
+                            }catch (e:Exception){
+
+                            }
                             postList!!.add(post)
                         }
                         postAdapter!!.notifyDataSetChanged()

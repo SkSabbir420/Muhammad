@@ -26,13 +26,13 @@ import com.islam.muhammad.main.video_comment_activity
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_video_play.*
 import kotlinx.android.synthetic.main.video_posts_layout.view.*
 
 class VideoPostAdapter(private val mContext:Context, private val mPost: List<VideoPost>):RecyclerView.Adapter<VideoPostAdapter.ViewHolder>(){
 
     private  var firebaseUser:FirebaseUser? = null
     //private var mVideoView: VideoView? = null
-
     private  var userid:String? = null
     private  var postKey:String? = null
     private  var likeReference:DatabaseReference? = null
@@ -40,15 +40,15 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 //    private lateinit var mRewardedVideoAd: RewardedVideoAd
 
 
-    inner class  ViewHolder(@NonNull itemView: View):RecyclerView.ViewHolder(itemView){
+    inner class  ViewHolder(@NonNull itemView: View,):RecyclerView.ViewHolder(itemView){
+
         var profileImage:CircleImageView
         var description: TextView
         var postImage:ImageView
+        var postVideo:VideoView
         var userName: TextView
-
         var likeButton:ImageView
         var likes:TextView
-
         var commentButton:ImageView
         var comments: TextView
         var date:TextView
@@ -62,18 +62,15 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             profileImage = itemView.findViewById(R.id.user_profile_image_post)
             description = itemView.findViewById(R.id.post_text_home)
             postImage = itemView.findViewById(R.id.post_video_video)
+            postVideo = itemView.findViewById(R.id.video_play_main)
             date = itemView.findViewById(R.id.txt_video_date)
            // mVideoView =postImage
             userName = itemView.findViewById(R.id.user_name_post)
-
             likeButton = itemView.findViewById(R.id.video_image_like_btn)
             likes = itemView.findViewById(R.id.video_image_like_text)
-
             //mBufferingTextView = itemView.findViewById(R.id.buffering_textview)
             commentButton = itemView.findViewById(R.id.video_image_comment_btn)
             comments = itemView.findViewById(R.id.video_comments)
-
-
 //            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
 //            mRewardedVideoAd.rewardedVideoAdListener = this
 //            mRewardedVideoAd.
@@ -128,10 +125,20 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             itemView.post_video_video.setOnClickListener {
                 val  position:Int = adapterPosition
                 val post = mPost[position]
-                val videoUri = post.getPostimage()
-                val intent = Intent(mContext, VideoPlayActivity::class.java)
-                intent.putExtra("keyv",videoUri)
-                mContext.startActivity(intent)
+                val videoUri = Uri.parse(post.getPostimage())
+                postImage.visibility = View.GONE
+                postVideo.visibility = View.VISIBLE
+
+//                val intent = Intent(mContext, VideoPlayActivity::class.java)
+//                intent.putExtra("keyv",videoUri)
+//                mContext.startActivity(intent)
+
+                val controller = MediaController(mContext)
+                controller.setMediaPlayer(postVideo)
+                postVideo.setMediaController(controller)
+                postVideo.setVideoURI(videoUri)
+                controller.hide()
+                postVideo.start()
 
 
             }

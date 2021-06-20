@@ -1,6 +1,7 @@
 package com.islam.muhammad.main
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -29,6 +30,13 @@ class MainActivity : AppCompatActivity(){
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_search -> {
+//                    try {
+//                        val  sharedPreferences: SharedPreferences = getSharedPreferences("sharePrefs",0)
+//                        val editor = sharedPreferences.edit()
+//                        editor.apply {
+//                            editor.clear()
+//                        }.apply()
+//                    }catch (e:Exception){ }
 //                    moveToFragment(AdvertiseFragment())
                     moveToFragment(NotificationsFragment())
                     return@OnNavigationItemSelectedListener true
@@ -58,6 +66,7 @@ class MainActivity : AppCompatActivity(){
             }
         false
     }
+    
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

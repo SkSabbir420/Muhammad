@@ -169,20 +169,20 @@ class AddPostVideoActivity : AppCompatActivity() {
                         val localtime  = LocalTime.now()
                         val date = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localdate).toString()
                         val time = DateTimeFormatter.ofPattern("HH:mm:ss").format(localtime).toString()
-
+                        val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
 
                         val postMap = HashMap<String, Any>()
                         postMap["postid"] = postId!!
                         //postMap["description"] = description_post.text.toString().toLowerCase()
                         postMap["description"] = description_post_video.text.toString()
-                        postMap["publisher"] = FirebaseAuth.getInstance().currentUser!!.uid
+                        postMap["publisher"] = userId
                         postMap["postimage"] = myUrl
                         postMap["postDate"] = date
                         postMap["postTime"] = time
                         postMap["coverPhoto"] = myUrlPhoto
 
-                        ref.child(postId).updateChildren(postMap)
+                        ref.child(userId).child(postId).updateChildren(postMap)
 
                         progressDialog.dismiss()
                         //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
