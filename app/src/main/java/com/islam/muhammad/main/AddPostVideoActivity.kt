@@ -38,11 +38,17 @@ class AddPostVideoActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private var imageUriframe: Uri? = null
     private var storagePostPicRef: StorageReference? = null
+    private var postCategory:String? =null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_post_video)
+
+        val intent: Intent = intent
+        postCategory = intent.getStringExtra("keyCategory")
+        //Toast.makeText(this, "$postCategory", Toast.LENGTH_LONG).show()
+
 
         storagePostPicRef = FirebaseStorage.getInstance().reference.child("Posts Videos")
 
@@ -118,8 +124,8 @@ class AddPostVideoActivity : AppCompatActivity() {
             progressDialog.setTitle("Adding your Post")
             progressDialog.setMessage("Please wait...")
             progressDialog.show()
-                //val ref = FirebaseDatabase.getInstance().reference.child("VideoPostTemp")
-                val ref = FirebaseDatabase.getInstance().reference.child("VideoPost")
+                val ref = FirebaseDatabase.getInstance().reference.child("VideoPostTemp")
+//                val ref = FirebaseDatabase.getInstance().reference.child("VideoPost")
                 val postId = ref.push().key
                 ///val fileRef = storagePostPicRef!!.child(System.currentTimeMillis().toString() + ".jpg")
                 val fileRef = storagePostPicRef!!.child(postId.toString() + ".mp4")
@@ -181,8 +187,11 @@ class AddPostVideoActivity : AppCompatActivity() {
                         postMap["postDate"] = date
                         postMap["postTime"] = time
                         postMap["coverPhoto"] = myUrlPhoto
+                        postMap["postCategory"] = postCategory!!
 
-                        ref.child(userId).child(postId).updateChildren(postMap)
+//                        ref.child(userId).child(postId).updateChildren(postMap)
+                        //ref.child(postCategory!!).child(postId).updateChildren(postMap)
+                        ref.child(postId).updateChildren(postMap)
 
                         progressDialog.dismiss()
                         //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()

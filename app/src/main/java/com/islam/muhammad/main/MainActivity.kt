@@ -15,11 +15,11 @@ import com.islam.muhammad.post.post_main_activity
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class MainActivity : AppCompatActivity(){
+
     var checkMembership:String? = "null"
 
-
-
-    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener{
+    private val onNavigationItemSelectedListener = BottomNavigationView.
+    OnNavigationItemSelectedListener{
             item -> when (item.itemId) {
                 R.id.nav_profile -> {
                     moveToFragment(ProfileFragment())
@@ -30,17 +30,9 @@ class MainActivity : AppCompatActivity(){
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_search -> {
-//                    try {
-//                        val  sharedPreferences: SharedPreferences = getSharedPreferences("sharePrefs",0)
-//                        val editor = sharedPreferences.edit()
-//                        editor.apply {
-//                            editor.clear()
-//                        }.apply()
-//                    }catch (e:Exception){ }
 //                    moveToFragment(AdvertiseFragment())
                     moveToFragment(NotificationsFragment())
                     return@OnNavigationItemSelectedListener true
-                    //Toast.makeText(this, "Working this feature!!\n Coming very soon.", Toast.LENGTH_SHORT).show()
                 }
                 R.id.nav_add_post -> {
 
@@ -87,7 +79,8 @@ class MainActivity : AppCompatActivity(){
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        moveToFragment(HomeFragment())
+        //moveToFragment(HomeFragment())
+        moveToFragment(NotificationsFragment())
     }
 
 

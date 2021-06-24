@@ -45,6 +45,8 @@ class NotificationsFragment : Fragment(){
     private  var postList:MutableList<VideoPost>? = null
     private  var postListTitle:MutableList<VideoPostTitle>? = null
     private  var followingList:MutableList<VideoPost>? = null
+    private  var sharedPreferences:SharedPreferences? = null
+    private  var userId:String? = null
 
 //    val intent: Intent = intent
 //    val postkey = intent.getStringExtra("key")!!
@@ -57,6 +59,9 @@ class NotificationsFragment : Fragment(){
         val view = inflater.inflate(R.layout.fragment_video, container, false)
         var recyclerView: RecyclerView? = null
         var recyclerViewtitle: RecyclerView? = null
+
+        sharedPreferences = context!!.getSharedPreferences("sharePrefs",0)
+        userId = sharedPreferences!!.getString("keyTitle","Allah")
 
 
         recyclerView = view.findViewById(R.id.recycler_view_video)
@@ -139,16 +144,19 @@ class NotificationsFragment : Fragment(){
 //                userList?.clear()
                 for (snapshot in p0.children) {
                     val Topid = snapshot.getValue(VideoPostTitle::class.java)
-//                    for (id in (followingList as ArrayList<String>)) {
-//                    //if (post!!.getPublisher() == id) {
-                    shimmerFrameLayout_video.stopShimmerAnimation()
-                    shimmerFrameLayout_video.visibility = View.GONE
-                    recycler_view_video_title.visibility = View.VISIBLE
+                    for (id in (followingList as ArrayList<String>)) {
+                    if (Topid!!.getUID() == id) {
+                        try {
+                            shimmerFrameLayout_video.stopShimmerAnimation()
+                            shimmerFrameLayout_video.visibility = View.GONE
+                            recycler_view_video_title.visibility = View.VISIBLE
+                        }catch (e:Exception){ }
+
                     postListTitle!!.add(Topid!!)
                     //profileId = Topid.getUID()
-                    // }
+                     }
                     postAdapterTitle!!.notifyDataSetChanged()
-                    //}
+                    }
                 }
 
             }
@@ -161,13 +169,14 @@ class NotificationsFragment : Fragment(){
 
     private fun retrievePosts() {
         //val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        val  sharedPreferences:SharedPreferences= context!!.getSharedPreferences("sharePrefs",0)
-        val userId = sharedPreferences.getString("keyTitle",FirebaseAuth.getInstance().currentUser!!.uid)
+
+
         val postsRef = FirebaseDatabase.getInstance().reference.child("VideoPost").child(userId!!)
-        val editor = sharedPreferences.edit()
+        val editor = sharedPreferences!!.edit()
                         editor.apply {
                             editor.clear()
                         }.apply()
+
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 //postList?.clear()
@@ -175,9 +184,11 @@ class NotificationsFragment : Fragment(){
                     val post = snapshot.getValue(VideoPost::class.java)
 //                    for (id in (followingList as ArrayList<String>)){
 //                        if (post!!.getPublisher() == id){
-                            shimmerFrameLayout_video.stopShimmerAnimation()
-                            shimmerFrameLayout_video.visibility = View.GONE
-                            recycler_view_video.visibility = View.VISIBLE
+                            try {
+                                shimmerFrameLayout_video.stopShimmerAnimation()
+                                shimmerFrameLayout_video.visibility = View.GONE
+                                recycler_view_video.visibility = View.VISIBLE
+                            }catch (e:Exception){ }
 //                            Toast.makeText(context,"retrieve post",Toast.LENGTH_SHORT).show()
                             postList!!.add(post!!)
 //                        }

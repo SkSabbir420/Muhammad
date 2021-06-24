@@ -156,8 +156,8 @@ class AddPostPhotoActivity : AppCompatActivity() {
                 progressDialog.setMessage("Please wait...")
                 progressDialog.show()
 
-                //val ref = FirebaseDatabase.getInstance().reference.child("PostTemp")
-                val ref = FirebaseDatabase.getInstance().reference.child("Post")
+                val ref = FirebaseDatabase.getInstance().reference.child("PostTemp")
+//                val ref = FirebaseDatabase.getInstance().reference.child("Post")
                 val postId = ref.push().key
                 val fileRef = storagePostPicRef!!.child(postId.toString() + ".jpg")
                 var uploadTask: StorageTask<*>

@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Muhammad">
         <activity
+            android:name=".main.VideoPostCategoryActivity"
+            android:exported="true" />
+        <activity
             android:name=".main.VideoPlayActivity"
             android:exported="true" />
 

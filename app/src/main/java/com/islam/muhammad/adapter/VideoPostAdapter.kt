@@ -23,10 +23,12 @@ import com.google.firebase.database.*
 import com.islam.muhammad.main.VideoPlayActivity
 import com.islam.muhammad.model.VideoPost
 import com.islam.muhammad.main.video_comment_activity
+import com.islam.muhammad.model.Vpvcount
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_video_play.*
+import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.video_posts_layout.view.*
 
 class VideoPostAdapter(private val mContext:Context, private val mPost: List<VideoPost>):RecyclerView.Adapter<VideoPostAdapter.ViewHolder>(){
@@ -36,6 +38,8 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
     private  var userid:String? = null
     private  var postKey:String? = null
     private  var likeReference:DatabaseReference? = null
+    //private  var viewReference:DatabaseReference? = null
+    val viewReference = FirebaseDatabase.getInstance().getReference("VPView")
     private  var testClick:Boolean =false
 //    private lateinit var mRewardedVideoAd: RewardedVideoAd
 
@@ -49,6 +53,8 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         var userName: TextView
         var likeButton:ImageView
         var likes:TextView
+        var views:TextView
+        var viewsText:TextView
         var commentButton:ImageView
         var comments: TextView
         var date:TextView
@@ -68,9 +74,12 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             userName = itemView.findViewById(R.id.user_name_post)
             likeButton = itemView.findViewById(R.id.video_image_like_btn)
             likes = itemView.findViewById(R.id.video_image_like_text)
+            views = itemView.findViewById(R.id.video_view)
+            viewsText = itemView.findViewById(R.id.video_view_text)
             //mBufferingTextView = itemView.findViewById(R.id.buffering_textview)
             commentButton = itemView.findViewById(R.id.video_image_comment_btn)
             comments = itemView.findViewById(R.id.video_comments)
+
 //            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
 //            mRewardedVideoAd.rewardedVideoAdListener = this
 //            mRewardedVideoAd.
@@ -122,12 +131,14 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 intent.putExtra("key",postKey)
                 mContext.startActivity(intent)
             }
+//            var count:Int
             itemView.post_video_video.setOnClickListener {
                 val  position:Int = adapterPosition
                 val post = mPost[position]
                 val videoUri = Uri.parse(post.getPostimage())
                 postImage.visibility = View.GONE
                 postVideo.visibility = View.VISIBLE
+
 
 //                val intent = Intent(mContext, VideoPlayActivity::class.java)
 //                intent.putExtra("keyv",videoUri)
@@ -139,6 +150,8 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 postVideo.setVideoURI(videoUri)
                 controller.hide()
                 postVideo.start()
+                val view = itemView.video_view.text.toString().toInt()
+                viewReference.child(post.getPostid()).child("postView").setValue(view + 1)
 
 
             }
@@ -148,7 +161,6 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 val post = mPost[position]
                 val currentUrl = post.getPostimage()
                 val title = post.getDescription()
-
                 val i = Intent(Intent.ACTION_SEND)
                 i.type = "text/plain"
                 i.putExtra(Intent.EXTRA_TEXT, "Post Description:\n$title\n\nVideo Link: $currentUrl")
@@ -239,12 +251,15 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         holder.description.text = post.getDescription()
         holder.date.setText(post.getPostDate())
         getLikeButtonStatus(postKey!!, userid!!,holder)
+        getViewButtonStatus(postKey!!,holder)
         getcommentButtonStatus(postKey!!,holder)
 
 
 
 
+
     }
+
 
     private fun publisherInfo(profileImage: CircleImageView, userName: TextView,publisherId: String) {
         val userRef = FirebaseDatabase.getInstance().reference.child("Users").child(publisherId)
@@ -253,7 +268,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 if(p0.exists()){
                     val user = p0.getValue<User>(User::class.java)
                     Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(profileImage)
-                    userName.text = user!!.getUsername()
+                    userName.text = user.getUsername()
                 }
             }
             override fun onCancelled(p0: DatabaseError) {
@@ -290,6 +305,22 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 
             }
             override fun onCancelled(p0: DatabaseError){
+            }
+        })
+
+    }
+    private  fun getViewButtonStatus(postkey:String,holder:ViewHolder){
+        var count:Int
+        viewReference.child(postkey).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    val post = p0.getValue<Vpvcount>(Vpvcount::class.java)
+                     count = post!!.getPostView()
+                    holder.views.setText("$count")
+                }
+            }
+            override fun onCancelled(p0: DatabaseError) {
+                Toast.makeText(mContext,"Not work",Toast.LENGTH_SHORT).show()
             }
         })
 

@@ -7,6 +7,7 @@ class VideoPost {
     private var publisher:String = ""
     private var description:String = ""
     private var postDate:String = ""
+    //private var postView:Int = 0
     constructor()
 
     constructor(postid: String, postimage: String,coverPhoto: String, publisher: String, description: String,postDate:String) {
@@ -16,10 +17,15 @@ class VideoPost {
         this.publisher = publisher
         this.description = description
         this.postDate =postDate
+        //this.postView = postView
     }
     fun getPostid():String{
         return postid
     }
+//    fun getPostView():Int{
+//        return postView
+//    }
+
     fun getPostimage():String{
         return postimage
     }
@@ -41,6 +47,9 @@ class VideoPost {
     fun setPostid(postid:String){
         this.postid =postid
     }
+//    fun setPostView(postView:Int){
+//        this.postView = postView
+//    }
     fun setPostimage(postimage:String){
         this.postimage =postimage
     }

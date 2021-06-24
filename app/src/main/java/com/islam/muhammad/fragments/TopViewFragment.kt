@@ -67,9 +67,11 @@ class TopViewFragment : Fragment() {
                     val Topid = snapshot.getValue(Top::class.java)
                     //for (id in (followingList as ArrayList<String>)) {
                         //if (post!!.getPublisher() == id) {
-                            shimmerFrameLayout.stopShimmerAnimation()
-                            shimmerFrameLayout.visibility = View.GONE
-                            recycler_view_top_user.visibility = View.VISIBLE
+                            try {
+                                shimmerFrameLayout.stopShimmerAnimation()
+                                shimmerFrameLayout.visibility = View.GONE
+                                recycler_view_top_user.visibility = View.VISIBLE
+                            }catch (e:Exception){ }
                             userList!!.add(Topid!!)
                     //profileId = Topid.getUID()
                        // }
