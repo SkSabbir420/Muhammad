@@ -8,16 +8,6 @@
         android:title="" />
 
     <item
-        android:id="@+id/nav_notifications"
-        android:icon="@drawable/ic_baseline_sort_24"
-        android:title="" />
-
-    <item
-        android:id="@+id/nav_add_post"
-        android:icon="@drawable/add"
-        android:title="" />
-
-    <item
         android:id="@+id/nav_search"
         android:icon="@drawable/ic_baseline_video_24"
         android:title="" />

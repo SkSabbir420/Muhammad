@@ -43,7 +43,8 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         RewardedVideoAdListener {
         var profileImage:CircleImageView
         var description: TextView
-        var postImage:VideoView
+        var postImage:ImageView
+        var postVideo:VideoView
         var userName: TextView
 
 //        var likeButton:ImageView
@@ -60,9 +61,11 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         init {
             profileImage = itemView.findViewById(R.id.user_profile_image_post)
             description = itemView.findViewById(R.id.post_text_home)
+//            postImage = itemView.findViewById(R.id.post_video_video)
             postImage = itemView.findViewById(R.id.post_video_video)
+            postVideo = itemView.findViewById(R.id.video_play_main)
             date = itemView.findViewById(R.id.txt_video_date)
-            mVideoView =postImage
+            mVideoView =postVideo
             userName = itemView.findViewById(R.id.user_name_post)
 
 //            likeButton = itemView.findViewById(R.id.video_image_like_btn)
@@ -120,9 +123,12 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 postMap["publisher"] = post.getPublisher()
                 postMap["postimage"] = post.getPostimage()
                 postMap["postDate"] = post.getPostDate()
-                postMap["postTime"] = post.getPostTime()
+//                postMap["postTime"] = post.getPostTime() //after add
+                postMap["coverPhoto"] = post.getCoverPhoto()
 
-                FirebaseDatabase.getInstance().reference.child("VideoPost")
+                FirebaseDatabase.getInstance().reference.child("VideoPost").child(post.getPublisher())
+                    .child(postKey!!).updateChildren(postMap)
+                FirebaseDatabase.getInstance().reference.child("VideoPost").child(post.getPostCategory())
                     .child(postKey!!).updateChildren(postMap)
 
                 FirebaseDatabase.getInstance().getReference("VideoPostTemp")
@@ -157,6 +163,19 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                         override fun onCancelled(p0: DatabaseError){
                         }
                     })
+            }
+            itemView.post_video_video.setOnClickListener {
+                val  position:Int = adapterPosition
+                val post = mPost[position]
+                val videoUri = Uri.parse(post.getPostimage())
+                postImage.visibility = View.GONE
+                postVideo.visibility = View.VISIBLE
+                val controller = MediaController(mContext)
+                controller.setMediaPlayer(postVideo)
+                postVideo.setMediaController(controller)
+                postVideo.setVideoURI(videoUri)
+                controller.hide()
+                postVideo.start()
             }
 
             /*itemView.video_image_comment_btn.setOnClickListener {
@@ -245,24 +264,25 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 //            holder.postImage.requestFocus()
 //            //holder.postImage.start()
 
-            val controller = MediaController(mContext)
-            controller.setMediaPlayer(mVideoView)
-            mVideoView!!.setMediaController(controller)
-            val mCurrentPosition = 0
-            val videoUri = Uri.parse(post.getPostimage())
-            //Toast.makeText(mContext,"$videoUri",Toast.LENGTH_SHORT).show()
-            mVideoView!!.setVideoURI(videoUri)
-            controller.hide()
-            mVideoView!!.setOnPreparedListener {
-                if (mCurrentPosition > 0) {
-                    mVideoView!!.seekTo(mCurrentPosition)
-                } else {
-                    mVideoView!!.seekTo(1)
-                }
-//                mVideoView!!.start()
-            }
+//            val controller = MediaController(mContext)
+//            controller.setMediaPlayer(mVideoView)
+//            mVideoView!!.setMediaController(controller)
+//            val mCurrentPosition = 0
+//            val videoUri = Uri.parse(post.getPostimage())
+//            //Toast.makeText(mContext,"$videoUri",Toast.LENGTH_SHORT).show()
+//            mVideoView!!.setVideoURI(videoUri)
+//            controller.hide()
+//            mVideoView!!.setOnPreparedListener {
+//                if (mCurrentPosition > 0) {
+//                    mVideoView!!.seekTo(mCurrentPosition)
+//                } else {
+//                    mVideoView!!.seekTo(1)
+//                }
+////                mVideoView!!.start()
+//            }
 
         publisherInfo(holder.profileImage,holder.userName,post.getPublisher())
+        Picasso.get().load(post.getCoverPhoto()).into(holder.postImage)
 
 
 

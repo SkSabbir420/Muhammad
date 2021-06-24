@@ -34,24 +34,24 @@ class MainActivity : AppCompatActivity(){
                     return@OnNavigationItemSelectedListener true
                     //Toast.makeText(this, "Working this feature!!\n Coming very soon.", Toast.LENGTH_SHORT).show()
                 }
-                R.id.nav_add_post -> {
-
-                    if(checkMembership == "true"){
-                        item.isChecked =false
-                        //startActivity(Intent(this@MainActivity, AddPostActivity::class.java))
-                        startActivity(Intent(this@MainActivity, post_main_activity::class.java))
-                        return@OnNavigationItemSelectedListener true
-                    }else{
-                        //Toast.makeText(this, "You don't have premium membership.", Toast.LENGTH_SHORT).show()
-                        Toast.makeText(this, "Your Don't Have Premium Membership", Toast.LENGTH_SHORT).show()
-                    }
-
-                }
-                R.id.nav_notifications -> {
-                    //Toast.makeText(this, "Working this feature!!\n Coming very soon.", Toast.LENGTH_SHORT).show()
-                    moveToFragment(TopViewFragment())
-                    return@OnNavigationItemSelectedListener true
-                }
+//                R.id.nav_add_post -> {
+//
+//                    if(checkMembership == "true"){
+//                        item.isChecked =false
+//                        //startActivity(Intent(this@MainActivity, AddPostActivity::class.java))
+//                        startActivity(Intent(this@MainActivity, post_main_activity::class.java))
+//                        return@OnNavigationItemSelectedListener true
+//                    }else{
+//                        //Toast.makeText(this, "You don't have premium membership.", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "Your Don't Have Premium Membership", Toast.LENGTH_SHORT).show()
+//                    }
+//
+//                }
+//                R.id.nav_notifications -> {
+//                    //Toast.makeText(this, "Working this feature!!\n Coming very soon.", Toast.LENGTH_SHORT).show()
+//                    moveToFragment(TopViewFragment())
+//                    return@OnNavigationItemSelectedListener true
+//                }
 
             }
         false
