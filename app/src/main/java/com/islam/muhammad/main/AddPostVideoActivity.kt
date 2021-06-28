@@ -39,6 +39,7 @@ class AddPostVideoActivity : AppCompatActivity() {
     private var imageUriframe: Uri? = null
     private var storagePostPicRef: StorageReference? = null
     private var postCategory:String? =null
+    val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +51,7 @@ class AddPostVideoActivity : AppCompatActivity() {
         //Toast.makeText(this, "$postCategory", Toast.LENGTH_LONG).show()
 
 
-        storagePostPicRef = FirebaseStorage.getInstance().reference.child("Posts Videos")
+        storagePostPicRef = FirebaseStorage.getInstance().reference.child("postVideos")
 
         save_new_post_video_btn.setOnClickListener {
             uploadImage()
@@ -124,12 +125,12 @@ class AddPostVideoActivity : AppCompatActivity() {
             progressDialog.setTitle("Adding your Post")
             progressDialog.setMessage("Please wait...")
             progressDialog.show()
-                val ref = FirebaseDatabase.getInstance().reference.child("VideoPostTemp")
-//                val ref = FirebaseDatabase.getInstance().reference.child("VideoPost")
+                val ref = FirebaseDatabase.getInstance().reference.child("postVideoTemporary")
+//                val ref = FirebaseDatabase.getInstance().reference.child("postVideos")
                 val postId = ref.push().key
                 ///val fileRef = storagePostPicRef!!.child(System.currentTimeMillis().toString() + ".jpg")
-                val fileRef = storagePostPicRef!!.child(postId.toString() + ".mp4")
-                val fileRefPhoto = storagePostPicRef!!.child(postId.toString() + ".jpg")
+                val fileRef = storagePostPicRef!!.child(userId).child(postId!!).child(postId.toString() + ".mp4")
+                val fileRefPhoto = storagePostPicRef!!.child(userId).child(postId).child(postId.toString() + ".jpg")
 
                 var uploadTask: StorageTask<*>
                 var uploadTaskPhoto:StorageTask<*>
@@ -175,11 +176,11 @@ class AddPostVideoActivity : AppCompatActivity() {
                         val localtime  = LocalTime.now()
                         val date = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localdate).toString()
                         val time = DateTimeFormatter.ofPattern("HH:mm:ss").format(localtime).toString()
-                        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+
 
 
                         val postMap = HashMap<String, Any>()
-                        postMap["postid"] = postId!!
+                        postMap["postid"] = postId
                         //postMap["description"] = description_post.text.toString().toLowerCase()
                         postMap["description"] = description_post_video.text.toString()
                         postMap["publisher"] = userId
@@ -189,13 +190,21 @@ class AddPostVideoActivity : AppCompatActivity() {
                         postMap["coverPhoto"] = myUrlPhoto
                         postMap["postCategory"] = postCategory!!
 
+
+                        //FirebaseDatabase.getInstance().reference.child("postVideoViews").child(userId).
+                        //child(postId).child("videoViews").setValue(0)
+                        //FirebaseDatabase.getInstance().getReference("VPView").child(postId).child("postView").setValue(0)
+
 //                        ref.child(userId).child(postId).updateChildren(postMap)
-                        //ref.child(postCategory!!).child(postId).updateChildren(postMap)
+//                        ref.child(postCategory!!).child(postId).updateChildren(postMap)
+//                        FirebaseDatabase.getInstance().getReference("postVideoViews").child(postId).child("postView").setValue(0)
+//                        ref.child(userId).child(postId).updateChildren(postMap)
+
                         ref.child(postId).updateChildren(postMap)
 
                         progressDialog.dismiss()
-                        //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
-                        Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
+//                        Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
                         super.onBackPressed()
                         finish()
                     }else{

@@ -101,8 +101,8 @@ class HomeFragment : Fragment() {
     private fun checkFollowings() {
         followingList = ArrayList()
         val followingRef = FirebaseDatabase.getInstance().reference
-                    .child("Follow").child(FirebaseAuth.getInstance().currentUser!!.uid)
-                    .child("Following")
+                    .child("follow").child(FirebaseAuth.getInstance().currentUser!!.uid)
+                    .child("following")
         followingRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()) {
@@ -121,7 +121,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun retrievePosts() {
-        val postsRef = FirebaseDatabase.getInstance().reference.child("Post")
+        val postsRef = FirebaseDatabase.getInstance().reference.child("postPictures")
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot){
 

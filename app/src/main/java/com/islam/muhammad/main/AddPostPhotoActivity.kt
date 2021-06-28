@@ -66,7 +66,7 @@ class AddPostPhotoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_post_photo)
 
-        storagePostPicRef = FirebaseStorage.getInstance().reference.child("postsPictures")
+        storagePostPicRef = FirebaseStorage.getInstance().reference.child("postPictures")
         ///storagePostPicRef = FirebaseStorage.getInstance().reference.child("Posts Videos")
 
 //        try {
@@ -156,10 +156,11 @@ class AddPostPhotoActivity : AppCompatActivity() {
                 progressDialog.setMessage("Please wait...")
                 progressDialog.show()
 
-                val ref = FirebaseDatabase.getInstance().reference.child("PostTemp")
-//                val ref = FirebaseDatabase.getInstance().reference.child("Post")
+                val ref = FirebaseDatabase.getInstance().reference.child("postPictureTemporary")
+//                val ref = FirebaseDatabase.getInstance().reference.child("postPictures")
+                val uid = FirebaseAuth.getInstance().currentUser!!.uid
                 val postId = ref.push().key
-                val fileRef = storagePostPicRef!!.child(postId.toString() + ".jpg")
+                val fileRef = storagePostPicRef!!.child(uid).child(postId.toString() + ".jpg")
                 var uploadTask: StorageTask<*>
                 uploadTask = fileRef.putFile(imageUri!!)
                 uploadTask.continueWithTask(Continuation <UploadTask.TaskSnapshot, Task<Uri>>{ task ->
@@ -189,7 +190,7 @@ class AddPostPhotoActivity : AppCompatActivity() {
                         val postMap = HashMap<String, Any>()
                         postMap["postid"] = postId!!
                         postMap["description"] = description_post.text.toString()
-                        postMap["publisher"] = FirebaseAuth.getInstance().currentUser!!.uid
+                        postMap["publisher"] = uid
                         postMap["postimage"] = myUrl
 //                        postMap["photoClassify"] = classify!!
                         postMap["postDate"] = date
@@ -197,8 +198,8 @@ class AddPostPhotoActivity : AppCompatActivity() {
 
                         ref.child(postId).updateChildren(postMap)
 
-                        //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
-                        Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
                         progressDialog.dismiss()
 //                        val intent = Intent(this@AddPostPhotoActivity, MainActivity::class.java)
 //                        startActivity(intent)

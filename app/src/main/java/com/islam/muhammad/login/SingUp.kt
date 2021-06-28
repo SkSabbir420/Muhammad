@@ -156,7 +156,7 @@ class SingUp : AppCompatActivity(){
         val storage= FirebaseStorage.getInstance()
         val storgaRef=storage.getReferenceFromUrl("gs://muhammad-be152.appspot.com")
         val imagePath= currentUser!!.uid + ".jpg"
-        val ImageRef=storgaRef.child("profileImages/"+imagePath )
+        val ImageRef=storgaRef.child("profilePictures/"+imagePath )
         val localdate = LocalDate.now()
         val localtime  = LocalTime.now()
         val date = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localdate).toString()
@@ -176,7 +176,7 @@ class SingUp : AppCompatActivity(){
                 singupMap["createTime"] = time
                 singupMap["membership"] = "false"
                 singupMap["bio"] = "Edit Profile and Enter your Bio"
-                myRef.child("Users").child(currentUser!!.uid).updateChildren(singupMap)
+                myRef.child("users").child(currentUser!!.uid).updateChildren(singupMap)
                 LoadTweets()
             }
         }

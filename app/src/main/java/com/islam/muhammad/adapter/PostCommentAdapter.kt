@@ -65,13 +65,13 @@ RecyclerView.Adapter<PostCommentAdapter.ViewHolder>(){
 
 
     private fun publisherInfo(profileImage: CircleImageView, userName: TextView, publisherId: String) {
-        val userRef = FirebaseDatabase.getInstance().reference.child("Users").child(publisherId)
+        val userRef = FirebaseDatabase.getInstance().reference.child("users").child(publisherId)
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){
                     val user = p0.getValue<User>(User::class.java)
                     userName.text = user!!.getUsername()
-                    Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(profileImage)
+                    Picasso.get().load(user.getImage()).placeholder(R.drawable.profile).into(profileImage)
 
                 }
             }

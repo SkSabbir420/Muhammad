@@ -43,30 +43,30 @@ class TopIdAdapter(private val mContext:Context,private val mTop:List<Top>):Recy
                 if(itemView.follow_btn_top_id.text.toString() == "Follow"){
 
                     firebaseUser?.uid.let { it1 ->
-                        FirebaseDatabase.getInstance().reference.child("Follow").
-                        child(it1.toString()).child("Following").child(UID)
+                        FirebaseDatabase.getInstance().reference.child("follow").
+                        child(it1.toString()).child("following").child(UID)
                             .setValue(true)
                     }
 
                     firebaseUser?.uid.let { it1 ->
                         FirebaseDatabase.getInstance().reference
-                            .child("Follow").child(UID)
-                            .child("Followers").child(it1.toString())
+                            .child("follow").child(UID)
+                            .child("followers").child(it1.toString())
                             .setValue(true)
                     }
                 }else{
 
                     firebaseUser?.uid.let { it1 ->
                         FirebaseDatabase.getInstance().reference
-                            .child("Follow").child(it1.toString())
-                            .child("Following").child(UID)
+                            .child("follow").child(it1.toString())
+                            .child("following").child(UID)
                             .removeValue()
                     }
 
                     firebaseUser?.uid.let { it1 ->
                         FirebaseDatabase.getInstance().reference
-                            .child("Follow").child(UID)
-                            .child("Followers").child(it1.toString())
+                            .child("follow").child(UID)
+                            .child("followers").child(it1.toString())
                             .removeValue()
                     }
                 }
@@ -94,8 +94,8 @@ class TopIdAdapter(private val mContext:Context,private val mTop:List<Top>):Recy
 
 
         val followingRef = FirebaseDatabase.getInstance().reference
-            .child("Follow").child(profileId)
-            .child("Following")
+            .child("follow").child(profileId)
+            .child("following")
         followingRef.addValueEventListener(object : ValueEventListener
         {
             override fun onDataChange(p0: DataSnapshot)
@@ -110,8 +110,8 @@ class TopIdAdapter(private val mContext:Context,private val mTop:List<Top>):Recy
         })
 
         val followersRef = FirebaseDatabase.getInstance().reference
-            .child("Follow").child(profileId)
-            .child("Followers")
+            .child("follow").child(profileId)
+            .child("followers")
 
         followersRef.addValueEventListener(object : ValueEventListener
         {
@@ -139,8 +139,8 @@ class TopIdAdapter(private val mContext:Context,private val mTop:List<Top>):Recy
 
         val followingRef = firebaseUser?.uid.let { it1 ->
             FirebaseDatabase.getInstance().reference
-                .child("Follow").child(it1.toString())
-                .child("Following")
+                .child("follow").child(it1.toString())
+                .child("following")
         }
 
         followingRef.addValueEventListener(object : ValueEventListener{

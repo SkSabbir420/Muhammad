@@ -59,9 +59,10 @@ class NotificationsFragment : Fragment(){
         val view = inflater.inflate(R.layout.fragment_video, container, false)
         var recyclerView: RecyclerView? = null
         var recyclerViewtitle: RecyclerView? = null
+        val defValue = "Allah"
 
         sharedPreferences = context!!.getSharedPreferences("sharePrefs",0)
-        userId = sharedPreferences!!.getString("keyTitle","Allah")
+        userId = sharedPreferences!!.getString("keyTitle",defValue)
 
 
         recyclerView = view.findViewById(R.id.recycler_view_video)
@@ -116,8 +117,8 @@ class NotificationsFragment : Fragment(){
     private fun checkFollowings() {
         followingList = ArrayList()
         val followingRef = FirebaseDatabase.getInstance().reference
-                .child("Follow").child(FirebaseAuth.getInstance().currentUser!!.uid)
-                .child("Following")
+                .child("follow").child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child("following")
         followingRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()) {
@@ -138,7 +139,7 @@ class NotificationsFragment : Fragment(){
     }
 
     private  fun retrieveProfileTitle(){
-        val postsRef = FirebaseDatabase.getInstance().reference.child("Users")
+        val postsRef = FirebaseDatabase.getInstance().reference.child("users")
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
 //                userList?.clear()
@@ -171,7 +172,7 @@ class NotificationsFragment : Fragment(){
         //val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
 
-        val postsRef = FirebaseDatabase.getInstance().reference.child("VideoPost").child(userId!!)
+        val postsRef = FirebaseDatabase.getInstance().reference.child("postVideos").child(userId!!)
         val editor = sharedPreferences!!.edit()
                         editor.apply {
                             editor.clear()

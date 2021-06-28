@@ -21,6 +21,7 @@ class PostCommentActivity : AppCompatActivity(){
     private  var postAdapter: PostCommentAdapter? = null
     private  var postList:MutableList<PostComment>? = null
     private var postkey:String? =null
+    private var publisher:String? =null
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -28,6 +29,7 @@ class PostCommentActivity : AppCompatActivity(){
 
         val intent:Intent = intent
         postkey = intent.getStringExtra("key")!!
+        publisher = intent.getStringExtra("keyUid")!!
 
 
         var recyclerView: RecyclerView? = null
@@ -58,7 +60,7 @@ class PostCommentActivity : AppCompatActivity(){
 
     private fun uploadComment() {
         //val ref = FirebaseDatabase.getInstance().reference.child("Post").child("$postkey").child("Comments")
-        val ref = FirebaseDatabase.getInstance().reference.child("Comments").child("$postkey")
+        val ref = FirebaseDatabase.getInstance().reference.child("postPictureComments").child(publisher!!).child(postkey!!)
         val postId = ref.push().key
 
         val postMap = HashMap<String, Any>()
@@ -71,7 +73,7 @@ class PostCommentActivity : AppCompatActivity(){
 
     private fun retrievePosts() {
 //        val postsRef = FirebaseDatabase.getInstance().reference.child("Post").child("$postkey").child("Comments")
-        val postsRef = FirebaseDatabase.getInstance().reference.child("Comments").child("$postkey")
+        val postsRef = FirebaseDatabase.getInstance().reference.child("postPictureComments").child(publisher!!).child(postkey!!)
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 postList?.clear()

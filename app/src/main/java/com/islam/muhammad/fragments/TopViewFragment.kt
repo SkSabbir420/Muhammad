@@ -59,7 +59,7 @@ class TopViewFragment : Fragment() {
     }
 
     private fun retrievePosts() {
-        val postsRef = FirebaseDatabase.getInstance().reference.child("Users")
+        val postsRef = FirebaseDatabase.getInstance().reference.child("users")
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 //userList?.clear()
