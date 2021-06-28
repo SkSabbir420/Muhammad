@@ -21,6 +21,7 @@ class video_comment_activity : AppCompatActivity() {
     private  var postAdapter: VideoPostCommentAdapter? = null
     private  var postList:MutableList<VideoPostComment>? = null
     private var postkey:String? =null
+    private var publisher:String? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +29,7 @@ class video_comment_activity : AppCompatActivity() {
 
         val intent: Intent = intent
         postkey = intent.getStringExtra("key")!!
+        publisher = intent.getStringExtra("keyUid")!!
 
 
         var recyclerView: RecyclerView? = null
@@ -58,7 +60,7 @@ class video_comment_activity : AppCompatActivity() {
 
     private fun uploadComment() {
 //        val ref = FirebaseDatabase.getInstance().reference.child("VideoPost").child("$postkey").child("Comments")
-        val ref = FirebaseDatabase.getInstance().reference.child("VPComments").child("$postkey")
+        val ref = FirebaseDatabase.getInstance().reference.child("postVideoComments").child(publisher!!).child(postkey!!)
         val postId = ref.push().key
 
         val postMap = HashMap<String, Any>()
@@ -71,7 +73,7 @@ class video_comment_activity : AppCompatActivity() {
 
     private fun retrievePosts() {
 //        val postsRef = FirebaseDatabase.getInstance().reference.child("VideoPost").child("$postkey").child("Comments")
-        val postsRef = FirebaseDatabase.getInstance().reference.child("VPComments").child("$postkey")
+        val postsRef = FirebaseDatabase.getInstance().reference.child("postVideoComments").child(publisher!!).child(postkey!!)
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 postList?.clear()

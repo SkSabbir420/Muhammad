@@ -153,8 +153,8 @@ class ProfileFragment : Fragment() {
     private fun getFollowers()
     {
         val followersRef = FirebaseDatabase.getInstance().reference
-                .child("Follow").child(profileId)
-                .child("Followers")
+                .child("follow").child(profileId)
+                .child("followers")
 
         followersRef.addValueEventListener(object : ValueEventListener
         {
@@ -176,8 +176,8 @@ class ProfileFragment : Fragment() {
     private fun getFollowings()
     {
         val followersRef = FirebaseDatabase.getInstance().reference
-                .child("Follow").child(profileId)
-                .child("Following")
+                .child("follow").child(profileId)
+                .child("following")
 
 
         followersRef.addValueEventListener(object : ValueEventListener
@@ -198,7 +198,7 @@ class ProfileFragment : Fragment() {
 
 
     private fun userInfo() {
-        val usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(profileId)
+        val usersRef = FirebaseDatabase.getInstance().getReference().child("users").child(profileId)
 
         usersRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {

@@ -176,7 +176,7 @@ class SingUp : AppCompatActivity(){
                 singupMap["createTime"] = time
                 singupMap["membership"] = "false"
                 singupMap["bio"] = "Edit Profile and Enter your Bio"
-                myRef.child("Users").child(currentUser!!.uid).updateChildren(singupMap)
+                myRef.child("users").child(currentUser!!.uid).updateChildren(singupMap)
                 LoadTweets()
             }
         }

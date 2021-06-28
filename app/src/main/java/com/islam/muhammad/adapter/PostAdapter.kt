@@ -131,6 +131,7 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
                 postKey = post.getPostid()
                 val intent = Intent(mContext, PostCommentActivity::class.java)
                 intent.putExtra("key",postKey)
+                intent.putExtra("keyUid",post.getPublisher())
                 mContext.startActivity(intent)
             }
             itemView.post_image_share_btn.setOnClickListener {
@@ -193,7 +194,7 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
             }
         }).into(holder.postImage)
         getLikeButtonStatus(postKey!!, userid!!,holder)
-        getcommentButtonStatus(postKey!!,holder)
+        getcommentButtonStatus(postKey!!,post.getPublisher(),holder)
 
 //        val urlString:String = post.getPostimage()
 //        try{
@@ -221,13 +222,13 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
     }
 
     private fun publisherInfo(profileImage: CircleImageView, userName: TextView,publisherId: String) {
-        val userRef = FirebaseDatabase.getInstance().reference.child("Users").child(publisherId)
+        val userRef = FirebaseDatabase.getInstance().reference.child("users").child(publisherId)
         userRef.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){
                     val user = p0.getValue<User>(User::class.java)
                     userName.text = user!!.getUsername()
-                    Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(profileImage)
+                    Picasso.get().load(user.getImage()).placeholder(R.drawable.profile).into(profileImage)
 
                 }
             }
@@ -237,7 +238,7 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
     }
 
     private  fun getLikeButtonStatus(postKey:String,userid:String,holder: ViewHolder){
-        likeReference = FirebaseDatabase.getInstance().getReference("likes")
+        likeReference = FirebaseDatabase.getInstance().getReference("postPictureLikes")
         //likeReference = FirebaseDatabase.getInstance().getReference("Post")//update
         likeReference!!.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
@@ -269,9 +270,9 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
 
     }
 
-    private  fun getcommentButtonStatus(postkey:String,holder: ViewHolder){
+    private  fun getcommentButtonStatus(postkey:String,publisher:String,holder: ViewHolder){
 //        val commentReference = FirebaseDatabase.getInstance().reference.child("Post").child(postkey).child("Comments")
-        val commentReference = FirebaseDatabase.getInstance().reference.child("Comments").child(postkey)
+        val commentReference = FirebaseDatabase.getInstance().reference.child("postPictureComments").child(publisher).child(postkey)
         commentReference.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 val likeCount:Int = p0.childrenCount.toInt()

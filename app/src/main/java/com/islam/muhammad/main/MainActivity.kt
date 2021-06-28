@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(){
             }
         }
 
-        val reference = FirebaseDatabase.getInstance().reference.child("Users").
+        val reference = FirebaseDatabase.getInstance().reference.child("users").
                             child(FirebaseAuth.getInstance().currentUser!!.uid)
         reference.addValueEventListener(getData)
 

@@ -80,7 +80,7 @@ class VideoPostAdapterProfileTitle(private val mContext:Context, private val mPo
     }
 
     private fun publisherInfo(profileImage: CircleImageView, publisherId: String) {
-        val userRef = FirebaseDatabase.getInstance().reference.child("Users").child(publisherId)
+        val userRef = FirebaseDatabase.getInstance().reference.child("users").child(publisherId)
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){

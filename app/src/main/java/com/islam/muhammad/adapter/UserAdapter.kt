@@ -77,30 +77,30 @@ class UserAdapter (private var mContext: Context, private var mUser: List<User>,
             if(holder.followButton.text.toString() == "Follow"){
 
                 firebaseUser?.uid.let { it1 ->
-                    FirebaseDatabase.getInstance().reference.child("Follow").
-                        child(it1.toString()).child("Following").child(user.getUID())
+                    FirebaseDatabase.getInstance().reference.child("follow").
+                        child(it1.toString()).child("following").child(user.getUID())
                         .setValue(true)
                 }
 
                 firebaseUser?.uid.let { it1 ->
                     FirebaseDatabase.getInstance().reference
-                        .child("Follow").child(user.getUID())
-                        .child("Followers").child(it1.toString())
+                        .child("follow").child(user.getUID())
+                        .child("followers").child(it1.toString())
                         .setValue(true)
                 }
             }else{
 
                 firebaseUser?.uid.let { it1 ->
                     FirebaseDatabase.getInstance().reference
-                        .child("Follow").child(it1.toString())
-                        .child("Following").child(user.getUID())
+                        .child("follow").child(it1.toString())
+                        .child("following").child(user.getUID())
                         .removeValue()
                 }
 
                 firebaseUser?.uid.let { it1 ->
                     FirebaseDatabase.getInstance().reference
-                        .child("Follow").child(user.getUID())
-                        .child("Followers").child(it1.toString())
+                        .child("follow").child(user.getUID())
+                        .child("followers").child(it1.toString())
                         .removeValue()
                 }
             }
@@ -123,8 +123,8 @@ class UserAdapter (private var mContext: Context, private var mUser: List<User>,
 
         val followingRef = firebaseUser?.uid.let { it1 ->
             FirebaseDatabase.getInstance().reference
-                .child("Follow").child(it1.toString())
-                .child("Following")
+                .child("follow").child(it1.toString())
+                .child("following")
         }
 
         followingRef.addValueEventListener(object : ValueEventListener{

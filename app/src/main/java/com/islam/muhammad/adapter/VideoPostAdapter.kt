@@ -39,7 +39,9 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
     private  var postKey:String? = null
     private  var likeReference:DatabaseReference? = null
     //private  var viewReference:DatabaseReference? = null
-    val viewReference = FirebaseDatabase.getInstance().getReference("VPView")
+    //val viewReference = FirebaseDatabase.getInstance().getReference("postVideoViews")
+    val viewReference = FirebaseDatabase.getInstance().getReference("postVideoViews")
+    //val viewReference = FirebaseDatabase.getInstance().getReference("VPView")
     private  var testClick:Boolean =false
 //    private lateinit var mRewardedVideoAd: RewardedVideoAd
 
@@ -129,6 +131,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 postKey = post.getPostid()
                 val intent = Intent(mContext, video_comment_activity::class.java)
                 intent.putExtra("key",postKey)
+                intent.putExtra("keyUid",post.getPublisher())
                 mContext.startActivity(intent)
             }
 //            var count:Int
@@ -152,7 +155,6 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 postVideo.start()
                 val view = itemView.video_view.text.toString().toInt()
                 viewReference.child(post.getPostid()).child("postView").setValue(view + 1)
-
 
             }
 
@@ -245,6 +247,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 }
 //                mVideoView!!.start()
             }*/
+        val publisher = post.getPublisher()
 
         publisherInfo(holder.profileImage,holder.userName,post.getPublisher())
         Picasso.get().load(post.getCoverPhoto()).into(holder.postImage)
@@ -252,7 +255,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         holder.date.setText(post.getPostDate())
         getLikeButtonStatus(postKey!!, userid!!,holder)
         getViewButtonStatus(postKey!!,holder)
-        getcommentButtonStatus(postKey!!,holder)
+        getcommentButtonStatus(postKey!!,publisher,holder)
 
 
 
@@ -262,7 +265,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 
 
     private fun publisherInfo(profileImage: CircleImageView, userName: TextView,publisherId: String) {
-        val userRef = FirebaseDatabase.getInstance().reference.child("Users").child(publisherId)
+        val userRef = FirebaseDatabase.getInstance().reference.child("users").child(publisherId)
         userRef.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){
@@ -279,7 +282,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 
     private  fun getLikeButtonStatus(postKey:String,userid:String,holder:ViewHolder){
 //        likeReference = FirebaseDatabase.getInstance().getReference("VideoPost")
-        likeReference = FirebaseDatabase.getInstance().getReference("VPLike")
+        likeReference = FirebaseDatabase.getInstance().getReference("postVideoLikes")
         likeReference!!.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
 
@@ -315,7 +318,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()) {
                     val post = p0.getValue<Vpvcount>(Vpvcount::class.java)
-                     count = post!!.getPostView()
+                    count = post!!.getPostView()
                     holder.views.setText("$count")
                 }
             }
@@ -326,9 +329,9 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 
     }
 
-    private  fun getcommentButtonStatus(postkey:String,holder:ViewHolder){
+    private  fun getcommentButtonStatus(postkey:String,publisher:String,holder:ViewHolder){
         //val commentReference = FirebaseDatabase.getInstance().reference.child("VideoPost").child(postkey).child("Comments")
-        val commentReference = FirebaseDatabase.getInstance().reference.child("VPComments").child(postkey)
+        val commentReference = FirebaseDatabase.getInstance().reference.child("postVideoComments").child(publisher).child(postkey)
         commentReference.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 val likeCount:Int = p0.childrenCount.toInt()
