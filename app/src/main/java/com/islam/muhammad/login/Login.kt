@@ -23,10 +23,6 @@ class Login : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
 
-        sing_log_in.setOnClickListener {
-            val intent = Intent(this, SingUp::class.java)
-            startActivity(intent)
-        }
 
         save_log_in.setOnClickListener {
             doLogin()

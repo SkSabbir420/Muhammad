@@ -57,40 +57,4 @@
         app:layout_constraintStart_toStartOf="@+id/password_log_in"
         app:layout_constraintTop_toBottomOf="@+id/password_log_in" />
 
-    <Button
-        android:id="@+id/sing_log_in"
-        android:layout_width="260dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="25dp"
-        android:text="Create New Account"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Forgot Password"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/save_log_in"
-        app:layout_constraintStart_toStartOf="@+id/save_log_in"
-        app:layout_constraintTop_toBottomOf="@+id/save_log_in" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="260dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="25dp"
-        android:gravity="center"
-        android:text="OR"
-        android:textColor="#3DAA31"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -113,19 +113,18 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
                 postMap["description"] = post.getDescription()
                 postMap["publisher"] = post.getPublisher()
                 postMap["postimage"] = post.getPostimage()
-                postMap["photoClassify"] = post.getPhotoClassify()
                 postMap["postDate"] = post.getPostDate()
                 postMap["postTime"] = post.getPostTime()
 
-                FirebaseDatabase.getInstance().reference.child("Post")
+                FirebaseDatabase.getInstance().reference.child("postPictures")
                     .child(postKey!!).updateChildren(postMap)
 
-                FirebaseDatabase.getInstance().getReference("PostTemp")
+                FirebaseDatabase.getInstance().getReference("postPictureTemporary")
                     .addValueEventListener(object :ValueEventListener{
 
                         override fun onDataChange(p0: DataSnapshot) {
                             if(p0.hasChild(postKey!!)){
-                                FirebaseDatabase.getInstance().getReference("PostTemp")
+                                FirebaseDatabase.getInstance().getReference("postPictureTemporary")
                                     .child(postKey!!).removeValue()
                                 Toast.makeText(mContext, "Move success Full", Toast.LENGTH_SHORT).show()
                             }
@@ -142,15 +141,15 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
                 val  position:Int = adapterPosition
                 val post = mPost[position]
                 postKey = post.getPostid()
-                FirebaseDatabase.getInstance().getReference("PostTemp")
+                FirebaseDatabase.getInstance().getReference("postPictureTemporary")
                     .addValueEventListener(object :ValueEventListener{
 
                         override fun onDataChange(p0: DataSnapshot) {
                             if(p0.hasChild(postKey!!)){
-                                FirebaseDatabase.getInstance().getReference("PostTemp")
+                                FirebaseDatabase.getInstance().getReference("postPictureTemporary")
                                     .child(postKey!!).removeValue()
-                                FirebaseStorage.getInstance().reference.child("postsPictures")
-                                    .child(postKey!!+".jpg").delete()
+                                FirebaseStorage.getInstance().reference.child("postPictures")
+                                    .child(post.getPublisher()).child(postKey!!+".jpg").delete()
                                 Toast.makeText(mContext, "Delete Success Full", Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -207,7 +206,7 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
     }
 
     private fun publisherInfo(profileImage: CircleImageView, userName: TextView,publisherId: String) {
-        val userRef = FirebaseDatabase.getInstance().reference.child("Users").child(publisherId)
+        val userRef = FirebaseDatabase.getInstance().reference.child("users").child(publisherId)
         userRef.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){

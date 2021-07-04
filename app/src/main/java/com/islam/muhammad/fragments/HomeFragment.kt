@@ -37,21 +37,6 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val searchButton= view.findViewById<ImageView>(R.id.people_search)
-        searchButton.setOnClickListener {
-            val intent = Intent(activity, SearchActivity::class.java)
-            activity?.startActivity(intent)
-            //activity?.finish()
-        }
-
-        val notificationButton= view.findViewById<ImageView>(R.id.notifications)
-        notificationButton.setOnClickListener {
-            val intent = Intent(activity, NotificationActivity::class.java)
-            activity?.startActivity(intent)
-            //activity?.finish()
-        }
-
-
         var recyclerView:RecyclerView? = null
         recyclerView = view.findViewById(R.id.recycler_view_home)
         val linearLayoutManager = LinearLayoutManager(context)
@@ -102,7 +87,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun retrievePosts() {
-        val postsRef = FirebaseDatabase.getInstance().reference.child("PostTemp")
+        val postsRef = FirebaseDatabase.getInstance().reference.child("postPictureTemporary")
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 postList?.clear()

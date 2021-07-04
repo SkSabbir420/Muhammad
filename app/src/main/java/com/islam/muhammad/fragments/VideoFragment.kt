@@ -83,7 +83,7 @@ class NotificationsFragment : Fragment() {
     }
 
     private fun retrievePosts() {
-        val postsRef = FirebaseDatabase.getInstance().reference.child("VideoPostTemp")
+        val postsRef = FirebaseDatabase.getInstance().reference.child("postVideoTemporary")
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 postList?.clear()

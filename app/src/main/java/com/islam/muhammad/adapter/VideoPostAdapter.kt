@@ -126,16 +126,18 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 //                postMap["postTime"] = post.getPostTime() //after add
                 postMap["coverPhoto"] = post.getCoverPhoto()
 
-                FirebaseDatabase.getInstance().reference.child("VideoPost").child(post.getPublisher())
+                FirebaseDatabase.getInstance().reference.child("postVideos").child(post.getPublisher())
                     .child(postKey!!).updateChildren(postMap)
-                FirebaseDatabase.getInstance().reference.child("VideoPost").child(post.getPostCategory())
+                FirebaseDatabase.getInstance().reference.child("postVideos").child(post.getPostCategory())
                     .child(postKey!!).updateChildren(postMap)
+                FirebaseDatabase.getInstance().reference.child("postVideoViews").
+                child(postKey!!).child("postView").setValue(0)
 
-                FirebaseDatabase.getInstance().getReference("VideoPostTemp")
+                FirebaseDatabase.getInstance().getReference("postVideoTemporary")
                     .addValueEventListener(object :ValueEventListener{
                         override fun onDataChange(p0: DataSnapshot) {
                             if(p0.hasChild(postKey!!)){
-                                FirebaseDatabase.getInstance().getReference("VideoPostTemp")
+                                FirebaseDatabase.getInstance().getReference("postVideoTemporary")
                                     .child(postKey!!).removeValue()
                                 Toast.makeText(mContext, "Move success Full", Toast.LENGTH_SHORT).show()
                             }
@@ -149,14 +151,18 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 val  position:Int = adapterPosition
                 val post = mPost[position]
                 postKey = post.getPostid()
-                FirebaseDatabase.getInstance().getReference("VideoPostTemp")
+                val postId = post.getPostid()
+                FirebaseDatabase.getInstance().getReference("postVideoTemporary")
                     .addValueEventListener(object :ValueEventListener{
                         override fun onDataChange(p0: DataSnapshot) {
                             if(p0.hasChild(postKey!!)){
-                                FirebaseDatabase.getInstance().getReference("VideoPostTemp")
+                                FirebaseDatabase.getInstance().getReference("postVideoTemporary")
                                     .child(postKey!!).removeValue()
-                                FirebaseStorage.getInstance().reference.child("Posts Videos")
-                                    .child(postKey!!+".mp4").delete()
+                                FirebaseStorage.getInstance().reference.child("postVideos")
+                                    .child(post.getPublisher()).child(postId).child(postId+".mp4").delete()
+                                FirebaseStorage.getInstance().reference.child("postVideos")
+                                    .child(post.getPublisher()).child(postId).child(postId+".jpg").delete()
+
                                 Toast.makeText(mContext, "Delete Success Full", Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -290,7 +296,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
     }
 
     private fun publisherInfo(profileImage: CircleImageView, userName: TextView,publisherId: String) {
-        val userRef = FirebaseDatabase.getInstance().reference.child("Users").child(publisherId)
+        val userRef = FirebaseDatabase.getInstance().reference.child("users").child(publisherId)
         userRef.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){

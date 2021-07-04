@@ -30,26 +30,15 @@
                     android:layout_height="wrap_content">
 
                 <TextView
-                        android:id="@+id/profile_fragment_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="username"
-                        android:textSize="18dp"
-                        android:maxLines="1"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:layout_centerVertical="true"
-                />
-
-                <ImageView
-                        android:id="@+id/options_view"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/options"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                />
-
+                    android:id="@+id/profile_fragment_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:maxLines="1"
+                    android:text="username"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -103,107 +92,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical">
-
-                    <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                        <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                            <TextView
-                                    android:id="@+id/total_posts"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0"
-                                    android:textSize="12dp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/black"
-                            />
-
-                            <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Posts"
-                                    android:textSize="12dp"
-                                    android:textColor="@color/black"
-                            />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="7dp"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                        >
-
-                            <TextView
-                                    android:id="@+id/total_followers"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0"
-                                    android:textSize="12dp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/black"
-                            />
-
-                            <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Followers"
-                                    android:textSize="12dp"
-                                    android:textColor="@color/black"
-                            />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="7dp"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                            <TextView
-                                    android:id="@+id/total_following"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0"
-                                    android:textSize="12dp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/black"
-                            />
-
-                            <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Following"
-                                    android:textSize="12dp"
-                                    android:textColor="@color/black"
-                            />
-
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <Button
-                            android:id="@+id/edit_account_settings_btn"
-                            android:layout_width="170dp"
-                            android:layout_height="wrap_content"
-                            android:text="Edit Profile"
-                            android:textAllCaps="false"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/buttons_background"
-                    />
                     <Button
                         android:id="@+id/logout_btn"
                         android:layout_width="170dp"
@@ -222,65 +110,6 @@
                 </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                    android:id="@+id/mid_bar"
-                    android:padding="12dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-            >
-
-                <TextView
-                        android:id="@+id/full_name_profile_frag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Full name"
-                        android:textSize="13dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                />
-
-                <TextView
-                        android:id="@+id/bio_profile_frag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Bio"
-                        android:textSize="13dp"
-                        android:textColor="@color/black"
-                />
-
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/button_black_background"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-            >
-
-                <ImageButton
-                    android:id="@+id/images_grid_view_btn"
-                    android:layout_width="1dp"
-                    android:layout_height="49dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/grid" />
-
-                <ImageButton
-                        android:id="@+id/images_save_btn"
-                        android:layout_width="1dp"
-                        android:layout_height="49dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/save_large_icon"
-                        android:layout_weight="1"
-                />
-
 
             </LinearLayout>
 
