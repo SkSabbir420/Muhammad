@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,8 @@ import com.google.firebase.database.ValueEventListener
 import com.islam.muhammad.R
 import com.islam.muhammad.adapter.VideoPostAdapter
 import com.islam.muhammad.adapter.VideoPostAdapterProfileTitle
+import com.islam.muhammad.main.SearchActivity
+import com.islam.muhammad.main.VideoSearchActivity
 import com.islam.muhammad.model.Top
 import com.islam.muhammad.model.VideoPost
 import com.islam.muhammad.model.VideoPostTitle
@@ -57,10 +60,23 @@ class NotificationsFragment : Fragment(){
 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_video, container, false)
+
+        val videoSearchButton= view.findViewById<ImageView>(R.id.video_search)
+        videoSearchButton.setOnClickListener {
+            val intent = Intent(activity, VideoSearchActivity::class.java)
+            activity?.startActivity(intent)
+            //activity?.finish()
+        }
+
+
         var recyclerView: RecyclerView? = null
         var recyclerViewtitle: RecyclerView? = null
-        val defValue = "Allah"
+        val arr:Array<String> = arrayOf("Allah","Nabi","Eman","Kiyamot","Others")
+        val ran = (0..4).random()
+        val defValue = arr[ran]
+//        Toast.makeText(context,defValue,Toast.LENGTH_SHORT).show()
 
+        //val defValue = "Allah"
         sharedPreferences = context!!.getSharedPreferences("sharePrefs",0)
         userId = sharedPreferences!!.getString("keyTitle",defValue)
 
@@ -87,6 +103,8 @@ class NotificationsFragment : Fragment(){
         recyclerViewtitle.adapter =postAdapterTitle
 
         checkFollowings()
+
+
 
         return view
 
@@ -172,7 +190,7 @@ class NotificationsFragment : Fragment(){
         //val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
 
-        val postsRef = FirebaseDatabase.getInstance().reference.child("postVideos").child(userId!!)
+        val postsRef = FirebaseDatabase.getInstance().reference.child("postVideos").child("allUsers").child(userId!!)
         val editor = sharedPreferences!!.edit()
                         editor.apply {
                             editor.clear()

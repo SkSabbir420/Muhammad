@@ -44,11 +44,12 @@ class SearchActivity : AppCompatActivity() {
             }
             override fun onTextChanged(name: CharSequence?, start: Int, before: Int, count: Int) {
                 if (search_edit_text.text.toString() == ""){
-
+                    userArray?.clear()
+                    recyclerView?.visibility = View.GONE
                 }else{
-                    recyclerView?.visibility = View.VISIBLE
-                    retrieveUsers()
                     searchUser(name.toString().toLowerCase())
+                    recyclerView?.visibility = View.VISIBLE
+                    //retrieveUsers()
                 }
             }
             override fun afterTextChanged(s: Editable?){
@@ -78,24 +79,24 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-    private fun retrieveUsers(){
-        val usersRef = FirebaseDatabase.getInstance().getReference().child("users")
-        usersRef.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot){
-                if (search_edit_text?.text.toString() == ""){
-                    userArray?.clear()
-                    for (snapshot in dataSnapshot.children){
-                        val user = snapshot.getValue(User::class.java)
-                        if (user != null){
-                            userArray?.add(user)
-                        }
-                    }
-                    userAdapter?.notifyDataSetChanged()
-                }
-            }
-            override fun onCancelled(p0: DatabaseError) { }
-        })
-    }
+//    private fun retrieveUsers(){
+//        val usersRef = FirebaseDatabase.getInstance().getReference().child("users")
+//        usersRef.addValueEventListener(object : ValueEventListener{
+//            override fun onDataChange(dataSnapshot: DataSnapshot){
+//                if (search_edit_text?.text.toString() == ""){
+//                    userArray?.clear()
+//                    for (snapshot in dataSnapshot.children){
+//                        val user = snapshot.getValue(User::class.java)
+//                        if (user != null){
+//                            userArray?.add(user)
+//                        }
+//                    }
+//                    userAdapter?.notifyDataSetChanged()
+//                }
+//            }
+//            override fun onCancelled(p0: DatabaseError) { }
+//        })
+//    }
 
 
 }

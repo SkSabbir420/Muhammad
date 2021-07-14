@@ -1,15 +1,14 @@
 package com.islam.muhammad.main
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.TextUtils
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -20,7 +19,6 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.islam.muhammad.R
-import com.islam.muhammad.fragments.NotificationsFragment
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_account_settings.*
 import kotlinx.android.synthetic.main.activity_add_post_photo.*
@@ -31,7 +29,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.HashMap
 
-class AddPostVideoActivity : AppCompatActivity() {
+class AddPostVideoActivity : AppCompatActivity(){
 
     private var myUrl = ""
     private var myUrlPhoto = ""
@@ -121,10 +119,27 @@ class AddPostVideoActivity : AppCompatActivity() {
             return
         }else{
 
-            val progressDialog = ProgressDialog(this)
-            progressDialog.setTitle("Adding your Post")
-            progressDialog.setMessage("Please wait...")
-            progressDialog.show()
+//            val progressDialog = ProgressDialog(this)
+//            progressDialog.setTitle("Adding your Post")
+//            progressDialog.setMessage("Please wait...")
+//            progressDialog.show()
+
+            val notification = NotificationCompat
+                .Builder(this, "content_loading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentText("Please wait")
+                .setContentTitle("Uploading")
+                .setTicker("Uploading")
+                .setProgress(0, 100, true)
+                .setAutoCancel(true)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+            val no: NotificationManagerCompat = NotificationManagerCompat.from(this)
+            no.notify(1,notification.build())
+            super.onBackPressed()
+
+
                 val ref = FirebaseDatabase.getInstance().reference.child("postVideoTemporary")
 //                val ref = FirebaseDatabase.getInstance().reference.child("postVideos")
                 val postId = ref.push().key
@@ -202,15 +217,25 @@ class AddPostVideoActivity : AppCompatActivity() {
 
                         ref.child(postId).updateChildren(postMap)
 
-                        progressDialog.dismiss()
-                        Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
+//                        progressDialog.dismiss()
+                        notification.setContentTitle("Upload Complete")
+                            .setContentText("Wait for verification")
+                            .setProgress(0,0,false)
+                            .setOngoing(false)
+                        no.notify(1,notification.build())
+                        //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
 //                        Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
-                        super.onBackPressed()
+
                         finish()
                     }else{
-                        Toast.makeText(this,"Post upload Unsuccessfully.", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this,"Post upload Unsuccessfully.", Toast.LENGTH_LONG).show()
                         super.onBackPressed()
-                        progressDialog.dismiss()
+                        notification.setContentTitle("Upload Unsuccessfull")
+                            .setContentText("Try Again")
+                            .setProgress(0,0,false)
+                            .setOngoing(false)
+                        no.notify(1,notification.build())
+//                        progressDialog.dismiss()
                     }
                 } )
         }
