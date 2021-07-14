@@ -116,7 +116,9 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
                 postMap["postDate"] = post.getPostDate()
                 postMap["postTime"] = post.getPostTime()
 
-                FirebaseDatabase.getInstance().reference.child("postPictures")
+                FirebaseDatabase.getInstance().reference.child("postPictures").child("allUsers").child(post.getPublisher())
+                    .child(postKey!!).updateChildren(postMap)
+                FirebaseDatabase.getInstance().reference.child("postPictures").child("allPostPictures")
                     .child(postKey!!).updateChildren(postMap)
 
                 FirebaseDatabase.getInstance().getReference("postPictureTemporary")

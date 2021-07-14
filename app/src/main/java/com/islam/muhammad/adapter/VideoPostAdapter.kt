@@ -123,12 +123,15 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 postMap["publisher"] = post.getPublisher()
                 postMap["postimage"] = post.getPostimage()
                 postMap["postDate"] = post.getPostDate()
-//                postMap["postTime"] = post.getPostTime() //after add
+                postMap["postCategory"] = post.getPostCategory()
+                postMap["postTime"] = post.getPostTime()
                 postMap["coverPhoto"] = post.getCoverPhoto()
 
-                FirebaseDatabase.getInstance().reference.child("postVideos").child(post.getPublisher())
+                FirebaseDatabase.getInstance().reference.child("postVideos").child("allUsers").child(post.getPublisher())
                     .child(postKey!!).updateChildren(postMap)
                 FirebaseDatabase.getInstance().reference.child("postVideos").child(post.getPostCategory())
+                    .child(postKey!!).updateChildren(postMap)
+                FirebaseDatabase.getInstance().reference.child("postVideos").child("allPostVideos")
                     .child(postKey!!).updateChildren(postMap)
                 FirebaseDatabase.getInstance().reference.child("postVideoViews").
                 child(postKey!!).child("postView").setValue(0)
