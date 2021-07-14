@@ -121,7 +121,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun retrievePosts() {
-        val postsRef = FirebaseDatabase.getInstance().reference.child("postPictures")
+        val postsRef = FirebaseDatabase.getInstance().reference.child("postPictures").child("allPostPictures")
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot){
 

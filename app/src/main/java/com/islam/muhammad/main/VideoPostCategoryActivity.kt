@@ -11,12 +11,7 @@ class VideoPostCategoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_post_category)
 
-        chose_video_post_category_eman.setOnClickListener {
-            val intent = Intent(this, AddPostVideoActivity::class.java)
-            intent.putExtra("keyCategory","Eman")
-            startActivity(intent)
-            finish()
-        }
+
         chose_video_post_category_Allah.setOnClickListener {
             val intent = Intent(this, AddPostVideoActivity::class.java)
             intent.putExtra("keyCategory","Allah")
@@ -29,15 +24,21 @@ class VideoPostCategoryActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+        chose_video_post_category_eman.setOnClickListener {
+            val intent = Intent(this, AddPostVideoActivity::class.java)
+            intent.putExtra("keyCategory","Eman")
+            startActivity(intent)
+            finish()
+        }
         chose_video_post_category_kiyamot.setOnClickListener {
             val intent = Intent(this, AddPostVideoActivity::class.java)
             intent.putExtra("keyCategory","Kiyamot")
             startActivity(intent)
             finish()
         }
-        chose_video_post_category_future.setOnClickListener {
+        chose_video_post_category_others.setOnClickListener {
             val intent = Intent(this, AddPostVideoActivity::class.java)
-            intent.putExtra("keyCategory","Future")
+            intent.putExtra("keyCategory","Others")
             startActivity(intent)
             finish()
         }

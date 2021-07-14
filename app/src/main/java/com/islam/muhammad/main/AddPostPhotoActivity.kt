@@ -10,6 +10,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 //import android.text.TextUtils
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -151,10 +153,25 @@ class AddPostPhotoActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please add your photo", Toast.LENGTH_LONG).show()
                 return
         }else{
-                val progressDialog = ProgressDialog(this)
-                progressDialog.setTitle("Adding your Post")
-                progressDialog.setMessage("Please wait...")
-                progressDialog.show()
+//                val progressDialog = ProgressDialog(this)
+//                progressDialog.setTitle("Adding your Post")
+//                progressDialog.setMessage("Please wait...")
+//                progressDialog.show()
+
+            val notification = NotificationCompat
+                .Builder(this, "content_loading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentText("Please wait")
+                .setContentTitle("Uploading")
+                .setTicker("Uploading")
+                .setProgress(0, 100, true)
+                .setAutoCancel(true)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+            val no: NotificationManagerCompat = NotificationManagerCompat.from(this)
+            no.notify(2,notification.build())
+            super.onBackPressed()
 
                 val ref = FirebaseDatabase.getInstance().reference.child("postPictureTemporary")
 //                val ref = FirebaseDatabase.getInstance().reference.child("postPictures")
@@ -167,7 +184,7 @@ class AddPostPhotoActivity : AppCompatActivity() {
                     if (!task.isSuccessful){
                         task.exception?.let {
                             throw it
-                            progressDialog.dismiss()
+                            //progressDialog.dismiss()
                         }
                     }
                     return@Continuation fileRef.downloadUrl
@@ -198,17 +215,26 @@ class AddPostPhotoActivity : AppCompatActivity() {
 
                         ref.child(postId).updateChildren(postMap)
 
-                        Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
                         //Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
-                        progressDialog.dismiss()
+                       // progressDialog.dismiss()
+                        notification.setContentTitle("Upload Complete")
+                            .setContentText("Wait for verification")
+                            .setProgress(0,0,false)
+                            .setOngoing(false)
+                        no.notify(2,notification.build())
 //                        val intent = Intent(this@AddPostPhotoActivity, MainActivity::class.java)
 //                        startActivity(intent)
-                        super.onBackPressed()
                         finish()
 
                     } else{
-                        Toast.makeText(this, "Post upload Unsuccessfully", Toast.LENGTH_LONG).show()
-                        progressDialog.dismiss()
+                        //Toast.makeText(this, "Post upload Unsuccessfully", Toast.LENGTH_LONG).show()
+                        //progressDialog.dismiss()
+                        notification.setContentTitle("Upload Unsuccessfull")
+                            .setContentText("Try Again")
+                            .setProgress(0,0,false)
+                            .setOngoing(false)
+                        no.notify(2,notification.build())
                         super.onBackPressed()
                         finish()
 

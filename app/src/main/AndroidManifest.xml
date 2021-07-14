@@ -37,6 +37,7 @@
             android:exported="true" />
         <activity android:name=".main.NotificationActivity" />
         <activity android:name=".main.SearchActivity" />
+        <activity android:name=".main.VideoSearchActivity" />
         <activity android:name=".splashScreen.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

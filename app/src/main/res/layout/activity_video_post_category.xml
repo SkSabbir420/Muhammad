@@ -9,41 +9,6 @@
 
 
     <Button
-        android:id="@+id/chose_video_post_category_eman"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="8dp"
-        android:text="eman"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <Button
-        android:id="@+id/chose_video_post_category_future"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="8dp"
-        android:text="future"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chose_video_post_category_eman"
-         />
-    <Button
-        android:id="@+id/chose_video_post_category_kiyamot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="8dp"
-        android:text="kiyamot"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chose_video_post_category_future"
-        />
-    <Button
         android:id="@+id/chose_video_post_category_Allah"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,8 +18,7 @@
         android:text="Allah"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chose_video_post_category_kiyamot"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
     <Button
         android:id="@+id/chose_video_post_category_Nabi"
         android:layout_width="match_parent"
@@ -66,6 +30,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chose_video_post_category_Allah"
+         />
+    <Button
+        android:id="@+id/chose_video_post_category_eman"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="8dp"
+        android:text="eman"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chose_video_post_category_Nabi"
+        />
+    <Button
+        android:id="@+id/chose_video_post_category_kiyamot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="8dp"
+        android:text="kiyamot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chose_video_post_category_eman"
+        />
+    <Button
+        android:id="@+id/chose_video_post_category_others"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="8dp"
+        android:text="Others"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chose_video_post_category_kiyamot"
         />
 
 
