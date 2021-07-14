@@ -74,7 +74,7 @@ class NotificationsFragment : Fragment(){
 //        Toast.makeText(context,defValue,Toast.LENGTH_SHORT).show()
 
         //val defValue = "Allah"
-        sharedPreferences = context!!.getSharedPreferences("sharePrefs",0)
+        sharedPreferences = requireContext().getSharedPreferences("sharePrefs",0)
         userId = sharedPreferences!!.getString("keyTitle",defValue)
 
 
