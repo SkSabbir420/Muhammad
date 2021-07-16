@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Muhammad">
         <activity
+            android:name=".main.ShowSaveVideoPost"
+            android:exported="true" />
+        <activity
+            android:name=".main.ShowMyAllPicturePost"
+            android:exported="true" />
+        <activity
+            android:name=".main.ShowMyAllVideoPost"
+            android:exported="true" />
+        <activity
             android:name=".main.VideoPostCategoryActivity"
             android:exported="true" />
         <activity
@@ -21,8 +30,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8763788269561285~9988895183" />
-
+            android:value="ca-app-pub-8763788269561285~5366349819" /> <!-- android:value="ca-app-pub-8763788269561285~9988895183" -->
         <activity
             android:name=".main.video_comment_activity"
             android:exported="true" />

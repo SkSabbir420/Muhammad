@@ -60,6 +60,7 @@ class TopViewFragment : Fragment() {
 
     private fun retrievePosts() {
         val postsRef = FirebaseDatabase.getInstance().reference.child("users")
+        //postsRef.orderByChild("followers").addValueEventListener(object : ValueEventListener {//Sort use
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 //userList?.clear()

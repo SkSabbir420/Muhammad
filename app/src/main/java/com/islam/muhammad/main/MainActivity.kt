@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity(){
                 }
 
             }
+
         false
     }
     
@@ -63,6 +64,7 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //fanUpdate()//Need cloud function
 
         val getData = object : ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
@@ -79,7 +81,6 @@ class MainActivity : AppCompatActivity(){
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        //moveToFragment(HomeFragment())
         moveToFragment(NotificationsFragment())
     }
 
@@ -88,6 +89,48 @@ class MainActivity : AppCompatActivity(){
         val fragmentTrans = supportFragmentManager.beginTransaction()
         fragmentTrans.replace(R.id.fragment_container, fragment)
         fragmentTrans.commit()
+    }
+    private fun fanUpdate(){
+        val profileId = FirebaseAuth.getInstance().currentUser!!.uid
+        val followingRef = FirebaseDatabase.getInstance().reference
+            .child("follow").child(profileId)
+            .child("following")
+        followingRef.addValueEventListener(object : ValueEventListener
+        {
+            override fun onDataChange(p0: DataSnapshot)
+            {
+                if (p0.exists())
+                {
+                    FirebaseDatabase.getInstance().reference.child("users")
+                        .child(profileId).child("followers").setValue(p0.childrenCount)
+
+                }
+            }
+            override fun onCancelled(p0: DatabaseError) {
+            }
+        })
+
+        val followersRef = FirebaseDatabase.getInstance().reference
+            .child("follow").child(profileId)
+            .child("followers")
+
+        followersRef.addValueEventListener(object : ValueEventListener
+        {
+            override fun onDataChange(p0: DataSnapshot)
+            {
+                if (p0.exists())
+                {
+                    FirebaseDatabase.getInstance().reference.child("users")
+                        .child(profileId).child("following").setValue(p0.childrenCount)
+
+
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
     }
 
 

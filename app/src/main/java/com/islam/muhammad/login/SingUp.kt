@@ -173,6 +173,8 @@ class SingUp : AppCompatActivity(){
                 singupMap["dateOfBirth"] = dateOfBirth.text.toString()
                 singupMap["gender"] = gender_editText.text.toString()
                 singupMap["createDate"] = date
+                singupMap["followers"] = 0
+                singupMap["following"] = 0
                 singupMap["createTime"] = time
                 singupMap["membership"] = "false"
                 singupMap["bio"] = "Edit Profile and Enter your Bio"

@@ -21,6 +21,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.islam.muhammad.login.Login
+import com.islam.muhammad.main.ShowMyAllPicturePost
+import com.islam.muhammad.main.ShowMyAllVideoPost
+import com.islam.muhammad.main.ShowSaveVideoPost
+import com.islam.muhammad.main.VideoSearchActivity
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -44,6 +48,22 @@ class ProfileFragment : Fragment() {
 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        view.show_save_all_post.setOnClickListener {
+            val intent = Intent(activity, ShowSaveVideoPost::class.java)
+            activity?.startActivity(intent)
+            //activity?.finish()
+        }
+        view.show_my_all_video_post.setOnClickListener {
+            val intent = Intent(activity, ShowMyAllVideoPost::class.java)
+            activity?.startActivity(intent)
+            //activity?.finish()
+        }
+        view.show_my_all_picture_post.setOnClickListener {
+            val intent = Intent(activity, ShowMyAllPicturePost::class.java)
+            activity?.startActivity(intent)
+            //activity?.finish()
+        }
 
         val logoutButton= view.findViewById<Button>(R.id.logout_btn)
         logoutButton.setOnClickListener(object: View.OnClickListener{

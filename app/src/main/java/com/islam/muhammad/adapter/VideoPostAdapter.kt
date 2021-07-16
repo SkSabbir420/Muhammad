@@ -43,10 +43,11 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
     val viewReference = FirebaseDatabase.getInstance().getReference("postVideoViews")
     //val viewReference = FirebaseDatabase.getInstance().getReference("VPView")
     private  var testClick:Boolean =false
-//    private lateinit var mRewardedVideoAd: RewardedVideoAd
+    private lateinit var mRewardedVideoAd: RewardedVideoAd
 
 
-    inner class  ViewHolder(@NonNull itemView: View,):RecyclerView.ViewHolder(itemView){
+    inner class  ViewHolder(@NonNull itemView: View,):RecyclerView.ViewHolder(itemView),
+        RewardedVideoAdListener {
 
         var profileImage:CircleImageView
         var description: TextView
@@ -60,8 +61,6 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         var commentButton:ImageView
         var comments: TextView
         var date:TextView
-
-
 
         //var publisher: TextView
         //var saveButton:ImageView
@@ -82,11 +81,11 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             commentButton = itemView.findViewById(R.id.video_image_comment_btn)
             comments = itemView.findViewById(R.id.video_comments)
 
-//            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
-//            mRewardedVideoAd.rewardedVideoAdListener = this
-//            mRewardedVideoAd.
-//            loadAd("ca-app-pub-3940256099942544/5224354917",AdRequest.Builder().build())
-//            mRewardedVideoAd.show()
+            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
+            mRewardedVideoAd.rewardedVideoAdListener = this
+            mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917"
+                ,AdRequest.Builder().build())
+
 
             //publisher = itemView.findViewById(R.id.publisher)
             //saveButton = itemView.findViewById(R.id.post_save_comment_btn)
@@ -134,19 +133,46 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 intent.putExtra("keyUid",post.getPublisher())
                 mContext.startActivity(intent)
             }
+            itemView.video_post_save.setOnClickListener {
+                val  position:Int = adapterPosition
+                val post = mPost[position]
+                postKey = post.getPostid()
+
+                val postMap = HashMap<String, Any>()
+                postMap["postid"] = postKey!!
+                postMap["description"] = post.getDescription()
+                postMap["publisher"] = post.getPublisher()
+                postMap["postimage"] = post.getPostimage()
+                postMap["postDate"] = post.getPostDate()
+//                postMap["postCategory"] = post.getPostCategory()
+//                postMap["postTime"] = post.getPostTime()
+                postMap["coverPhoto"] = post.getCoverPhoto()
+
+                FirebaseDatabase.getInstance().reference.child("postVideos")
+                    .child("allUsers").child(FirebaseAuth.getInstance().currentUser!!.uid)
+                    .child("saveVideoPost").child(postKey!!).updateChildren(postMap)
+                Toast.makeText(mContext,"Save success",Toast.LENGTH_SHORT).show()
+            }
+
 //            var count:Int
             itemView.post_video_video.setOnClickListener {
                 val  position:Int = adapterPosition
                 val post = mPost[position]
-                val videoUri = Uri.parse(post.getPostimage())
-                postImage.visibility = View.GONE
-                postVideo.visibility = View.VISIBLE
 
-
+//                val videouri = post.getPostimage()
 //                val intent = Intent(mContext, VideoPlayActivity::class.java)
-//                intent.putExtra("keyv",videoUri)
+//                intent.putExtra("keyv",videouri)
 //                mContext.startActivity(intent)
 
+                val videoUri = Uri.parse(post.getPostimage())
+                if(mRewardedVideoAd.isLoaded) {
+                    Toast.makeText(mContext,"Add Load success",Toast.LENGTH_SHORT).show()
+                    mRewardedVideoAd.show()
+                }else{
+                    Toast.makeText(mContext,"Add Load Unsuccess",Toast.LENGTH_SHORT).show()
+                }
+                postImage.visibility = View.GONE
+                postVideo.visibility = View.VISIBLE
                 val controller = MediaController(mContext)
                 controller.setMediaPlayer(postVideo)
                 postVideo.setMediaController(controller)
@@ -173,37 +199,37 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 
         }
 
-//        override fun onRewardedVideoAdLoaded() {
-//
-//        }
-//
-//        override fun onRewardedVideoAdOpened() {
-//
-//        }
-//
-//        override fun onRewardedVideoStarted() {
-//
-//        }
-//
-//        override fun onRewardedVideoAdClosed() {
-//
-//        }
-//
-//        override fun onRewarded(p0: RewardItem?) {
-//
-//        }
-//
-//        override fun onRewardedVideoAdLeftApplication() {
-//
-//        }
-//
-//        override fun onRewardedVideoAdFailedToLoad(p0: Int) {
-//
-//        }
-//
-//        override fun onRewardedVideoCompleted() {
-//
-//        }
+        override fun onRewardedVideoAdLoaded() {
+
+        }
+
+        override fun onRewardedVideoAdOpened() {
+
+        }
+
+        override fun onRewardedVideoStarted() {
+
+        }
+
+        override fun onRewardedVideoAdClosed() {
+
+        }
+
+        override fun onRewarded(p0: RewardItem?) {
+
+        }
+
+        override fun onRewardedVideoAdLeftApplication() {
+
+        }
+
+        override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+
+        }
+
+        override fun onRewardedVideoCompleted() {
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

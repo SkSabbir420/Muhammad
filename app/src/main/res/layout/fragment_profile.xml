@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:maxLines="1"
-                    android:text="Profile"
+                    android:text="PROFILE"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -259,7 +259,7 @@
                 />
             </LinearLayout>
 
-            <!--<LinearLayout
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -270,25 +270,33 @@
             >
 
                 <ImageButton
-                    android:id="@+id/images_grid_view_btn"
+                    android:id="@+id/show_my_all_video_post"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@color/love"
                     android:layout_weight="1"
-                    android:src="@drawable/grid" />
+                    android:src="@drawable/ic_baseline_video_24" />
+                <ImageButton
+                    android:id="@+id/show_my_all_picture_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/love"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_post" />
+
 
                 <ImageButton
-                        android:id="@+id/images_save_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:scaleType="fitCenter"
+                    android:id="@+id/show_save_all_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:scaleType="fitCenter"
                     android:background="@color/love"
-                        android:src="@drawable/save_large_icon"
-                        android:layout_weight="1"
+                    android:src="@drawable/save_large_icon"
+                    android:layout_weight="1"
                 />
 
 
-            </LinearLayout>-->
+            </LinearLayout>
 
         </LinearLayout>
 

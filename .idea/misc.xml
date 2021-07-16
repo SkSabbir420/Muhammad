@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/ic_app_logo.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.17662337662337663" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.17662337662337663" />
+        <entry key="app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.16296296296296298" />
         <entry key="app/src/main/res/drawable/ic_baseline_mode_comment_24.xml" value="0.17662337662337663" />
         <entry key="app/src/main/res/drawable/ic_baseline_person_search_24.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.17894736842105263" />
@@ -20,6 +21,7 @@
         <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/ic_outline_mode_comment_24.xml" value="0.11666666666666667" />
         <entry key="app/src/main/res/drawable/ic_outline_reply_24.xml" value="0.17662337662337663" />
+        <entry key="app/src/main/res/drawable/ic_post.xml" value="0.16296296296296298" />
         <entry key="app/src/main/res/drawable/ic_splash_screen.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/inputs_background.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/roundsape.xml" value="0.1763157894736842" />
@@ -33,6 +35,9 @@
         <entry key="app/src/main/res/layout/activity_post_comment.xml" value="0.1606060606060606" />
         <entry key="app/src/main/res/layout/activity_post_main.xml" value="0.1632034632034632" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.16271929824561404" />
+        <entry key="app/src/main/res/layout/activity_show_my_all_picture_post.xml" value="0.16271929824561404" />
+        <entry key="app/src/main/res/layout/activity_show_my_all_video_post.xml" value="0.16271929824561404" />
+        <entry key="app/src/main/res/layout/activity_show_save_video_post.xml" value="0.16271929824561404" />
         <entry key="app/src/main/res/layout/activity_sing_up.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_video_comment.xml" value="0.1606060606060606" />
@@ -43,7 +48,7 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.16271929824561404" />
         <entry key="app/src/main/res/layout/fragment_top__view.xml" value="0.16271929824561404" />
-        <entry key="app/src/main/res/layout/fragment_video.xml" value="0.1574074074074074" />
+        <entry key="app/src/main/res/layout/fragment_video.xml" value="0.1" />
         <entry key="app/src/main/res/layout/post_add_layout.xml" value="0.15263157894736842" />
         <entry key="app/src/main/res/layout/post_comment_layout.xml" value="0.1606060606060606" />
         <entry key="app/src/main/res/layout/posts_layout.xml" value="0.1" />

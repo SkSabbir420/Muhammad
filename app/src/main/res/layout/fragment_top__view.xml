@@ -36,7 +36,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:gravity="center"
-                    android:text="User"
+                    android:text="USERS"
                     android:textColor="#3DAA31"
                     android:textSize="20dp"
                     android:textStyle="bold" />

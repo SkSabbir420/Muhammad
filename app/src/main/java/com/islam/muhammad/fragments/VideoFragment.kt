@@ -13,10 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 import com.islam.muhammad.R
 import com.islam.muhammad.adapter.VideoPostAdapter
@@ -77,7 +74,7 @@ class NotificationsFragment : Fragment(){
 //        Toast.makeText(context,defValue,Toast.LENGTH_SHORT).show()
 
         //val defValue = "Allah"
-        sharedPreferences = context!!.getSharedPreferences("sharePrefs",0)
+        sharedPreferences = requireContext().getSharedPreferences("sharePrefs",0)
         userId = sharedPreferences!!.getString("keyTitle",defValue)
 
 
@@ -106,6 +103,7 @@ class NotificationsFragment : Fragment(){
 
 
 
+
         return view
 
     }
@@ -131,6 +129,7 @@ class NotificationsFragment : Fragment(){
         shimmerFrameLayout_video.stopShimmerAnimation()
         super.onPause()
     }
+
 
     private fun checkFollowings() {
         followingList = ArrayList()
@@ -188,9 +187,13 @@ class NotificationsFragment : Fragment(){
 
     private fun retrievePosts() {
         //val userId = FirebaseAuth.getInstance().currentUser!!.uid
-
-
-        val postsRef = FirebaseDatabase.getInstance().reference.child("postVideos").child("allUsers").child(userId!!)
+        var postsRef:DatabaseReference? = null
+        if(userId == "Allah"||userId =="Nabi"||userId =="Eman"||userId =="Kiyamot"||userId =="Others"){
+            postsRef = FirebaseDatabase.getInstance().reference.child("postVideos").child(userId!!)
+        }else{
+            postsRef = FirebaseDatabase.getInstance().reference.child("postVideos")
+                .child("allUsers").child(userId!!).child("uploadVideoPost")
+        }
         val editor = sharedPreferences!!.edit()
                         editor.apply {
                             editor.clear()
