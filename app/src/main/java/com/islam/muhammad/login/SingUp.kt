@@ -167,7 +167,7 @@ class SingUp : AppCompatActivity(){
                 val singupMap = HashMap<String, Any>()
                 singupMap["uid"] = currentUser!!.uid
                 singupMap["email"] = currentUser!!.email!!
-                singupMap["password"] = etPassword.text.toString()
+                //singupMap["password"] = etPassword.text.toString()
                 singupMap["image"] = uri.toString()
                 singupMap["username"] = personName.text.toString().lowercase()
                 singupMap["dateOfBirth"] = dateOfBirth.text.toString()

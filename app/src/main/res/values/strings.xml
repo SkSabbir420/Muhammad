@@ -4,7 +4,7 @@
     <string name="email_hint">Your Email Address</string>
     <string name="password_hint">Your Password</string>
     <string name="login_button">Login</string>
-    <string name="password_forget_button">Forgot Password</string>
+    <string name="password_forget_button">Forgot Password?</string>
     <string name="account_button">Create New Account</string>
     <string name="or_text">OR</string>
     <string name="DateOfBirth">Date of Birth(01-01-2021)</string>

@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Muhammad">
         <activity
+            android:name=".login.ForgetPassword"
+            android:exported="true" />
+        <activity
             android:name=".main.ShowSaveVideoPost"
             android:exported="true" />
         <activity

@@ -25,6 +25,10 @@ class Login : AppCompatActivity() {
             val intent = Intent(this, SingUp::class.java)
             startActivity(intent)
         }
+        button.setOnClickListener {
+            val intent = Intent(this, ForgetPassword::class.java)
+            startActivity(intent)
+        }
 
         save_log_in.setOnClickListener {
             doLogin()
