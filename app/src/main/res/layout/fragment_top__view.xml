@@ -35,7 +35,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:gravity="center"
-                    android:text="Top Users"
+                    android:text="Admin-MemberShip"
                     android:textColor="#3DAA31"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -43,20 +43,31 @@
 
         </androidx.appcompat.widget.Toolbar>
 
+        <EditText
+            android:id="@+id/textMemberShipEmail"
+            android:layout_width="260dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="68dp"
+            android:layout_gravity="center"
+
+            android:inputType="textEmailAddress"
+            >
+
+        </EditText>
+
+        <Button
+            android:id="@+id/memberShipSubmision"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Submit">
+
+        </Button>
+
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_top_user"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/app_bar_layout_top"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp">
 
-    </androidx.recyclerview.widget.RecyclerView>
 
 
 </RelativeLayout>

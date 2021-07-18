@@ -7,23 +7,36 @@ class User
     private var bio: String = ""
     private var image: String = ""
     private var uid: String = ""
+    private var email: String = ""
+    private var membership: String = ""
 
 
     constructor()
 
 
-    constructor(username: String, fullname: String, bio: String, image: String, uid: String) {
+    constructor(username: String, fullname: String, bio: String, image: String, uid: String,email:String,membership:String) {
         this.username = username
         this.fullname = fullname
         this.bio = bio
         this.image = image
         this.uid = uid
+        this.email = email
+        this.membership = membership
     }
 
 
     fun getUsername(): String
     {
         return  username
+    }
+    fun getEmail():String{
+        return email
+    }
+    fun getMembership():String{
+        return membership
+    }
+    fun setMembership(membership: String){
+        this.membership = membership
     }
 
     fun setUsername(username: String)

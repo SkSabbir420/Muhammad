@@ -11,6 +11,11 @@
         android:id="@+id/nav_search"
         android:icon="@drawable/ic_baseline_video_24"
         android:title="" />
+    <item
+        android:id="@+id/nav_membership"
+        android:icon="@drawable/ic_membership_24"
+        android:title="" />
+
 
     <item
         android:id="@+id/nav_profile"

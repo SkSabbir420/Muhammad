@@ -47,11 +47,11 @@ class MainActivity : AppCompatActivity(){
 //                    }
 //
 //                }
-//                R.id.nav_notifications -> {
-//                    //Toast.makeText(this, "Working this feature!!\n Coming very soon.", Toast.LENGTH_SHORT).show()
-//                    moveToFragment(TopViewFragment())
-//                    return@OnNavigationItemSelectedListener true
-//                }
+                R.id.nav_membership -> {
+                    //Toast.makeText(this, "Working this feature!!\n Coming very soon.", Toast.LENGTH_SHORT).show()
+                    moveToFragment(TopViewFragment())
+                    return@OnNavigationItemSelectedListener true
+                }
 
             }
         false
