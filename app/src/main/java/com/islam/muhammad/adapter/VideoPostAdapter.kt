@@ -20,6 +20,7 @@ import com.islam.muhammad.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
 import com.islam.muhammad.main.VideoPlayActivity
 import com.islam.muhammad.model.VideoPost
 import com.islam.muhammad.main.video_comment_activity
@@ -30,6 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_video_play.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.video_posts_layout.view.*
+import java.lang.Exception
 
 class VideoPostAdapter(private val mContext:Context, private val mPost: List<VideoPost>):RecyclerView.Adapter<VideoPostAdapter.ViewHolder>(){
 
@@ -61,6 +63,8 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         var commentButton:ImageView
         var comments: TextView
         var date:TextView
+        var videoPostSave:ImageView
+        var deleteVideoPost:ImageView
 
         //var publisher: TextView
         //var saveButton:ImageView
@@ -80,6 +84,8 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             //mBufferingTextView = itemView.findViewById(R.id.buffering_textview)
             commentButton = itemView.findViewById(R.id.video_image_comment_btn)
             comments = itemView.findViewById(R.id.video_comments)
+            videoPostSave = itemView.findViewById(R.id.video_post_save)
+            deleteVideoPost = itemView.findViewById(R.id.video_post_delete)
 
             mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
             mRewardedVideoAd.rewardedVideoAdListener = this
@@ -133,25 +139,106 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 intent.putExtra("keyUid",post.getPublisher())
                 mContext.startActivity(intent)
             }
+            itemView.video_post_delete.setOnClickListener {
+                val  position:Int = adapterPosition
+                val post = mPost[position]
+                postKey = post.getPostid()
+                try {
+
+
+
+                val instance = FirebaseDatabase.getInstance()
+
+                instance.getReference("postVideos")
+                    .child("allUsers").child(FirebaseAuth.getInstance().uid.toString())
+                    .child("uploadVideoPost").child(postKey!!).removeValue()
+                instance.getReference("postVideos")
+                    .child("allUsers").child(FirebaseAuth.getInstance().uid.toString())
+                    .child("saveVideoPost").child(postKey!!).removeValue()
+                instance.getReference("postVideos")
+                    .child("allPostVideos").child(postKey!!).removeValue()
+
+                instance.getReference("postVideos").child(post.getPostCategory())
+                    .child(postKey!!).removeValue()
+
+                instance.getReference("postVideoLikes").child(postKey!!).removeValue()
+                instance.getReference("postVideoComments").child(post.getPublisher())
+                    .child(postKey!!).removeValue()
+
+                FirebaseStorage.getInstance().reference.child("postVideos")
+                    .child(post.getPublisher()).child(postKey!!).child(postKey+".mp4").delete()
+                FirebaseStorage.getInstance().reference.child("postVideos")
+                    .child(post.getPublisher()).child(postKey!!).child(postKey+".jpg").delete()
+
+                Toast.makeText(mContext, "Delete Success Full", Toast.LENGTH_SHORT).show()
+                }catch (e:Exception){
+                    Toast.makeText(mContext, "Delete Unsuccessful", Toast.LENGTH_SHORT).show()
+                }
+
+
+//                val saveReference = FirebaseDatabase.getInstance().getReference("postVideos")
+//                    .child("allUsers").child(FirebaseAuth.getInstance().uid.toString())
+//                    .child("uploadVideoPost")
+//                var testClick =true
+//                saveReference.addValueEventListener(object :ValueEventListener{
+//                    override fun onDataChange(p0: DataSnapshot) {
+//                        if (testClick ==true){
+//                            if(p0.hasChild(postKey!!)){
+//                                saveReference.child(postKey!!).removeValue()
+//                                Toast.makeText(mContext,"Remove success",Toast.LENGTH_SHORT).show()
+//                                testClick =false
+//                            }
+//                        }
+//                    }
+//
+//                    override fun onCancelled(error: DatabaseError) {
+//                    }
+//
+//
+//                })
+
+            }
             itemView.video_post_save.setOnClickListener {
                 val  position:Int = adapterPosition
                 val post = mPost[position]
                 postKey = post.getPostid()
 
-                val postMap = HashMap<String, Any>()
-                postMap["postid"] = postKey!!
-                postMap["description"] = post.getDescription()
-                postMap["publisher"] = post.getPublisher()
-                postMap["postimage"] = post.getPostimage()
-                postMap["postDate"] = post.getPostDate()
+                val saveReference = FirebaseDatabase.getInstance().getReference("postVideos")
+                    .child("allUsers").child(FirebaseAuth.getInstance().uid.toString())
+                    .child("saveVideoPost")
+                var testClick =true
+                saveReference.addValueEventListener(object :ValueEventListener{
+                    override fun onDataChange(p0: DataSnapshot) {
+                        if (testClick ==true){
+                            if(p0.hasChild(postKey!!)){
+                                saveReference.child(postKey!!).removeValue()
+                                Toast.makeText(mContext,"Unsaved success",Toast.LENGTH_SHORT).show()
+                                testClick =false
+                            }else{
+                                val postMap = HashMap<String, Any>()
+                                postMap["postid"] = postKey!!
+                                postMap["description"] = post.getDescription()
+                                postMap["publisher"] = post.getPublisher()
+                                postMap["postimage"] = post.getPostimage()
+                                postMap["postDate"] = post.getPostDate()
 //                postMap["postCategory"] = post.getPostCategory()
 //                postMap["postTime"] = post.getPostTime()
-                postMap["coverPhoto"] = post.getCoverPhoto()
+                                postMap["coverPhoto"] = post.getCoverPhoto()
 
-                FirebaseDatabase.getInstance().reference.child("postVideos")
-                    .child("allUsers").child(FirebaseAuth.getInstance().currentUser!!.uid)
-                    .child("saveVideoPost").child(postKey!!).updateChildren(postMap)
-                Toast.makeText(mContext,"Save success",Toast.LENGTH_SHORT).show()
+                                saveReference.child(postKey!!).updateChildren(postMap)
+                                Toast.makeText(mContext,"Save success",Toast.LENGTH_SHORT).show()
+                                testClick =false
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+
+
+                })
+
+
             }
 
 //            var count:Int
@@ -279,7 +366,9 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         Picasso.get().load(post.getCoverPhoto()).into(holder.postImage)
         holder.description.text = post.getDescription()
         holder.date.setText(post.getPostDate())
+        getDeleteButtonStatus(postKey!!,holder)
         getLikeButtonStatus(postKey!!, userid!!,holder)
+        getSaveButtonStatus(postKey!!,holder)
         getViewButtonStatus(postKey!!,holder)
         getcommentButtonStatus(postKey!!,publisher,holder)
 
@@ -338,6 +427,42 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         })
 
     }
+
+    private fun getSaveButtonStatus(postKey:String,holder:ViewHolder){
+        val saveReference = FirebaseDatabase.getInstance().getReference("postVideos")
+            .child("allUsers").child(FirebaseAuth.getInstance().uid.toString())
+            .child("saveVideoPost")
+        saveReference.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.hasChild(postKey)){
+                    holder.videoPostSave.setImageResource(R.drawable.save_large_icon)
+                }else{
+                    holder.videoPostSave.setImageResource(R.drawable.save_unfilled_large_icon)
+                }
+            }
+            override fun onCancelled(p0: DatabaseError){
+            }
+        })
+    }
+
+    private fun getDeleteButtonStatus(postkey: String,holder: ViewHolder){
+        val deleteReference = FirebaseDatabase.getInstance().getReference("postVideos")
+            .child("allUsers").child(FirebaseAuth.getInstance().uid.toString())
+            .child("uploadVideoPost")
+        deleteReference.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.hasChild(postKey!!)){
+                    holder.deleteVideoPost.visibility = View.VISIBLE
+                    holder.deleteVideoPost.setImageResource(R.drawable.ic_delete_24)
+                }
+            }
+            override fun onCancelled(p0: DatabaseError){
+            }
+        })
+    }
+
     private  fun getViewButtonStatus(postkey:String,holder:ViewHolder){
         var count:Int
         viewReference.child(postkey).addValueEventListener(object : ValueEventListener {
