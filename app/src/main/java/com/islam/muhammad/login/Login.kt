@@ -25,6 +25,7 @@ class Login : AppCompatActivity() {
             val intent = Intent(this, SingUp::class.java)
             startActivity(intent)
         }
+
         button.setOnClickListener {
             val intent = Intent(this, ForgetPassword::class.java)
             startActivity(intent)
@@ -75,9 +76,6 @@ class Login : AppCompatActivity() {
             if (currentUser.isEmailVerified) {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
-            } else {
-                Toast.makeText(baseContext, "Please verify your email address.",
-                    Toast.LENGTH_SHORT).show()
             }
         }
     }

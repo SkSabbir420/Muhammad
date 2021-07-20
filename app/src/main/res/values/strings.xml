@@ -7,8 +7,9 @@
     <string name="password_forget_button">Forgot Password?</string>
     <string name="account_button">Create New Account</string>
     <string name="or_text">OR</string>
-    <string name="DateOfBirth">Date of Birth(01-01-2021)</string>
+    <string name="DateOfBirth">Date of Birth(dd-mm-yyyy)</string>
     <string name="Gender">Gender(Male or Female)</string>
+    <string name="Religion">Religion(Muslim,Christian etc)</string>
     <string name="Hint_Name">Name</string>
     <string name="Notification">
         Assalamu Alaikum Every One.

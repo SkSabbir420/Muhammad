@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,29 +18,24 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import com.islam.muhammad.model.Post
 import com.islam.muhammad.model.User
 import com.islam.muhammad.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.islam.muhammad.main.PostCommentActivity
+import com.islam.muhammad.comment.PostCommentActivity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.posts_layout.view.*
 import android.graphics.drawable.BitmapDrawable
-import android.util.Log
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.android.synthetic.main.posts_layout.view.picture_post_delete
 import kotlinx.android.synthetic.main.posts_layout.view.post_image_share_btn
 import kotlinx.android.synthetic.main.video_posts_layout.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
@@ -139,7 +132,10 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
                 intent.putExtra("keyUid",post.getPublisher())
                 mContext.startActivity(intent)
             }
-            itemView.picture_post_delete.setOnClickListener {
+            itemView.more_picture_layout.setOnClickListener {
+                Toast.makeText(mContext,"Click Picture item option layout",Toast.LENGTH_SHORT).show()
+            }
+            /*itemView.picture_post_delete.setOnClickListener {
                 val  position:Int = adapterPosition
                 val post = mPost[position]
                 postKey = post.getPostid()
@@ -181,7 +177,7 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
 //
 //                })
 
-            }
+            }*/
             itemView.post_image_share_btn.setOnClickListener {
                 val  position:Int = adapterPosition
                 val post = mPost[position]
@@ -217,7 +213,7 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
 //        Toast.makeText(mContext,"$position",Toast.LENGTH_SHORT).show()
         publisherInfo(holder.profileImage,holder.userName,post.getPublisher())
         holder.date.setText(post.getPostDate())
-        getDeleteButtonStatus(postKey!!,holder)
+        //getDeleteButtonStatus(postKey!!,holder)
         holder.description.setText(post.getDescription())
         //Picasso.get().load(post.getPostimage()).into(holder.postImage)
         Glide.with(mContext).load(post.getPostimage()).listener(object: RequestListener<Drawable>{

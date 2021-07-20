@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -15,10 +14,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.islam.muhammad.R
-import com.islam.muhammad.fragments.NotificationsFragment
 import com.islam.muhammad.main.MainActivity
-import com.islam.muhammad.main.PostCommentActivity
-import com.islam.muhammad.main.VideoPlayActivity
 import com.islam.muhammad.model.User
 import com.islam.muhammad.model.VideoPostTitle
 import com.squareup.picasso.Picasso

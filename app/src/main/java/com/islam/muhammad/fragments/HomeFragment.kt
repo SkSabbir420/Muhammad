@@ -24,7 +24,7 @@ import com.islam.muhammad.main.NotificationActivity
 import com.islam.muhammad.main.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
-import kotlinx.android.synthetic.main.fragment_top__view.*
+import kotlinx.android.synthetic.main.fragment_top_view.*
 import java.util.*
 
 

@@ -3,7 +3,6 @@ package com.islam.muhammad.adapter
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,15 +20,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
-import com.islam.muhammad.main.VideoPlayActivity
 import com.islam.muhammad.model.VideoPost
-import com.islam.muhammad.main.video_comment_activity
+import com.islam.muhammad.comment.video_comment_activity
 import com.islam.muhammad.model.Vpvcount
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_video_play.*
-import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.video_posts_layout.view.*
 import java.lang.Exception
 
@@ -65,6 +61,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         var date:TextView
         var videoPostSave:ImageView
         var deleteVideoPost:ImageView
+        var moreVideoLayout:ImageView
 
         //var publisher: TextView
         //var saveButton:ImageView
@@ -86,6 +83,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             comments = itemView.findViewById(R.id.video_comments)
             videoPostSave = itemView.findViewById(R.id.video_post_save)
             deleteVideoPost = itemView.findViewById(R.id.video_post_delete)
+            moreVideoLayout = itemView.findViewById(R.id.more_video_layout)
 
             mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
             mRewardedVideoAd.rewardedVideoAdListener = this
@@ -128,6 +126,10 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 
                     }
                 })
+
+            }
+            itemView.more_video_layout.setOnClickListener {
+                Toast.makeText(mContext,"Click Video item option layout",Toast.LENGTH_SHORT).show()
             }
 
             itemView.video_image_comment_btn.setOnClickListener {
@@ -139,7 +141,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
                 intent.putExtra("keyUid",post.getPublisher())
                 mContext.startActivity(intent)
             }
-            itemView.video_post_delete.setOnClickListener {
+            /*itemView.video_post_delete.setOnClickListener {
                 val  position:Int = adapterPosition
                 val post = mPost[position]
                 postKey = post.getPostid()
@@ -197,7 +199,7 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 //
 //                })
 
-            }
+            }*/
             itemView.video_post_save.setOnClickListener {
                 val  position:Int = adapterPosition
                 val post = mPost[position]
@@ -252,12 +254,12 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 //                mContext.startActivity(intent)
 
                 val videoUri = Uri.parse(post.getPostimage())
-                if(mRewardedVideoAd.isLoaded) {
+                /*if(mRewardedVideoAd.isLoaded) {//Add show
                     Toast.makeText(mContext,"Add Load success",Toast.LENGTH_SHORT).show()
                     mRewardedVideoAd.show()
                 }else{
                     Toast.makeText(mContext,"Add Load Unsuccess",Toast.LENGTH_SHORT).show()
-                }
+                }*/
                 postImage.visibility = View.GONE
                 postVideo.visibility = View.VISIBLE
                 val controller = MediaController(mContext)
@@ -366,9 +368,9 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
         Picasso.get().load(post.getCoverPhoto()).into(holder.postImage)
         holder.description.text = post.getDescription()
         holder.date.setText(post.getPostDate())
-        getDeleteButtonStatus(postKey!!,holder)
+        //getDeleteButtonStatus(postKey!!,holder)
         getLikeButtonStatus(postKey!!, userid!!,holder)
-        getSaveButtonStatus(postKey!!,holder)
+        //getSaveButtonStatus(postKey!!,holder)
         getViewButtonStatus(postKey!!,holder)
         getcommentButtonStatus(postKey!!,publisher,holder)
 

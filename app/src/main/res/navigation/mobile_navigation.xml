@@ -24,7 +24,7 @@
         android:id="@+id/nav_notifications"
         android:name="com.islam.muhammad.fragments.TopViewFragment"
         android:label=""
-        tools:layout="@layout/fragment_top__view" />
+        tools:layout="@layout/fragment_top_view" />
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.islam.muhammad.fragments.ProfileFragment"

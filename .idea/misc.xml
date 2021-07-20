@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/buttons_background.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/ic_app_logo.xml" value="0.2" />
+        <entry key="app/src/main/res/drawable/ic_arrow_back_24.xml" value="0.1761904761904762" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.17662337662337663" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.17662337662337663" />
         <entry key="app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.16296296296296298" />
@@ -16,19 +17,22 @@
         <entry key="app/src/main/res/drawable/ic_baseline_video_24.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/ic_delete_24.xml" value="0.17850877192982456" />
+        <entry key="app/src/main/res/drawable/ic_done_24.xml" value="0.17850877192982456" />
         <entry key="app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.17894736842105263" />
+        <entry key="app/src/main/res/drawable/ic_more_horiz_24.xml" value="0.17850877192982456" />
         <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/ic_outline_mode_comment_24.xml" value="0.11666666666666667" />
         <entry key="app/src/main/res/drawable/ic_outline_reply_24.xml" value="0.17662337662337663" />
         <entry key="app/src/main/res/drawable/ic_post.xml" value="0.16296296296296298" />
+        <entry key="app/src/main/res/drawable/ic_save_24.xml" value="0.17850877192982456" />
         <entry key="app/src/main/res/drawable/ic_splash_screen.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/inputs_background.xml" value="0.17894736842105263" />
         <entry key="app/src/main/res/drawable/roundsape.xml" value="0.1763157894736842" />
         <entry key="app/src/main/res/layout/activity_account_settings.xml" value="0.16271929824561404" />
         <entry key="app/src/main/res/layout/activity_add_post.xml" value="0.16271929824561404" />
-        <entry key="app/src/main/res/layout/activity_add_post_photo.xml" value="0.15648148148148147" />
+        <entry key="app/src/main/res/layout/activity_add_post_photo.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_add_post_video.xml" value="0.1574074074074074" />
         <entry key="app/src/main/res/layout/activity_forget_password.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="1.0" />
@@ -50,6 +54,7 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.16271929824561404" />
         <entry key="app/src/main/res/layout/fragment_top__view.xml" value="0.16271929824561404" />
+        <entry key="app/src/main/res/layout/fragment_top_view.xml" value="0.16277056277056276" />
         <entry key="app/src/main/res/layout/fragment_video.xml" value="0.1" />
         <entry key="app/src/main/res/layout/post_add_layout.xml" value="0.15263157894736842" />
         <entry key="app/src/main/res/layout/post_comment_layout.xml" value="0.1606060606060606" />
@@ -62,6 +67,7 @@
         <entry key="app/src/main/res/layout/video_post_title.xml" value="0.16271929824561404" />
         <entry key="app/src/main/res/layout/video_posts_layout.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.16271929824561404" />
+        <entry key="app/src/main/res/menu/post_option_menu.xml" value="0.1649122807017544" />
       </map>
     </option>
   </component>

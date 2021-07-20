@@ -36,9 +36,9 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:gravity="center"
-                    android:text="MUHAMMAD"
+                    android:text="Muhammad"
                     android:textAlignment="center"
-                    android:textColor="#3DAA31"
+                    android:textColor="@color/love"
                     android:textSize="20dp"
                     android:textStyle="bold" />
                 <ImageView

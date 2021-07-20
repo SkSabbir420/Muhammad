@@ -30,21 +30,19 @@
                     android:layout_height="wrap_content">
 
                 <ImageView
-                        android:id="@+id/close_profile_btn"
-                        android:layout_width="20dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentStart="true"
-                        android:src="@drawable/close"
-                />
+                    android:id="@+id/close_profile_btn"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_arrow_back_24" />
 
                 <ImageView
-                        android:id="@+id/save_infor_profile_btn"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_alignParentEnd="true"
-                        android:src="@drawable/save_edited_info"
-                />
+                    android:id="@+id/save_infor_profile_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/ic_done_24" />
 
             </RelativeLayout>
 
@@ -87,21 +85,20 @@
         android:hint="UserName"
         android:inputType="text" />
 
-    <EditText
-            android:id="@+id/bio_profile_frag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/username_profile_frag"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="16dp"
-            android:inputType="text"
-            android:hint="Bio"
-    />
+    <!--<EditText
+        android:id="@+id/bio_profile_frag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username_profile_frag"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="20dp"
+        android:hint="Bio"
+        android:inputType="text" />
 
 
 
-    <!--<Button
+    <Button
             android:id="@+id/delete_account_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

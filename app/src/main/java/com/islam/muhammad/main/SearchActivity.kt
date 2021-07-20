@@ -47,7 +47,8 @@ class SearchActivity : AppCompatActivity() {
                     userArray?.clear()
                     recyclerView?.visibility = View.GONE
                 }else{
-                    searchUser(name.toString().toLowerCase())
+                    //searchUser(name.toString().toLowerCase())
+                    searchUser(name.toString())
                     recyclerView?.visibility = View.VISIBLE
                     //retrieveUsers()
                 }

@@ -12,10 +12,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.islam.muhammad.R
-import com.islam.muhammad.adapter.PostAdapter
 import com.islam.muhammad.adapter.TopIdAdapter
 import com.islam.muhammad.model.Top
-import kotlinx.android.synthetic.main.fragment_top__view.*
+import kotlinx.android.synthetic.main.fragment_top_view.*
 import kotlinx.android.synthetic.main.top_item_layout.view.*
 import java.util.*
 
@@ -27,7 +26,7 @@ class TopViewFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_top__view, container, false)
+        val view = inflater.inflate(R.layout.fragment_top_view, container, false)
 
         var recyclerView: RecyclerView? = null
         recyclerView = view.findViewById(R.id.recycler_view_top_user)
@@ -60,10 +59,10 @@ class TopViewFragment : Fragment() {
 
     private fun retrievePosts() {
         val postsRef = FirebaseDatabase.getInstance().reference.child("users")
-        //postsRef.orderByChild("followers").addValueEventListener(object : ValueEventListener {//Sort use
-        postsRef.addValueEventListener(object : ValueEventListener {
+        postsRef.orderByChild("followers").addValueEventListener(object : ValueEventListener {//Sort use
+        //postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                //userList?.clear()
+                userList?.clear()
                 for (snapshot in p0.children) {
                     val Topid = snapshot.getValue(Top::class.java)
                     //for (id in (followingList as ArrayList<String>)) {

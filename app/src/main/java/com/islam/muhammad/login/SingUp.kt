@@ -39,7 +39,7 @@ class SingUp : AppCompatActivity(){
             finish()
         }
 
-        add_profile_pic_btn.setOnClickListener{
+        ivImagePerson.setOnClickListener {
             checkPermission()
         }
 
@@ -92,7 +92,6 @@ class SingUp : AppCompatActivity(){
         }
     }
 
-
     private fun SingUpUser(){
         if(selectedImage == null){
             Toast.makeText(this, "Please Add Your Profile Picture", Toast.LENGTH_LONG).show()
@@ -110,6 +109,11 @@ class SingUp : AppCompatActivity(){
         }
         if(gender_editText.text.toString().isEmpty()){
             gender_editText.error="Please Enter Your Gender."
+            gender_editText.requestFocus()
+            return
+        }
+        if(Religion_editText.text.toString().isEmpty()){
+            gender_editText.error="Please Enter Your Religion."
             gender_editText.requestFocus()
             return
         }
@@ -156,7 +160,7 @@ class SingUp : AppCompatActivity(){
         val storage= FirebaseStorage.getInstance()
         val storgaRef=storage.getReferenceFromUrl("gs://muhammad-be152.appspot.com")
         val imagePath= currentUser!!.uid + ".jpg"
-        val ImageRef=storgaRef.child("profilePictures/"+imagePath )
+        val ImageRef=storgaRef.child("profilePictures/" + imagePath )
         val localdate = LocalDate.now()
         val localtime  = LocalTime.now()
         val date = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localdate).toString()
@@ -164,32 +168,29 @@ class SingUp : AppCompatActivity(){
 
         ImageRef.putFile(selectedImage!!).addOnSuccessListener {
             ImageRef.downloadUrl.addOnSuccessListener { uri ->
+
                 val singupMap = HashMap<String, Any>()
                 singupMap["uid"] = currentUser!!.uid
-                singupMap["email"] = currentUser!!.email!!
-                //singupMap["password"] = etPassword.text.toString()
                 singupMap["image"] = uri.toString()
-                singupMap["username"] = personName.text.toString().lowercase()
+                singupMap["email"] = currentUser!!.email!!
+                //singupMap["username"] = personName.text.toString().lowercase()
+                singupMap["username"] = personName.text.toString()
+                singupMap["membership"] = "false"
                 singupMap["dateOfBirth"] = dateOfBirth.text.toString()
                 singupMap["gender"] = gender_editText.text.toString()
+                singupMap["religion"] = Religion_editText.text.toString()
                 singupMap["createDate"] = date
                 singupMap["followers"] = 0
                 singupMap["following"] = 0
                 singupMap["createTime"] = time
-                singupMap["membership"] = "false"
                 singupMap["bio"] = "Edit Profile and Enter your Bio"
+
                 myRef.child("users").child(currentUser!!.uid).updateChildren(singupMap)
-                LoadTweets()
+
+                val intent = Intent(this, Login::class.java)
+                startActivity(intent)
+                finish()
             }
-        }
-    }
-    fun LoadTweets(){
-        val currentUser =myAuth.currentUser
-        if(currentUser!=null) {
-            val intent = Intent(this, Login::class.java)
-            intent.putExtra("email", currentUser.email)
-            intent.putExtra("uid", currentUser.uid)
-            startActivity(intent)
         }
     }
 }//last curly.

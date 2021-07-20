@@ -88,6 +88,7 @@ class TopIdAdapter(private val mContext:Context,private val mTop:List<Top>):Recy
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val top = mTop[position]
         val profileId = top.getUID()
+
         holder.userName.setText(top.getUsername())
         Picasso.get().load(top.getImage()).into(holder.profileImage)
         checkFollowingStatus(top.getUID(), holder.followButton)
@@ -102,7 +103,10 @@ class TopIdAdapter(private val mContext:Context,private val mTop:List<Top>):Recy
             {
                 if (p0.exists())
                 {
-                    holder.totalFollowingForTop.setText( p0.childrenCount.toString())
+                    val following = p0.childrenCount.toString()
+                    holder.totalFollowingForTop.setText( following)
+                    FirebaseDatabase.getInstance().reference.child("users")
+                        .child(profileId).child("following").setValue(following)
                 }
             }
             override fun onCancelled(p0: DatabaseError) {
@@ -119,7 +123,10 @@ class TopIdAdapter(private val mContext:Context,private val mTop:List<Top>):Recy
             {
                 if (p0.exists())
                 {
-                    holder.totalFollowersForTop.setText( p0.childrenCount.toString())
+                    val follower = p0.childrenCount.toString()
+                    holder.totalFollowersForTop.setText( follower)
+                    FirebaseDatabase.getInstance().reference.child("users")
+                        .child(profileId).child("followers").setValue(follower)
                 }
             }
 

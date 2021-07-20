@@ -4,10 +4,8 @@ package com.islam.muhammad.fragments
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +23,7 @@ import com.islam.muhammad.model.VideoPost
 import com.islam.muhammad.model.VideoPostTitle
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.shimmerFrameLayout_home
-import kotlinx.android.synthetic.main.fragment_top__view.*
+import kotlinx.android.synthetic.main.fragment_top_view.*
 import kotlinx.android.synthetic.main.fragment_video.*
 import java.util.*
 

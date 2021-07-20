@@ -103,13 +103,14 @@ class AccountSettingsActivity : AppCompatActivity()
     {
         when {
             username_profile_frag.text.toString() == "" -> Toast.makeText(this, "Please write user name first.", Toast.LENGTH_LONG).show()
-            bio_profile_frag.text.toString() == "" -> Toast.makeText(this, "Please write your bio first.", Toast.LENGTH_LONG).show()
+            //bio_profile_frag.text.toString() == "" -> Toast.makeText(this, "Please write your bio first.", Toast.LENGTH_LONG).show()
             else -> {
                 val usersRef = FirebaseDatabase.getInstance().reference.child("users")
 
                 val userMap = HashMap<String, Any>()
-                userMap["username"] = username_profile_frag.text.toString().toLowerCase()
-                userMap["bio"] = bio_profile_frag.text.toString().toLowerCase()
+                //userMap["username"] = username_profile_frag.text.toString().toLowerCase()
+                userMap["username"] = username_profile_frag.text.toString()
+                //userMap["bio"] = bio_profile_frag.text.toString().toLowerCase()
 
                 usersRef.child(firebaseUser.uid).updateChildren(userMap)
 
@@ -138,7 +139,7 @@ class AccountSettingsActivity : AppCompatActivity()
 
                     Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(profile_image_view_profile_frag)
                     username_profile_frag.setText(user!!.getUsername())
-                    bio_profile_frag.setText(user!!.getBio())
+                    //bio_profile_frag.setText(user!!.getBio())
                 }
             }
 
@@ -155,7 +156,7 @@ class AccountSettingsActivity : AppCompatActivity()
         {
             imageUri == null -> Toast.makeText(this, "Please select image first.", Toast.LENGTH_LONG).show()
             username_profile_frag.text.toString() == "" -> Toast.makeText(this, "Please write user name first.", Toast.LENGTH_LONG).show()
-            bio_profile_frag.text.toString() == "" -> Toast.makeText(this, "Please write your bio first.", Toast.LENGTH_LONG).show()
+            //bio_profile_frag.text.toString() == "" -> Toast.makeText(this, "Please write your bio first.", Toast.LENGTH_LONG).show()
 
             else -> {
                 val progressDialog = ProgressDialog(this)
@@ -187,7 +188,7 @@ class AccountSettingsActivity : AppCompatActivity()
 
                         val userMap = HashMap<String, Any>()
                         userMap["username"] = username_profile_frag.text.toString().toLowerCase()
-                        userMap["bio"] = bio_profile_frag.text.toString().toLowerCase()
+                        //userMap["bio"] = bio_profile_frag.text.toString().toLowerCase()
                         userMap["image"] = myUrl
 
                         ref.child(firebaseUser.uid).updateChildren(userMap)

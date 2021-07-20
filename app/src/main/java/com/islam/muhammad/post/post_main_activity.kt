@@ -4,9 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.islam.muhammad.R
-import com.islam.muhammad.main.AddPostPhotoActivity
-import com.islam.muhammad.main.AddPostVideoActivity
-import com.islam.muhammad.main.VideoPostCategoryActivity
 import kotlinx.android.synthetic.main.activity_post_main.*
 
 class post_main_activity : AppCompatActivity() {

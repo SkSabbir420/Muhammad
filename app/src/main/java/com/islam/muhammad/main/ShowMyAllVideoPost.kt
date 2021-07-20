@@ -11,6 +11,7 @@ import com.islam.muhammad.R
 import com.islam.muhammad.adapter.VideoPostAdapter
 import com.islam.muhammad.model.VideoPost
 import com.islam.muhammad.model.VideoPostTitle
+import kotlinx.android.synthetic.main.activity_show_my_all_picture_post.*
 import kotlinx.android.synthetic.main.activity_show_my_all_video_post.*
 import kotlinx.android.synthetic.main.activity_show_save_video_post.*
 import java.util.ArrayList
@@ -23,6 +24,11 @@ class ShowMyAllVideoPost : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_my_all_video_post)
+
+        all_video_back.setOnClickListener {
+            super.onBackPressed()
+            finish()
+        }
 
         var recyclerView: RecyclerView? = null
         recyclerView = findViewById(R.id.recycler_view_video_all_post)
