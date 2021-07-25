@@ -7,10 +7,6 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -29,11 +25,14 @@ import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.posts_layout.view.*
 import android.graphics.drawable.BitmapDrawable
+import android.view.MenuItem
+import android.widget.*
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.posts_layout.view.picture_post_delete
+import com.islam.muhammad.fragments.HomeFragment
+import com.islam.muhammad.fragments.ProfileFragment
 import kotlinx.android.synthetic.main.posts_layout.view.post_image_share_btn
 import kotlinx.android.synthetic.main.video_posts_layout.view.*
 
@@ -50,7 +49,8 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
 //    private var bitmap: Bitmap? = null
 
 
-    inner class  ViewHolder(@NonNull itemView:View):RecyclerView.ViewHolder(itemView){
+    inner class  ViewHolder(@NonNull itemView:View):RecyclerView.ViewHolder(itemView)
+        ,PopupMenu.OnMenuItemClickListener{
 
         var userName:TextView
         var profileImage:CircleImageView
@@ -64,7 +64,6 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
         var comments: TextView
         var date:TextView
         var post_progress_bar:ProgressBar
-        var deletePicturePost:ImageView
 //        var adView: AdView
         //var publisher: TextView
         //var saveButton:ImageView
@@ -81,7 +80,6 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
 
             commentButton = itemView.findViewById(R.id.post_image_comment_btn)
             comments = itemView.findViewById(R.id.post_image_comment_text)
-            deletePicturePost = itemView.findViewById(R.id.picture_post_delete)
 //            adView = itemView.findViewById(R.id.adView)
             //publisher = itemView.findViewById(R.id.publisher)
             //saveButton = itemView.findViewById(R.id.post_save_comment_btn)
@@ -133,7 +131,14 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
                 mContext.startActivity(intent)
             }
             itemView.more_picture_layout.setOnClickListener {
-                Toast.makeText(mContext,"Click Picture item option layout",Toast.LENGTH_SHORT).show()
+                val  position:Int = adapterPosition
+                val post = mPost[position]
+                postKey = post.getPostid()
+                val popupMenu = PopupMenu(mContext,it)
+                popupMenu.inflate(R.menu.post_option_menu_picture)
+                getDeleteButtonStatus(postKey!!,popupMenu)
+                popupMenu.setOnMenuItemClickListener(this)
+                popupMenu.show()
             }
             /*itemView.picture_post_delete.setOnClickListener {
                 val  position:Int = adapterPosition
@@ -193,6 +198,34 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
 
 
         }
+
+        override fun onMenuItemClick(item: MenuItem?): Boolean {
+            when (item!!.itemId) {
+                R.id.delete_picture ->{
+                    val  position:Int = adapterPosition
+                    val post = mPost[position]
+                    val postKey = post.getPostid()
+                    try {
+                        val instance = FirebaseDatabase.getInstance()
+                        instance.getReference("postPictures").child("allUsers")
+                            .child(FirebaseAuth.getInstance().uid.toString()).child(postKey!!).removeValue()
+                        instance.getReference("postPictures").child("allPostPictures")
+                            .child(postKey!!).removeValue()
+                        instance.getReference("postPictureLikes").child(postKey!!).removeValue()
+                        instance.getReference("postPictureComments").child(post.getPublisher())
+                            .child(postKey!!).removeValue()
+                        FirebaseStorage.getInstance().reference.child("postPictures")
+                            .child(post.getPublisher()).child(postKey!!+".jpg").delete()
+                        Toast.makeText(mContext, "Delete Successful", Toast.LENGTH_SHORT).show()
+                    }catch (e:Exception){
+                        Toast.makeText(mContext, "Delete Unsuccessful", Toast.LENGTH_SHORT).show()
+                    }
+                    //Toast.makeText(mContext, postKey,Toast.LENGTH_SHORT).show()
+                return true
+                }
+            }
+            return false
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -213,7 +246,6 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
 //        Toast.makeText(mContext,"$position",Toast.LENGTH_SHORT).show()
         publisherInfo(holder.profileImage,holder.userName,post.getPublisher())
         holder.date.setText(post.getPostDate())
-        //getDeleteButtonStatus(postKey!!,holder)
         holder.description.setText(post.getDescription())
         //Picasso.get().load(post.getPostimage()).into(holder.postImage)
         Glide.with(mContext).load(post.getPostimage()).listener(object: RequestListener<Drawable>{
@@ -328,7 +360,7 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
         })
 
     }
-    private fun getDeleteButtonStatus(postkey: String,holder: ViewHolder){
+    private fun getDeleteButtonStatus(postkey: String,popupMenu: PopupMenu){
         val deleteReference = FirebaseDatabase.getInstance().getReference("postPictures")
             .child("allUsers").child(FirebaseAuth.getInstance().uid.toString())
             //.child("uploadVideoPost")
@@ -336,9 +368,9 @@ class PostAdapter(private val mContext:Context,private val mPost: List<Post>):
             override fun onDataChange(p0: DataSnapshot) {
 
                 if (p0.hasChild(postKey!!)){
-                    holder.deletePicturePost.visibility = View.VISIBLE
-                    holder.deletePicturePost.setImageResource(R.drawable.ic_delete_24)
-
+                    popupMenu.menu.findItem(R.id.delete_picture).setVisible(true)
+                }else{
+                    popupMenu.menu.findItem(R.id.delete_picture).setVisible(false)
                 }
             }
             override fun onCancelled(p0: DatabaseError){

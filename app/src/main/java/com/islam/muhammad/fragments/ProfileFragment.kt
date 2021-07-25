@@ -49,11 +49,11 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         profileId = FirebaseAuth.getInstance().currentUser!!.uid
 
-//        view.show_save_all_post.setOnClickListener {
-//            val intent = Intent(activity, ShowSaveVideoPost::class.java)
-//            activity?.startActivity(intent)
-//            //activity?.finish()
-//        }
+        view.show_save_all_post.setOnClickListener {
+            val intent = Intent(activity, ShowSaveVideoPost::class.java)
+            activity?.startActivity(intent)
+            //activity?.finish()
+        }
         view.show_my_all_video_post.setOnClickListener {
             val intent = Intent(activity, ShowMyAllVideoPost::class.java)
             activity?.startActivity(intent)

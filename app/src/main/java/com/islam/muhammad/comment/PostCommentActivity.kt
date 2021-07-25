@@ -14,6 +14,9 @@ import com.islam.muhammad.R
 import com.islam.muhammad.adapter.PostCommentAdapter
 import com.islam.muhammad.model.PostComment
 import kotlinx.android.synthetic.main.activity_post_comment.*
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.ArrayList
 
 class PostCommentActivity : AppCompatActivity(){
@@ -62,10 +65,17 @@ class PostCommentActivity : AppCompatActivity(){
         //val ref = FirebaseDatabase.getInstance().reference.child("Post").child("$postkey").child("Comments")
         val ref = FirebaseDatabase.getInstance().reference.child("postPictureComments").child(publisher!!).child(postkey!!)
         val postId = ref.push().key
+        val localdate = LocalDate.now()
+        val localtime  = LocalTime.now()
+        val date = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localdate).toString()
+        val time = DateTimeFormatter.ofPattern("HH:mm:ss").format(localtime).toString()
+
 
         val postMap = HashMap<String, Any>()
         postMap["postid"] = postId!!
-        postMap["description"] = description_comment.text.toString().toLowerCase()
+        postMap["postDate"] = date
+        postMap["postTime"] = time
+        postMap["description"] = description_comment.text.toString()
         postMap["publisher"] = FirebaseAuth.getInstance().currentUser!!.uid
         ref.child(postId).updateChildren(postMap)
     }

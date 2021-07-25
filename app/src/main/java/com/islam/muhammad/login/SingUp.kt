@@ -183,7 +183,7 @@ class SingUp : AppCompatActivity(){
                 singupMap["followers"] = 0
                 singupMap["following"] = 0
                 singupMap["createTime"] = time
-                singupMap["bio"] = "Edit Profile and Enter your Bio"
+                //singupMap["bio"] = "Edit Profile and Enter your Bio"
 
                 myRef.child("users").child(currentUser!!.uid).updateChildren(singupMap)
 

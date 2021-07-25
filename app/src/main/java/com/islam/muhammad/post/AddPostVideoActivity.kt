@@ -223,12 +223,12 @@ class AddPostVideoActivity : AppCompatActivity(){
                             .setProgress(0,0,false)
                             .setOngoing(false)
                         no.notify(1,notification.build())
-                        //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
 //                        Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
 
                         finish()
                     }else{
-                        //Toast.makeText(this,"Post upload Unsuccessfully.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this,"Post upload Unsuccessfully.", Toast.LENGTH_LONG).show()
                         super.onBackPressed()
                         notification.setContentTitle("Upload Unsuccessfull")
                             .setContentText("Try Again")

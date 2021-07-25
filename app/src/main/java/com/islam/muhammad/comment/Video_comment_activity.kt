@@ -14,6 +14,9 @@ import com.islam.muhammad.R
 import com.islam.muhammad.adapter.VideoPostCommentAdapter
 import com.islam.muhammad.model.VideoPostComment
 import kotlinx.android.synthetic.main.activity_video_comment.*
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.ArrayList
 
 class video_comment_activity : AppCompatActivity() {
@@ -62,10 +65,17 @@ class video_comment_activity : AppCompatActivity() {
 //        val ref = FirebaseDatabase.getInstance().reference.child("VideoPost").child("$postkey").child("Comments")
         val ref = FirebaseDatabase.getInstance().reference.child("postVideoComments").child(publisher!!).child(postkey!!)
         val postId = ref.push().key
+        val localdate = LocalDate.now()
+        val localtime  = LocalTime.now()
+        val date = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localdate).toString()
+        val time = DateTimeFormatter.ofPattern("HH:mm:ss").format(localtime).toString()
+
 
         val postMap = HashMap<String, Any>()
         postMap["postid"] = postId!!
-        postMap["description"] = description_comment_video.text.toString().toLowerCase()
+        postMap["postDate"] = date
+        postMap["postTime"] = time
+        postMap["description"] = description_comment_video.text.toString()
         postMap["publisher"] = FirebaseAuth.getInstance().currentUser!!.uid
         ref.child(postId).updateChildren(postMap)
     }

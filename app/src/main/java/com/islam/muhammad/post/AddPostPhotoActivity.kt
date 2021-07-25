@@ -199,7 +199,6 @@ class AddPostPhotoActivity : AppCompatActivity() {
                         val localtime  = LocalTime.now()
                         val date = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(localdate).toString()
                         val time = DateTimeFormatter.ofPattern("HH:mm:ss").format(localtime).toString()
-//
 
 
 
@@ -214,7 +213,7 @@ class AddPostPhotoActivity : AppCompatActivity() {
 
                         ref.child(postId).updateChildren(postMap)
 
-                        //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
                         //Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
                        // progressDialog.dismiss()
                         notification.setContentTitle("Upload Complete")
@@ -227,7 +226,7 @@ class AddPostPhotoActivity : AppCompatActivity() {
                         finish()
 
                     } else{
-                        //Toast.makeText(this, "Post upload Unsuccessfully", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Post upload Unsuccessfully", Toast.LENGTH_LONG).show()
                         //progressDialog.dismiss()
                         notification.setContentTitle("Upload Unsuccessfull")
                             .setContentText("Try Again")
