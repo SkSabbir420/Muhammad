@@ -276,11 +276,11 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     >
 
-                    <ImageButton
+                    <ImageView
                     android:id="@+id/show_my_all_video_post"
                     android:layout_width="match_parent"
+                        android:layout_gravity="center"
                     android:layout_height="30dp"
-                        android:background="@color/love"
                     android:src="@drawable/ic_baseline_video_24" />
 
                     <TextView
@@ -306,12 +306,11 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:orientation="vertical">
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/show_my_all_picture_post"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_weight="1"
-                        android:background="@color/love"
                         android:src="@drawable/ic_post" />
 
                     <TextView
@@ -336,12 +335,11 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:orientation="vertical">
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/show_save_all_post"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_weight="1"
-                        android:background="@color/love"
                         android:src="@drawable/ic_save_24" />
 
                     <TextView

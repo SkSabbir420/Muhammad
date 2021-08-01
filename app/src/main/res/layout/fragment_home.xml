@@ -43,7 +43,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:gravity="center"
-                    android:text="Muhammad"
+                    android:text="Photo"
                     android:textAlignment="center"
                     android:textColor="@color/love"
                     android:textSize="20dp"

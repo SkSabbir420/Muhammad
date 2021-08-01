@@ -7,27 +7,27 @@
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.islam.muhammad.fragments.NotificationsFragment"
+        android:name="com.islam.muslimdream.fragments.NotificationsFragment"
         android:label=""
         tools:layout="@layout/fragment_video" />
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.islam.muhammad.fragments.HomeFragment"
+        android:name="com.islam.muslimdream.fragments.HomeFragment"
         android:label=""
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/nav_add_post"
-        android:name="com.islam.muhammad.post.post_main_activity"
+        android:name="com.islam.muslimdream.post.post_main_activity"
         android:label=""
         tools:layout="@layout/activity_post_main" />
     <fragment
         android:id="@+id/nav_notifications"
-        android:name="com.islam.muhammad.fragments.TopViewFragment"
+        android:name="com.islam.muslimdream.fragments.TopViewFragment"
         android:label=""
         tools:layout="@layout/fragment_top_view" />
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.islam.muhammad.fragments.ProfileFragment"
+        android:name="com.islam.muslimdream.fragments.ProfileFragment"
         android:label=""
         tools:layout="@layout/fragment_profile" />
 

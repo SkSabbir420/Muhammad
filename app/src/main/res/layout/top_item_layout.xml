@@ -33,12 +33,13 @@
 
                 <TextView
                     android:id="@+id/profile_username_top_id"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="20dp"
                     android:maxLines="1"
+                    android:gravity="center"
                     android:text="username"
                     android:textColor="@color/love"
-                    android:textSize="14dp"
+                    android:textSize="13dp"
                     android:textStyle="bold" />
 
                 <de.hdodenhof.circleimageview.CircleImageView

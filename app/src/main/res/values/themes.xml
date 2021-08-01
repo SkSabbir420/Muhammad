@@ -1,16 +1,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Muhammad" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Muslimdream" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/love</item>
         <item name="colorPrimaryVariant">@color/love</item>
         <item name="colorOnPrimary">@color/white</item>
+
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/love</item>
+        <item name="colorSecondaryVariant">@color/love</item>
+        <item name="colorOnSecondary">@color/love</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor"
+            tools:targetApi="l">?attr/colorPrimaryVariant
+        </item>
+
     </style>
+
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@color/white</item>
+        <item name="android:textColor">@color/love</item>
+    </style>
+
 </resources>
