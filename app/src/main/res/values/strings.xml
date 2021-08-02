@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Muslim Dream</string>
 
+    <string name="channel_name">sk</string>
+    <string name="channel_description">jfklsj</string>
+
     <string name="email_hint">Your Email Address</string>
     <string name="password_hint">Your Password</string>
     <string name="login_button">Login</string>

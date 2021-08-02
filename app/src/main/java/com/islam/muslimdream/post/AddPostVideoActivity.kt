@@ -1,8 +1,12 @@
 package com.islam.muslimdream.post
 
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -31,6 +35,13 @@ import kotlin.collections.HashMap
 
 class AddPostVideoActivity : AppCompatActivity(){
 
+    companion object {
+        const val notificationId = 1513
+        const val CHANNEL_ID = "content_loading"
+        const val CHANNEL_NAME = "Content Loading"
+        const val ACTION_START = "com.akexorcist.service.start"
+    }
+
     private var myUrl = ""
     private var myUrlPhoto = ""
     private var imageUri: Uri? = null
@@ -47,6 +58,8 @@ class AddPostVideoActivity : AppCompatActivity(){
         val intent: Intent = intent
         postCategory = intent.getStringExtra("keyCategory")
         //Toast.makeText(this, "$postCategory", Toast.LENGTH_LONG).show()
+
+        createNotificationChannel()
 
 
         storagePostPicRef = FirebaseStorage.getInstance().reference.child("postVideos")
@@ -124,19 +137,36 @@ class AddPostVideoActivity : AppCompatActivity(){
 //            progressDialog.setMessage("Please wait...")
 //            progressDialog.show()
 
-            val notification = NotificationCompat
-                .Builder(this, "content_loading")
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentText("Please wait")
-                .setContentTitle("Uploading")
-                .setTicker("Uploading")
-                .setProgress(0, 100, true)
-                //.setAutoCancel(true)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
+//            val notification = NotificationCompat
+//                .Builder(this, "content_loading")
+//                .setSmallIcon(R.drawable.ic_launcher_background)
+//                .setContentText("Please wait")
+//                .setContentTitle("Uploading")
+//                .setTicker("Uploading")
+//                .setProgress(0, 100, true)
+//                //.setAutoCancel(true)
+//                .setDefaults(NotificationCompat.DEFAULT_ALL)
+//                .setPriority(NotificationCompat.PRIORITY_HIGH)
+//
+//            val no: NotificationManagerCompat = NotificationManagerCompat.from(this)
+//            no.notify(1,notification.build())
 
-            val no: NotificationManagerCompat = NotificationManagerCompat.from(this)
-            no.notify(1,notification.build())
+            val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                //.setSmallIcon(R.drawable.notification_icon)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentTitle("Uploading")
+                .setContentText("Please wait")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setProgress(0, 100, true)
+                // Set the intent that will fire when the user taps the notification
+                //.setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+
+            with(NotificationManagerCompat.from(this)) {
+                // notificationId is a unique int for each notification that you must define
+                notify(notificationId, builder.build())
+            }
+
             super.onBackPressed()
 
 
@@ -218,11 +248,17 @@ class AddPostVideoActivity : AppCompatActivity(){
                         ref.child(postId).updateChildren(postMap)
 
 //                        progressDialog.dismiss()
-                        notification.setContentTitle("Upload Complete")
+
+                        builder.setContentTitle("Upload Complete")
                             .setContentText("Wait for verification")
                             .setProgress(0,0,false)
                             .setOngoing(false)
-                        no.notify(1,notification.build())
+
+                        with(NotificationManagerCompat.from(this)) {
+                            // notificationId is a unique int for each notification that you must define
+                            notify(notificationId, builder.build())
+                        }
+
                         Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
 //                        Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
 
@@ -230,14 +266,43 @@ class AddPostVideoActivity : AppCompatActivity(){
                     }else{
                         Toast.makeText(this,"Post upload Unsuccessfully.", Toast.LENGTH_LONG).show()
                         super.onBackPressed()
-                        notification.setContentTitle("Upload Unsuccessfull")
+
+//                        notification.setContentTitle("Upload Unsuccessfull")
+//                            .setContentText("Try Again")
+//                            .setProgress(0,0,false)
+//                            .setOngoing(false)
+//                        no.notify(1,notification.build())
+
+                        builder.setContentTitle("Upload Unsuccessfull")
                             .setContentText("Try Again")
                             .setProgress(0,0,false)
                             .setOngoing(false)
-                        no.notify(1,notification.build())
+                        with(NotificationManagerCompat.from(this)) {
+                            // notificationId is a unique int for each notification that you must define
+                            notify(notificationId, builder.build())
+                        }
+
 //                        progressDialog.dismiss()
                     }
                 } )
+        }
+    }
+
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
     }
 }
