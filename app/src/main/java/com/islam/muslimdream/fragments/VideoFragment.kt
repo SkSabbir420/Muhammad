@@ -209,6 +209,9 @@ class NotificationsFragment : Fragment(){
                         postAdapter!!.notifyDataSetChanged()
 //                    }
                 }
+                shimmerFrameLayout_video.stopShimmerAnimation()
+                shimmerFrameLayout_video.visibility = View.GONE
+                video_notice.visibility = View.VISIBLE
 
             }
 

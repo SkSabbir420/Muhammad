@@ -88,7 +88,9 @@ class ShowSaveVideoPost : AppCompatActivity() {
                     postAdapter!!.notifyDataSetChanged()
 //                    }
                 }
-
+                shimmerFrameLayout_video_save.stopShimmerAnimation()
+                shimmerFrameLayout_video_save.visibility = View.GONE
+                save_video_notice.visibility = View.VISIBLE
             }
 
             override fun onCancelled(p0: DatabaseError) {

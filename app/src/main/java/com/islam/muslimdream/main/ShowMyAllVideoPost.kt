@@ -86,6 +86,9 @@ class ShowMyAllVideoPost : AppCompatActivity() {
                     postAdapter!!.notifyDataSetChanged()
 //                    }
                 }
+                shimmerFrameLayout_video_all_post.stopShimmerAnimation()
+                shimmerFrameLayout_video_all_post.visibility = View.GONE
+                my_video_notice.visibility = View.VISIBLE
 
             }
 

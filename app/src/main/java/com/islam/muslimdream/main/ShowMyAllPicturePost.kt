@@ -85,7 +85,10 @@ class ShowMyAllPicturePost : AppCompatActivity() {
                    // }
                 }
 
-
+                shimmerFrameLayout_home_allPost.stopShimmerAnimation()
+                shimmerFrameLayout_home_allPost.visibility = View.GONE
+//                               adView.visibility = View.VISIBLE
+                my_picture_notice.visibility = View.VISIBLE
             }
 
             override fun onCancelled(p0: DatabaseError) {

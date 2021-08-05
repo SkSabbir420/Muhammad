@@ -138,8 +138,11 @@ class HomeFragment : Fragment() {
                         }
                         postAdapter!!.notifyDataSetChanged()
                     }
-                }
 
+                }
+                shimmerFrameLayout_home.stopShimmerAnimation()
+                shimmerFrameLayout_home.visibility = View.GONE
+                home_notice.visibility = View.VISIBLE
 
             }
 
