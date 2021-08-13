@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 class MainActivity : AppCompatActivity(){
 
-    var checkMembership:String? = "null"
+    var verification:String? = "null"
 
     private val onNavigationItemSelectedListener = BottomNavigationView.
     OnNavigationItemSelectedListener{
@@ -35,16 +35,16 @@ class MainActivity : AppCompatActivity(){
                 }
                 R.id.nav_add_post -> {
 
-                    if(checkMembership == "true"){
+                    if(verification == "true"){
                         item.isChecked =false
                         //startActivity(Intent(this@MainActivity, AddPostActivity::class.java))
                         startActivity(Intent(this@MainActivity, post_main_activity::class.java))
                         return@OnNavigationItemSelectedListener true
-                    }else if(checkMembership == "false"){
+                    }else if(verification == "false"){
                         //Toast.makeText(this, "You don't have premium membership.", Toast.LENGTH_SHORT).show()
-                        Toast.makeText(this, "Your Don't Have Premium Membership", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Your Account Does not Verified", Toast.LENGTH_SHORT).show()
                     }else{
-                        Toast.makeText(this, "Check your Internet Connection", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Something Wrong!", Toast.LENGTH_SHORT).show()
                     }
 
                 }
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(){
             override fun onCancelled(error: DatabaseError) {
             }
             override fun onDataChange(snapshot: DataSnapshot) {
-                checkMembership = snapshot.child("membership").getValue().toString()
+                verification = snapshot.child("verified").getValue().toString()
             }
         }
 

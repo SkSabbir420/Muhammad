@@ -1,10 +1,12 @@
 package com.islam.muslimdream.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -21,6 +23,7 @@ class TopViewFragment : Fragment() {
     //private  var postAdapter: ? = null
     private  var userAdapter:TopIdAdapter? = null
     private  var userList:MutableList<Top>? = null
+    var membership:String? = "null"
    // private  var profileId:String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,24 +61,25 @@ class TopViewFragment : Fragment() {
 
     private fun retrievePosts() {
         val postsRef = FirebaseDatabase.getInstance().reference.child("users")
+
         postsRef.orderByChild("followers").addValueEventListener(object : ValueEventListener {//Sort use
         //postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 userList?.clear()
                 for (snapshot in p0.children) {
                     val Topid = snapshot.getValue(Top::class.java)
-                    //for (id in (followingList as ArrayList<String>)) {
-                        //if (post!!.getPublisher() == id) {
-                            try {
-                                shimmerFrameLayout.stopShimmerAnimation()
-                                shimmerFrameLayout.visibility = View.GONE
-                                recycler_view_top_user.visibility = View.VISIBLE
-                            }catch (e:Exception){ }
-                            userList!!.add(Topid!!)
-                    //profileId = Topid.getUID()
-                       // }
+                    val check = snapshot.child("verified").getValue().toString()
+                    if ( check == "true"){
+                    //Log.d(tag,Topid!!.getVerification())
+                        try {
+                            shimmerFrameLayout.stopShimmerAnimation()
+                            shimmerFrameLayout.visibility = View.GONE
+                            recycler_view_top_user.visibility = View.VISIBLE
+                        } catch (e: Exception) {
+                        }
+                    userList!!.add(Topid!!)
                     userAdapter!!.notifyDataSetChanged()
-                    //}
+                 }
                 }
 
             }

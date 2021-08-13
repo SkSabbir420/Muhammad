@@ -7,7 +7,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-//import android.text.TextUtils
+import android.text.TextUtils
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -25,24 +25,24 @@ import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_account_settings.*
 import kotlinx.android.synthetic.main.activity_add_post_photo.*
 import kotlinx.android.synthetic.main.activity_sing_up.*
-//import java.io.FileInputStream
+import java.io.FileInputStream
 import java.io.IOException
-//import java.lang.Exception
-//import java.nio.MappedByteBuffer
-//import java.nio.channels.FileChannel
+import java.lang.Exception
+import java.nio.MappedByteBuffer
+import java.nio.channels.FileChannel
 import java.util.*
 import kotlin.collections.HashMap
-//import org.tensorflow.lite.Interpreter
-//import org.tensorflow.lite.support.common.FileUtil
-//import org.tensorflow.lite.support.common.TensorOperator
-//import org.tensorflow.lite.support.common.TensorProcessor
-//import org.tensorflow.lite.support.common.ops.NormalizeOp
-//import org.tensorflow.lite.support.image.ImageProcessor
-//import org.tensorflow.lite.support.image.TensorImage
-//import org.tensorflow.lite.support.image.ops.ResizeOp
-//import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp
-//import org.tensorflow.lite.support.label.TensorLabel
-//import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import org.tensorflow.lite.Interpreter
+import org.tensorflow.lite.support.common.FileUtil
+import org.tensorflow.lite.support.common.TensorOperator
+import org.tensorflow.lite.support.common.TensorProcessor
+import org.tensorflow.lite.support.common.ops.NormalizeOp
+import org.tensorflow.lite.support.image.ImageProcessor
+import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.image.ops.ResizeOp
+import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp
+import org.tensorflow.lite.support.label.TensorLabel
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -54,13 +54,13 @@ class AddPostPhotoActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private var storagePostPicRef: StorageReference? = null
     private var bitmap: Bitmap? = null
-//    protected var tflite: Interpreter? = null
-//    private var imageSizeX = 0
-//    private var imageSizeY = 0
-//    private var inputImageBuffer: TensorImage? = null
-//    private var outputProbabilityBuffer: TensorBuffer? = null
-//    private var probabilityProcessor: TensorProcessor? = null
-//    private var labels: List<String>? = null
+    protected var tflite: Interpreter? = null
+    private var imageSizeX = 0
+    private var imageSizeY = 0
+    private var inputImageBuffer: TensorImage? = null
+    private var outputProbabilityBuffer: TensorBuffer? = null
+    private var probabilityProcessor: TensorProcessor? = null
+    private var labels: List<String>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,13 +70,13 @@ class AddPostPhotoActivity : AppCompatActivity() {
         storagePostPicRef = FirebaseStorage.getInstance().reference.child("postPictures")
         ///storagePostPicRef = FirebaseStorage.getInstance().reference.child("Posts Videos")
 
-//        try {
-//            ///Main code 1
-//            tflite = Interpreter(loadmodelfile(this))
-//        } catch (e: Exception) {
-//            //e.printStackTrace();
-//            Toast.makeText(this, "Dont load model!!", Toast.LENGTH_SHORT).show()
-//        }
+        try {
+            ///Main code 1
+            tflite = Interpreter(loadmodelfile(this))
+        } catch (e: Exception) {
+            //e.printStackTrace();
+            Toast.makeText(this, "Dont load model!!", Toast.LENGTH_SHORT).show()
+        }
 
         save_new_post_btn.setOnClickListener {
             uploadImage()
@@ -101,25 +101,25 @@ class AddPostPhotoActivity : AppCompatActivity() {
 
         //Main code 2.
         save_new_post_btn.setOnClickListener {
-//            val imageTensorIndex = 0
-//            val imageShape =
-//                tflite!!.getInputTensor(imageTensorIndex).shape() // {1, height, width, 3}
-//            //Toast.makeText(MainActivity.this,Integer.toString(imageShape[1]),Toast.LENGTH_SHORT).show();
-//            imageSizeY = imageShape[1] //224
-//            //Toast.makeText(MainActivity.this,Integer.toString(imageSizeY),Toast.LENGTH_SHORT).show();
-//            imageSizeX = imageShape[2] //224
-//            //Toast.makeText(MainActivity.this,Integer.toString(imageSizeX),Toast.LENGTH_SHORT).show();
-//            val imageDataType = tflite!!.getInputTensor(imageTensorIndex).dataType()
-//            val probabilityTensorIndex = 0
-//            val probabilityShape = tflite!!.getOutputTensor(probabilityTensorIndex).shape() // {1, NUM_CLASSES}
-//            //Toast.makeText(MainActivity.this,Integer.toString(probabilityShape[0]),Toast.LENGTH_SHORT).show();
-//            val probabilityDataType = tflite!!.getOutputTensor(probabilityTensorIndex).dataType()
-//            inputImageBuffer = TensorImage(imageDataType)
-//            inputImageBuffer = loadImage(bitmap) ///vvimp
-//            outputProbabilityBuffer = TensorBuffer.createFixedSize(probabilityShape, probabilityDataType)
-//            probabilityProcessor = TensorProcessor.Builder().add(postprocessNormalizeOp).build()
-//            tflite!!.run(inputImageBuffer!!.buffer, outputProbabilityBuffer!!.buffer.rewind())
-//            showresult()
+            val imageTensorIndex = 0
+            val imageShape =
+                tflite!!.getInputTensor(imageTensorIndex).shape() // {1, height, width, 3}
+            //Toast.makeText(MainActivity.this,Integer.toString(imageShape[1]),Toast.LENGTH_SHORT).show();
+            imageSizeY = imageShape[1] //224
+            //Toast.makeText(MainActivity.this,Integer.toString(imageSizeY),Toast.LENGTH_SHORT).show();
+            imageSizeX = imageShape[2] //224
+            //Toast.makeText(MainActivity.this,Integer.toString(imageSizeX),Toast.LENGTH_SHORT).show();
+            val imageDataType = tflite!!.getInputTensor(imageTensorIndex).dataType()
+            val probabilityTensorIndex = 0
+            val probabilityShape = tflite!!.getOutputTensor(probabilityTensorIndex).shape() // {1, NUM_CLASSES}
+            //Toast.makeText(MainActivity.this,Integer.toString(probabilityShape[0]),Toast.LENGTH_SHORT).show();
+            val probabilityDataType = tflite!!.getOutputTensor(probabilityTensorIndex).dataType()
+            inputImageBuffer = TensorImage(imageDataType)
+            inputImageBuffer = loadImage(bitmap) ///vvimp
+            outputProbabilityBuffer = TensorBuffer.createFixedSize(probabilityShape, probabilityDataType)
+            probabilityProcessor = TensorProcessor.Builder().add(postprocessNormalizeOp).build()
+            tflite!!.run(inputImageBuffer!!.buffer, outputProbabilityBuffer!!.buffer.rewind())
+            showresult()
             uploadImage()
 
         }
@@ -210,20 +210,44 @@ class AddPostPhotoActivity : AppCompatActivity() {
 //                        postMap["photoClassify"] = classify!!
                         postMap["postDate"] = date
                         postMap["postTime"] = time
+                        if(classify == "Islamic") {
 
-                        ref.child(postId).updateChildren(postMap)
 
-                        Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
-                        //Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
-                       // progressDialog.dismiss()
-                        notification.setContentTitle("Upload Complete")
-                            .setContentText("Wait for verification")
-                            .setProgress(0,0,false)
-                            .setOngoing(false)
-                        no.notify(2,notification.build())
+                            //ref.child(postId).updateChildren(postMap)
+                            FirebaseDatabase.getInstance().reference.child("postPictures")
+                                .child("allUsers").child(uid)
+                                .child(postId!!).updateChildren(postMap)
+                            FirebaseDatabase.getInstance().reference.child("postPictures")
+                                .child("allPostPictures")
+                                .child(postId!!).updateChildren(postMap)
+
+                            //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG)
+                                .show()
+                            // progressDialog.dismiss()
+                            notification.setContentTitle("Upload Complete")
+                                //.setContentText("Wait for verification")
+                                .setContentText("Done")
+                                .setProgress(0, 0, false)
+                                .setOngoing(false)
+                            no.notify(2, notification.build())
 //                        val intent = Intent(this@AddPostPhotoActivity, MainActivity::class.java)
 //                        startActivity(intent)
-                        finish()
+                            finish()
+                        }else{
+                            Toast.makeText(this, "Post Not Accepted", Toast.LENGTH_LONG)
+                                .show()
+                            // progressDialog.dismiss()
+                            notification.setContentTitle("Post Not Accepted")
+                                //.setContentText("Wait for verification")
+                                .setContentText("add Muslim post")
+                                .setProgress(0, 0, false)
+                                .setOngoing(false)
+                            no.notify(2, notification.build())
+//                        val intent = Intent(this@AddPostPhotoActivity, MainActivity::class.java)
+//                        startActivity(intent)
+                            finish()
+                        }
 
                     } else{
                         Toast.makeText(this, "Post upload Unsuccessfully", Toast.LENGTH_LONG).show()
@@ -241,65 +265,65 @@ class AddPostPhotoActivity : AppCompatActivity() {
         }
     }
 
-    ///Main code 1.
+    //Main code 1.
     //@Throws(IOException::class)
-//    fun loadmodelfile(activity: Activity): MappedByteBuffer {
-//        val fileDescriptor = activity.assets.openFd("newmodel.tflite")
-//        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-//        val fileChannel = inputStream.channel
-//        val startoffset = fileDescriptor.startOffset
-//        val declaredLength = fileDescriptor.declaredLength
-//        //Toast.makeText(MainActivity.this,Long.toString(declaredLength),Toast.LENGTH_SHORT).show();
-//        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startoffset, declaredLength)
-//    }
+    fun loadmodelfile(activity: Activity): MappedByteBuffer {
+        val fileDescriptor = activity.assets.openFd("model3.tflite")
+        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
+        val fileChannel = inputStream.channel
+        val startoffset = fileDescriptor.startOffset
+        val declaredLength = fileDescriptor.declaredLength
+        //Toast.makeText(MainActivity.this,Long.toString(declaredLength),Toast.LENGTH_SHORT).show();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startoffset, declaredLength)
+    }
 
-//    private fun showresult() {
-//        try {
-//            labels = FileUtil.loadLabels(this, "newdict.txt")
-//        }catch (e: Exception) {
-//            Toast.makeText(this, "testtext not work", Toast.LENGTH_SHORT).show()
-//        }
-//
-//        try {
-//            val labeledProbability = TensorLabel(labels!!,
-//                probabilityProcessor!!.process(outputProbabilityBuffer) ).mapWithFloatValue
-//            val maxValueInMap = Collections.max(labeledProbability.values)
-//            for ((key, value) in labeledProbability) {
-//                if (value == maxValueInMap) {
-//                    //Toast.makeText(this, key, Toast.LENGTH_SHORT).show()
-//                    //classitext!!.text = key
-//                    classify = key
-//                }
-//            }
-//        } catch (e: Exception) {
-//            Toast.makeText(this, "show 2nd part not work!!", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-//    private fun loadImage(bitmap: Bitmap?): TensorImage {
-//        // Loads bitmap into a TensorImage.
-//        inputImageBuffer!!.load(bitmap!!)
-//
-//        // Creates processor for the TensorImage.
-//        val cropSize = Math.min(bitmap.width, bitmap.height)
-//        // TODO(b/143564309): Fuse ops inside ImageProcessor.
-//        val imageProcessor = ImageProcessor.Builder()
-//            .add(ResizeWithCropOrPadOp(cropSize, cropSize))
-//            .add(ResizeOp(imageSizeX, imageSizeY, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
-//            .add(preprocessNormalizeOp)
-//            .build()
-//        return imageProcessor.process(inputImageBuffer)
-//    }
-//    private val preprocessNormalizeOp: TensorOperator
-//        private get() = NormalizeOp(IMAGE_MEAN, IMAGE_STD)
-//    private val postprocessNormalizeOp: TensorOperator
-//        private get() = NormalizeOp(PROBABILITY_MEAN, PROBABILITY_STD)
-//
-//    companion object {
-//        private const val IMAGE_MEAN = 0.0f
-//        private const val IMAGE_STD = 1.0f
-//        private const val PROBABILITY_MEAN = 0.0f
-//        private const val PROBABILITY_STD = 255.0f
-//    }
+    private fun showresult() {
+        try {
+            labels = FileUtil.loadLabels(this, "labels3.txt")
+        }catch (e: Exception) {
+            Toast.makeText(this, "testtext not work", Toast.LENGTH_SHORT).show()
+        }
+
+        try {
+            val labeledProbability = TensorLabel(labels!!,
+                probabilityProcessor!!.process(outputProbabilityBuffer) ).mapWithFloatValue
+            val maxValueInMap = Collections.max(labeledProbability.values)
+            for ((key, value) in labeledProbability) {
+                if (value == maxValueInMap) {
+                    Toast.makeText(this, key, Toast.LENGTH_SHORT).show()
+                    //classitext!!.text = key
+                    classify = key
+                }
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "show 2nd part not work!!", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun loadImage(bitmap: Bitmap?): TensorImage {
+        // Loads bitmap into a TensorImage.
+        inputImageBuffer!!.load(bitmap!!)
+
+        // Creates processor for the TensorImage.
+        val cropSize = Math.min(bitmap.width, bitmap.height)
+        // TODO(b/143564309): Fuse ops inside ImageProcessor.
+        val imageProcessor = ImageProcessor.Builder()
+            .add(ResizeWithCropOrPadOp(cropSize, cropSize))
+            .add(ResizeOp(imageSizeX, imageSizeY, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
+            .add(preprocessNormalizeOp)
+            .build()
+        return imageProcessor.process(inputImageBuffer)
+    }
+    private val preprocessNormalizeOp: TensorOperator
+        private get() = NormalizeOp(IMAGE_MEAN, IMAGE_STD)
+    private val postprocessNormalizeOp: TensorOperator
+        private get() = NormalizeOp(PROBABILITY_MEAN, PROBABILITY_STD)
+
+    companion object {
+        private const val IMAGE_MEAN = 0.0f
+        private const val IMAGE_STD = 1.0f
+        private const val PROBABILITY_MEAN = 0.0f
+        private const val PROBABILITY_STD = 255.0f
+    }
 
 
 }//extra
