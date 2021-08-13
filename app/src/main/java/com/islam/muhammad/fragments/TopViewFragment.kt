@@ -40,7 +40,30 @@ class TopViewFragment : Fragment() {
                 setMemberShip(email)
             }
         }
-
+        view.verifiedSubmision.setOnClickListener {
+            val email = textMemberShipEmail.text.toString().trim(){it <= ' '}
+            if (email.isEmpty()){
+                Toast.makeText(context,"Please Enter your Email Address", Toast.LENGTH_SHORT).show()
+            }else{
+                setVerified(email)
+            }
+        }
+//        view.memberShipSubmisionRemove.setOnClickListener {
+//            val email = textMemberShipEmail.text.toString().trim(){it <= ' '}
+//            if (email.isEmpty()){
+//                Toast.makeText(context,"Please Enter your Email Address", Toast.LENGTH_SHORT).show()
+//            }else{
+//            removeMemberShip(email)
+//            }
+//        }
+//        view.verifiedSubmisionRemove.setOnClickListener {
+//            val email = textMemberShipEmail.text.toString().trim(){it <= ' '}
+//            if (email.isEmpty()){
+//                Toast.makeText(context,"Please Enter your Email Address", Toast.LENGTH_SHORT).show()
+//            }else{
+//            removeVerified(email)
+//            }
+//        }
 
         return view
     }
@@ -72,5 +95,94 @@ class TopViewFragment : Fragment() {
             }
         })
     }
+
+    private fun  setVerified(email:String) {
+        val postsRef = FirebaseDatabase.getInstance().reference.child("users")
+        postsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot){
+
+                for (snapshot in p0.children) {
+                    val user = snapshot.getValue(User::class.java)
+                    if (user!!.getEmail() == email) {
+                        if(user.getVerified() == "false" ){
+                            FirebaseDatabase.getInstance().reference.child("users")
+                                .child(user.getUID()).child("verified").setValue("true")
+                            Toast.makeText(context,"Successfully add verified",Toast.LENGTH_SHORT).show()
+
+                        }else{
+                            Toast.makeText(context,"This Email already verified",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                }
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
+    }
+
+    private fun  removeMemberShip(email:String) {
+        val postsRef = FirebaseDatabase.getInstance().reference.child("users")
+        postsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot){
+
+                for (snapshot in p0.children) {
+                    val user = snapshot.getValue(User::class.java)
+                    if (user!!.getEmail() == email) {
+                        if(user.getMembership() == "true"){
+//                            FirebaseDatabase.getInstance().reference.child("users")
+//                                .child(user.getUID()).child("membership").removeValue()
+                            FirebaseDatabase.getInstance().reference.child("users")
+                                .child(user.getUID()).child("membership").setValue("false" )
+                            Toast.makeText(context,"Successfully remove premium member",Toast.LENGTH_SHORT).show()
+
+                        }else{
+                            Toast.makeText(context,"This Email already not premium member",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                }
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
+    }
+
+    private fun  removeVerified(email:String) {
+        val postsRef = FirebaseDatabase.getInstance().reference.child("users")
+        postsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot){
+
+                for (snapshot in p0.children) {
+                    val user = snapshot.getValue(User::class.java)
+                    if (user!!.getEmail() == email) {
+                        if(user.getVerified() ==  "true"){
+//                            FirebaseDatabase.getInstance().reference.child("users")
+//                                .child(user.getUID()).child("verified").removeValue()
+                            FirebaseDatabase.getInstance().reference.child("users")
+                                .child(user.getUID()).child("verified").setValue("false")
+                            Toast.makeText(context,"Successfully remove from verified",Toast.LENGTH_SHORT).show()
+
+                        }else{
+                            Toast.makeText(context,"This Email already not verified",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                }
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
+    }
+
 
 }

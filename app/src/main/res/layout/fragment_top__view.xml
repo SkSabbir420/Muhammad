@@ -56,13 +56,47 @@
         </EditText>
 
         <Button
+            android:id="@+id/verifiedSubmision"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Verified"
+            android:layout_marginTop="5dp">
+
+        </Button>
+
+        <Button
             android:id="@+id/memberShipSubmision"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Submit">
+            android:text="MemberShip"
+
+            android:layout_marginTop="10dp">
 
         </Button>
+        <!--<Button
+            android:id="@+id/verifiedSubmisionRemove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Verified Remove"
+            android:layout_marginTop="5dp">
+
+        </Button>
+
+        <Button
+            android:id="@+id/memberShipSubmisionRemove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="MemberShipRemove"
+
+            android:layout_marginTop="10dp">
+
+        </Button>-->
+
+
 
     </com.google.android.material.appbar.AppBarLayout>
 

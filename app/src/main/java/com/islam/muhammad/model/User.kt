@@ -9,12 +9,13 @@ class User
     private var uid: String = ""
     private var email: String = ""
     private var membership: String = ""
+    private var verified: String = ""
 
 
     constructor()
 
 
-    constructor(username: String, fullname: String, bio: String, image: String, uid: String,email:String,membership:String) {
+    constructor(username: String, fullname: String, bio: String, image: String, uid: String,email:String,membership:String,verified:String) {
         this.username = username
         this.fullname = fullname
         this.bio = bio
@@ -22,6 +23,7 @@ class User
         this.uid = uid
         this.email = email
         this.membership = membership
+        this.verified = verified
     }
 
 
@@ -35,8 +37,14 @@ class User
     fun getMembership():String{
         return membership
     }
+    fun getVerified():String{
+        return verified
+    }
     fun setMembership(membership: String){
         this.membership = membership
+    }
+    fun setVerified(verified: String){
+        this.verified = verified
     }
 
     fun setUsername(username: String)
