@@ -81,6 +81,9 @@ class TopViewFragment : Fragment() {
                     userAdapter!!.notifyDataSetChanged()
                  }
                 }
+            shimmerFrameLayout.stopShimmerAnimation()
+            shimmerFrameLayout.visibility = View.GONE
+            top_notice.visibility = View.VISIBLE
 
             }
 
