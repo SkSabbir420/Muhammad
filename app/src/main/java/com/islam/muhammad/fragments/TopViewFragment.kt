@@ -73,7 +73,7 @@ class TopViewFragment : Fragment() {
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot){
 
-                for (snapshot in p0.children) {
+                for (snapshot in p0.children) {//One bug here//continuously  add and remove.
                     val user = snapshot.getValue(User::class.java)
                         if (user!!.getEmail() == email) {
                             if(user.getMembership() == "false" ){
@@ -81,8 +81,18 @@ class TopViewFragment : Fragment() {
                                     .child(user.getUID()).child("membership").setValue("true")
                                 Toast.makeText(context,"Successfully add premium member",Toast.LENGTH_SHORT).show()
 
-                            }else{
-                                Toast.makeText(context,"This Email already premium member",Toast.LENGTH_SHORT).show()
+                            }
+                            else if(user.getMembership() == "true" ){
+//                                FirebaseDatabase.getInstance().reference.child("users")
+//                                    .child(user.getUID()).child("membership").setValue("false")
+//                                Toast.makeText(context,"Successfully remove premium member",Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context,"already premium member",Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+//                                FirebaseDatabase.getInstance().reference.child("users")
+//                                    .child(user.getUID()).child("membership").setValue("false")
+//                                Toast.makeText(context,"This Email add",Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context,"please add This Email",Toast.LENGTH_SHORT).show()
                             }
                         }
 
@@ -101,7 +111,7 @@ class TopViewFragment : Fragment() {
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot){
 
-                for (snapshot in p0.children) {
+                for (snapshot in p0.children) {//One bug here//continuously  add and remove.
                     val user = snapshot.getValue(User::class.java)
                     if (user!!.getEmail() == email) {
                         if(user.getVerified() == "false" ){
@@ -109,8 +119,16 @@ class TopViewFragment : Fragment() {
                                 .child(user.getUID()).child("verified").setValue("true")
                             Toast.makeText(context,"Successfully add verified",Toast.LENGTH_SHORT).show()
 
+                        }else if(user.getVerified() == "true" ){
+//                            FirebaseDatabase.getInstance().reference.child("users")
+//                                .child(user.getUID()).child("verified").setValue("false")
+//                            Toast.makeText(context,"Successfully remove from verified",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context,"already verified",Toast.LENGTH_SHORT).show()
                         }else{
-                            Toast.makeText(context,"This Email already verified",Toast.LENGTH_SHORT).show()
+//                            FirebaseDatabase.getInstance().reference.child("users")
+//                                .child(user.getUID()).child("verified").setValue("false")
+//                            Toast.makeText(context,"This Email add",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context,"please add This Email",Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -124,7 +142,7 @@ class TopViewFragment : Fragment() {
         })
     }
 
-    private fun  removeMemberShip(email:String) {
+    /*private fun  removeMemberShip(email:String) {
         val postsRef = FirebaseDatabase.getInstance().reference.child("users")
         postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot){
@@ -182,7 +200,7 @@ class TopViewFragment : Fragment() {
 
             }
         })
-    }
+    }*/
 
 
 }

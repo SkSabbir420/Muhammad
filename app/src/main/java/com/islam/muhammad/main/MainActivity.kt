@@ -24,16 +24,16 @@ class MainActivity : AppCompatActivity(){
                     moveToFragment(ProfileFragment())
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.nav_home -> {
-                    moveToFragment(HomeFragment())
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.nav_search -> {
-//                    moveToFragment(AdvertiseFragment())
-                    moveToFragment(NotificationsFragment())
-                    return@OnNavigationItemSelectedListener true
-                    //Toast.makeText(this, "Working this feature!!\n Coming very soon.", Toast.LENGTH_SHORT).show()
-                }
+//                R.id.nav_home -> {
+//                    moveToFragment(HomeFragment())
+//                    return@OnNavigationItemSelectedListener true
+//                }
+//                R.id.nav_search -> {
+////                    moveToFragment(AdvertiseFragment())
+//                    moveToFragment(NotificationsFragment())
+//                    return@OnNavigationItemSelectedListener true
+//                    //Toast.makeText(this, "Working this feature!!\n Coming very soon.", Toast.LENGTH_SHORT).show()
+//                }
 //                R.id.nav_add_post -> {
 //
 //                    if(checkMembership == "true"){
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(){
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        moveToFragment(HomeFragment())
+        moveToFragment(TopViewFragment())
     }
 
 
