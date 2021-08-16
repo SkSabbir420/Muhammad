@@ -65,7 +65,7 @@ class TopViewFragment : Fragment() {
         postsRef.orderByChild("followers").addValueEventListener(object : ValueEventListener {//Sort use
         //postsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                userList?.clear()
+                //userList?.clear()
                 for (snapshot in p0.children) {
                     val Topid = snapshot.getValue(Top::class.java)
                     val check = snapshot.child("verified").getValue().toString()
@@ -81,9 +81,9 @@ class TopViewFragment : Fragment() {
                     userAdapter!!.notifyDataSetChanged()
                  }
                 }
-            shimmerFrameLayout.stopShimmerAnimation()
-            shimmerFrameLayout.visibility = View.GONE
-            top_notice.visibility = View.VISIBLE
+//            shimmerFrameLayout.stopShimmerAnimation()
+//            shimmerFrameLayout.visibility = View.GONE
+//            top_notice.visibility = View.VISIBLE
 
             }
 

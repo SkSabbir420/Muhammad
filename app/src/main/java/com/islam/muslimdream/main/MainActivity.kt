@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.islam.muslimdream.R
 import com.islam.muslimdream.fragments.*
+import com.islam.muslimdream.post.VerifiedAccountNotification
 import com.islam.muslimdream.post.post_main_activity
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -41,8 +42,9 @@ class MainActivity : AppCompatActivity(){
                         startActivity(Intent(this@MainActivity, post_main_activity::class.java))
                         return@OnNavigationItemSelectedListener true
                     }else if(verification == "false"){
-                        //Toast.makeText(this, "You don't have premium membership.", Toast.LENGTH_SHORT).show()
-                        Toast.makeText(this, "Your Account Does not Verified", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@MainActivity, VerifiedAccountNotification::class.java))
+                        return@OnNavigationItemSelectedListener true
+                        //Toast.makeText(this, "Your Account Does not Verified", Toast.LENGTH_SHORT).show()
                     }else{
                         Toast.makeText(this, "Something Wrong!", Toast.LENGTH_SHORT).show()
                     }

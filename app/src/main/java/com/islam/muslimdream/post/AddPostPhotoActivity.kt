@@ -7,7 +7,6 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.TextUtils
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -68,7 +67,6 @@ class AddPostPhotoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_post_photo)
 
         storagePostPicRef = FirebaseStorage.getInstance().reference.child("postPictures")
-        ///storagePostPicRef = FirebaseStorage.getInstance().reference.child("Posts Videos")
 
         try {
             ///Main code 1
@@ -227,7 +225,7 @@ class AddPostPhotoActivity : AppCompatActivity() {
                             // progressDialog.dismiss()
                             notification.setContentTitle("Upload Complete")
                                 //.setContentText("Wait for verification")
-                                .setContentText("Done")
+                                .setContentText("Congratulation")
                                 .setProgress(0, 0, false)
                                 .setOngoing(false)
                             no.notify(2, notification.build())
@@ -268,7 +266,7 @@ class AddPostPhotoActivity : AppCompatActivity() {
     //Main code 1.
     //@Throws(IOException::class)
     fun loadmodelfile(activity: Activity): MappedByteBuffer {
-        val fileDescriptor = activity.assets.openFd("model3.tflite")
+        val fileDescriptor = activity.assets.openFd("model.tflite")
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
         val fileChannel = inputStream.channel
         val startoffset = fileDescriptor.startOffset
@@ -279,7 +277,7 @@ class AddPostPhotoActivity : AppCompatActivity() {
 
     private fun showresult() {
         try {
-            labels = FileUtil.loadLabels(this, "labels3.txt")
+            labels = FileUtil.loadLabels(this, "label.txt")
         }catch (e: Exception) {
             Toast.makeText(this, "testtext not work", Toast.LENGTH_SHORT).show()
         }
@@ -326,93 +324,4 @@ class AddPostPhotoActivity : AppCompatActivity() {
     }
 
 
-}//extra
-
-//operator fun <K, V> HashMap<K, V>.set(v: V, value: V) {
-//
-//}
-
-/*
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE  &&  resultCode == Activity.RESULT_OK  &&  data != null)
-//        {
-//            val result = CropImage.getActivityResult(data)
-//            imageUri = result.uri
-//            image_post.setImageURI(imageUri)
-//        }
-//    }
-
-    //Load video
-    val PICK_IMAGE_CODE=123
-    fun loadImage(){
-        var intent= Intent(Intent.ACTION_PICK,
-                MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent,PICK_IMAGE_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==PICK_IMAGE_CODE  && data!=null && resultCode == RESULT_OK){
-            imageUri =data.data
-        }
-    }
-
-    private fun uploadImage(){
-        when{
-            imageUri ==null -> Toast.makeText(this, "Please select image first.", Toast.LENGTH_LONG).show()
-            TextUtils.isEmpty(description_post.text.toString()) -> Toast.makeText(this, "Please write description first.", Toast.LENGTH_LONG).show()
-            else ->{
-                val progressDialog = ProgressDialog(this)
-                progressDialog.setTitle("Adding new Post")
-                progressDialog.setMessage("Please wait, we are adding your post...")
-                progressDialog.show()
-                ///val fileRef = storagePostPicRef!!.child(System.currentTimeMillis().toString() + ".jpg")
-                val fileRef = storagePostPicRef!!.child(System.currentTimeMillis().toString() + ".mp4")
-
-                var uploadTask: StorageTask<*>
-                uploadTask = fileRef.putFile(imageUri!!)
-                uploadTask.continueWithTask(Continuation <UploadTask.TaskSnapshot, Task<Uri>>{ task ->
-                    if (!task.isSuccessful)
-                    {
-                        task.exception?.let {
-                            throw it
-                            progressDialog.dismiss()
-                        }
-                    }
-                    return@Continuation fileRef.downloadUrl
-                }).addOnCompleteListener (OnCompleteListener<Uri> { task ->
-                    if (task.isSuccessful)
-                    {
-                        val downloadUrl = task.result
-                        myUrl = downloadUrl.toString()
-
-                        ///val ref = FirebaseDatabase.getInstance().reference.child("Post")
-                        val ref = FirebaseDatabase.getInstance().reference.child("VideoPost")
-                        val postId = ref.push().key
-
-                        val postMap = HashMap<String, Any>()
-                        postMap["postid"] = postId!!
-                        //postMap["description"] = description_post.text.toString().toLowerCase()
-                        postMap["description"] = description_post.text.toString()
-                        postMap["publisher"] = FirebaseAuth.getInstance().currentUser!!.uid
-                        postMap["postimage"] = myUrl
-
-                        ref.child(postId).updateChildren(postMap)
-
-                        Toast.makeText(this, "Post updated successfully.", Toast.LENGTH_LONG).show()
-
-                        val intent = Intent(this@AddPostActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                        progressDialog.dismiss()
-                    }
-                    else
-                    {
-                        progressDialog.dismiss()
-                    }
-                } )
-            }
-        }
-    }
-}*/
+}//end.

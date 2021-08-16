@@ -170,8 +170,8 @@ class AddPostVideoActivity : AppCompatActivity(){
             super.onBackPressed()
 
 
-                val ref = FirebaseDatabase.getInstance().reference.child("postVideoTemporary")
-//                val ref = FirebaseDatabase.getInstance().reference.child("postVideos")
+                //val ref = FirebaseDatabase.getInstance().reference.child("postVideoTemporary")
+                val ref = FirebaseDatabase.getInstance().reference.child("postVideos")
                 val postId = ref.push().key
                 ///val fileRef = storagePostPicRef!!.child(System.currentTimeMillis().toString() + ".jpg")
                 val fileRef = storagePostPicRef!!.child(userId).child(postId!!).child(postId.toString() + ".mp4")
@@ -245,12 +245,26 @@ class AddPostVideoActivity : AppCompatActivity(){
 //                        FirebaseDatabase.getInstance().getReference("postVideoViews").child(postId).child("postView").setValue(0)
 //                        ref.child(userId).child(postId).updateChildren(postMap)
 
-                        ref.child(postId).updateChildren(postMap)
+                        //ref.child(postId).updateChildren(postMap)//final
+                        FirebaseDatabase.getInstance().reference.child("postVideos").child("allUsers")
+                            .child(userId).child("uploadVideoPost")
+                            .child(postId).updateChildren(postMap)
+                        FirebaseDatabase.getInstance().reference.child("postVideos").child(postCategory!!)
+                            .child(postId).updateChildren(postMap)
+                        FirebaseDatabase.getInstance().reference.child("postVideos").child("allPostVideos")
+                            .child(postId).updateChildren(postMap)
+                        FirebaseDatabase.getInstance().reference.child("postVideoViews").
+                        child(postId).child("postView").setValue(0)
+
+
+
+
+
 
 //                        progressDialog.dismiss()
 
                         builder.setContentTitle("Upload Complete")
-                            .setContentText("Wait for verification")
+                            .setContentText("Congratulation")
                             .setProgress(0,0,false)
                             .setOngoing(false)
 
@@ -259,7 +273,7 @@ class AddPostVideoActivity : AppCompatActivity(){
                             notify(notificationId, builder.build())
                         }
 
-                        Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this, "Post upload successfully.\nWait for verification", Toast.LENGTH_LONG).show()
 //                        Toast.makeText(this, "Post upload successfully", Toast.LENGTH_LONG).show()
 
                         finish()
