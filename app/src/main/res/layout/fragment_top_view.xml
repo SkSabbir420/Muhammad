@@ -74,7 +74,7 @@
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <!--<TextView
+    <TextView
         android:id="@+id/top_notice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
         android:textSize="15dp"
         android:textColor="@color/love"
         >
-    </TextView>-->
+    </TextView>
 
 
     <androidx.recyclerview.widget.RecyclerView
