@@ -10,11 +10,11 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.reward.RewardItem
-import com.google.android.gms.ads.reward.RewardedVideoAd
-import com.google.android.gms.ads.reward.RewardedVideoAdListener
+//import com.google.android.gms.ads.AdRequest
+//import com.google.android.gms.ads.MobileAds
+//import com.google.android.gms.ads.reward.RewardItem
+//import com.google.android.gms.ads.reward.RewardedVideoAd
+//import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.ourdream.muslimdream.model.User
 import com.ourdream.muslimdream.R
 import com.google.firebase.auth.FirebaseAuth
@@ -42,11 +42,12 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
     val viewReference = FirebaseDatabase.getInstance().getReference("postVideoViews")
     //val viewReference = FirebaseDatabase.getInstance().getReference("VPView")
     private  var testClick:Boolean =false
-    private lateinit var mRewardedVideoAd: RewardedVideoAd
+//    private lateinit var mRewardedVideoAd: RewardedVideoAd
 
 
     inner class  ViewHolder(@NonNull itemView: View,):RecyclerView.ViewHolder(itemView),
-        RewardedVideoAdListener ,PopupMenu.OnMenuItemClickListener{
+//        RewardedVideoAdListener,
+        PopupMenu.OnMenuItemClickListener{
 
         var profileImage:CircleImageView
         var description: TextView
@@ -82,10 +83,10 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
             comments = itemView.findViewById(R.id.video_comments)
             moreVideoLayout = itemView.findViewById(R.id.more_video_layout)
 
-            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
-            mRewardedVideoAd.rewardedVideoAdListener = this
-            mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917"
-                ,AdRequest.Builder().build())
+//            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext)
+//            mRewardedVideoAd.rewardedVideoAdListener = this
+//            mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917"
+//                ,AdRequest.Builder().build())
 
 
             //publisher = itemView.findViewById(R.id.publisher)
@@ -293,37 +294,37 @@ class VideoPostAdapter(private val mContext:Context, private val mPost: List<Vid
 
         }
 
-        override fun onRewardedVideoAdLoaded() {
-
-        }
-
-        override fun onRewardedVideoAdOpened() {
-
-        }
-
-        override fun onRewardedVideoStarted() {
-
-        }
-
-        override fun onRewardedVideoAdClosed() {
-
-        }
-
-        override fun onRewarded(p0: RewardItem?) {
-
-        }
-
-        override fun onRewardedVideoAdLeftApplication() {
-
-        }
-
-        override fun onRewardedVideoAdFailedToLoad(p0: Int) {
-
-        }
-
-        override fun onRewardedVideoCompleted() {
-
-        }
+//        override fun onRewardedVideoAdLoaded() {
+//
+//        }
+//
+//        override fun onRewardedVideoAdOpened() {
+//
+//        }
+//
+//        override fun onRewardedVideoStarted() {
+//
+//        }
+//
+//        override fun onRewardedVideoAdClosed() {
+//
+//        }
+//
+//        override fun onRewarded(p0: RewardItem?) {
+//
+//        }
+//
+//        override fun onRewardedVideoAdLeftApplication() {
+//
+//        }
+//
+//        override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+//
+//        }
+//
+//        override fun onRewardedVideoCompleted() {
+//
+//        }
 
         override fun onMenuItemClick(item: MenuItem?): Boolean {
             when (item!!.itemId) {

@@ -64,7 +64,7 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite-task-vision:0.1.0'
     implementation 'org.tensorflow:tensorflow-lite-task-text:0.1.0'
 
-    implementation 'com.google.android.gms:play-services-ads:19.3.0'
+    //implementation 'com.google.android.gms:play-services-ads:19.3.0'
 
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
