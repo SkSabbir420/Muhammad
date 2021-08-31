@@ -176,6 +176,7 @@ class SingUp : AppCompatActivity(){
                 //singupMap["username"] = personName.text.toString().lowercase()
                 singupMap["username"] = personName.text.toString()
                 singupMap["membership"] = "false"
+                singupMap["verified"] = "false"
                 singupMap["dateOfBirth"] = dateOfBirth.text.toString()
                 singupMap["gender"] = gender_editText.text.toString()
                 singupMap["religion"] = Religion_editText.text.toString()
@@ -186,6 +187,7 @@ class SingUp : AppCompatActivity(){
                 //singupMap["bio"] = "Edit Profile and Enter your Bio"
 
                 myRef.child("users").child(currentUser!!.uid).updateChildren(singupMap)
+                Toast.makeText(this,"Please check your Email",Toast.LENGTH_LONG).show()
 
                 val intent = Intent(this, Login::class.java)
                 startActivity(intent)
