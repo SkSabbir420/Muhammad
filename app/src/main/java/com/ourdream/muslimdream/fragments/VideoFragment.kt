@@ -157,8 +157,8 @@ class NotificationsFragment : Fragment(){
                     for (id in (followingList as ArrayList<String>)) {
                     if (Topid!!.getUID() == id) {
                         try {
-                            shimmerFrameLayout_video.stopShimmerAnimation()
-                            shimmerFrameLayout_video.visibility = View.GONE
+//                            shimmerFrameLayout_video.stopShimmerAnimation()
+//                            shimmerFrameLayout_video.visibility = View.GONE
                             recycler_view_video_title.visibility = View.VISIBLE
                         }catch (e:Exception){ }
 

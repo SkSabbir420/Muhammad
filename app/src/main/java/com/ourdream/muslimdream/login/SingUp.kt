@@ -28,6 +28,7 @@ class SingUp : AppCompatActivity(){
     private var selectedImage: Uri? = null
     private var myAuth:FirebaseAuth = FirebaseAuth.getInstance()
     private var myRef = FirebaseDatabase.getInstance().reference
+    private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
 
     override fun onCreate(savedInstanceState: Bundle?){
@@ -184,10 +185,26 @@ class SingUp : AppCompatActivity(){
                 singupMap["followers"] = 0
                 singupMap["following"] = 0
                 singupMap["createTime"] = time
+
+                Toast.makeText(this,"Please check your Email Box and Verify your Email.",Toast.LENGTH_LONG).show()
                 //singupMap["bio"] = "Edit Profile and Enter your Bio"
 
                 myRef.child("users").child(currentUser!!.uid).updateChildren(singupMap)
-                Toast.makeText(this,"Please check your Email",Toast.LENGTH_LONG).show()
+
+                val UID="YDejNwWKD3RKreUktQWrcpWKpND3"
+                currentUser!!.uid.let { it1 ->
+                    FirebaseDatabase.getInstance().reference.child("follow").
+                    child(it1.toString()).child("following").child(UID)
+                        .setValue(true)
+                }
+
+                currentUser!!.uid.let { it1 ->
+                    FirebaseDatabase.getInstance().reference
+                        .child("follow").child(UID)
+                        .child("followers").child(it1.toString())
+                        .setValue(true)
+                }
+
 
                 val intent = Intent(this, Login::class.java)
                 startActivity(intent)
