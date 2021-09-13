@@ -19,6 +19,9 @@
             android:name="com.ourdream.muslimdream.login.ForgetPassword"
             android:exported="true" />
         <activity
+            android:name="com.ourdream.muslimdream.login.NotificationForConformationMail"
+            android:exported="true" />
+        <activity
             android:name="com.ourdream.muslimdream.main.ShowSaveVideoPost"
             android:exported="true" />
         <activity

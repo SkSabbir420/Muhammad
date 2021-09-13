@@ -1,5 +1,6 @@
 package com.ourdream.muslimdream.login
 
+import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
@@ -156,6 +157,10 @@ class SingUp : AppCompatActivity(){
     }
 
     fun SaveImageInFirebase(){
+//        val progressDialog = ProgressDialog(this)
+//        progressDialog.setTitle("Adding Account Information")
+//        progressDialog.setMessage("Please wait...")
+//        progressDialog.show()
 
         currentUser =myAuth.currentUser
         val storage= FirebaseStorage.getInstance()
@@ -186,7 +191,7 @@ class SingUp : AppCompatActivity(){
                 singupMap["following"] = 0
                 singupMap["createTime"] = time
 
-                Toast.makeText(this,"Please check your Email Box and Verify your Email.",Toast.LENGTH_LONG).show()
+                Toast.makeText(this,"Please check your Email Box and Follow link to Verify your Email address.",Toast.LENGTH_LONG).show()
                 //singupMap["bio"] = "Edit Profile and Enter your Bio"
 
                 myRef.child("users").child(currentUser!!.uid).updateChildren(singupMap)
@@ -205,8 +210,9 @@ class SingUp : AppCompatActivity(){
                         .setValue(true)
                 }
 
-
-                val intent = Intent(this, Login::class.java)
+//                progressDialog.dismiss()
+//                val intent = Intent(this, Login::class.java)
+                val intent = Intent(this, NotificationForConformationMail::class.java)
                 startActivity(intent)
                 finish()
             }
