@@ -1,5 +1,6 @@
 package com.ourdream.muslimdream.login
 
+import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Patterns
+import android.view.View
 import android.widget.Toast
 import com.ourdream.muslimdream.R
 import kotlinx.android.synthetic.main.activity_sing_up.*
@@ -27,6 +29,8 @@ class SingUp : AppCompatActivity(){
 
     private var currentUser: FirebaseUser? = null
     private var selectedImage: Uri? = null
+    private  var dateOfBirthu:String? = null
+    private  var birthYear:Int? = null
     private var myAuth:FirebaseAuth = FirebaseAuth.getInstance()
     private var myRef = FirebaseDatabase.getInstance().reference
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
@@ -51,6 +55,23 @@ class SingUp : AppCompatActivity(){
 
 
     }//first curly.
+    fun clickDataPicker(view: View) {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(this,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                // Display Selected date in Toast
+                dateOfBirthu ="""$dayOfMonth/${monthOfYear + 1}/$year"""
+                birthYear = year
+                dateOfBirth.setText(dateOfBirthu)
+//              Toast.makeText(this, """$dayOfMonth - ${monthOfYear + 1} - $year""", Toast.LENGTH_LONG).show()
+
+            }, year, month, day)
+        dpd.show()
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode){
@@ -95,6 +116,9 @@ class SingUp : AppCompatActivity(){
     }
 
     private fun SingUpUser(){
+        val localdate = LocalDate.now()
+        val date = DateTimeFormatter.ofPattern("yyyy").format(localdate).toInt()
+//        Toast.makeText(this, "${date}", Toast.LENGTH_LONG).show()
         if(selectedImage == null){
             Toast.makeText(this, "Please Add Your Profile Picture", Toast.LENGTH_LONG).show()
             return
@@ -105,7 +129,7 @@ class SingUp : AppCompatActivity(){
             return
         }
         if(dateOfBirth.text.toString().isEmpty()){
-            dateOfBirth.error="Please Enter Your Date of Birth"
+            dateOfBirth.error="Please Set Your Date of Birth"
             dateOfBirth.requestFocus()
             return
         }
@@ -114,8 +138,28 @@ class SingUp : AppCompatActivity(){
             gender_editText.requestFocus()
             return
         }
+        if(gender_editText.text.toString()=="male"||
+            gender_editText.text.toString()=="Male"||
+            gender_editText.text.toString()=="Female"||
+            gender_editText.text.toString()=="female"){
+        }else{
+            gender_editText.error="Give Your Current Gender."
+            gender_editText.requestFocus()
+            return
+        }
         if(Religion_editText.text.toString().isEmpty()){
-            gender_editText.error="Please Enter Your Religion."
+            Religion_editText.error="Please Enter Your Religion."
+            Religion_editText.requestFocus()
+            return
+        }
+        if(Religion_editText.text.toString()=="Muslim"||
+            Religion_editText.text.toString()=="muslim"||
+            Religion_editText.text.toString()=="Christian"||
+            Religion_editText.text.toString()=="christian"||
+            Religion_editText.text.toString()=="Hindu"||
+            Religion_editText.text.toString()=="hindu"){
+        }else{
+            gender_editText.error="Give Your Current Religion."
             gender_editText.requestFocus()
             return
         }
@@ -134,25 +178,47 @@ class SingUp : AppCompatActivity(){
             etPassword.requestFocus()
             return
         }
-        myAuth.createUserWithEmailAndPassword(etEmail.text.toString(),etPassword.text.toString())
+        if(etPassword.text.toString().length < 6){
+            etPassword.error="minimum use 6 character"
+            etPassword.requestFocus()
+            return
+        }
+        if(birthYear!!+12 > date){
+            Toast.makeText(baseContext,"Sing-Up failed.\nYour age Under 12", Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, Login::class.java))
+            finish()
+        }else{
+            myAuth.createUserWithEmailAndPassword(
+                etEmail.text.toString(),
+                etPassword.text.toString()
+            )
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        val user: FirebaseUser?=myAuth.currentUser
+                        val user: FirebaseUser? = myAuth.currentUser
                         user!!.sendEmailVerification()
-                                .addOnCompleteListener {
-                                    if (task.isSuccessful) {
-                                        SaveImageInFirebase()
-                                        startActivity(Intent(this, Login::class.java))
-                                        finish()
-                                    }else{
-                                        Toast.makeText(baseContext,"Please Check your Internet connection and Try again", Toast.LENGTH_SHORT).show()
-                                    }
+                            .addOnCompleteListener {
+                                if (task.isSuccessful) {
+                                    SaveImageInFirebase()
+                                    startActivity(Intent(this, Login::class.java))
+                                    finish()
+                                } else {
+                                    Toast.makeText(
+                                        baseContext,
+                                        "Please Check your Internet connection and Try again",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
+                            }
 
                     } else {
-                        Toast.makeText(baseContext,"Sing-Up failed.\nPlease Try again", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            baseContext,
+                            "Sing-Up failed.\nPlease Try again",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
+        }
 
     }
 
@@ -183,7 +249,7 @@ class SingUp : AppCompatActivity(){
                 singupMap["username"] = personName.text.toString()
                 singupMap["membership"] = "false"
                 singupMap["verified"] = "false"
-                singupMap["dateOfBirth"] = dateOfBirth.text.toString()
+                singupMap["dateOfBirth"] = dateOfBirthu!!
                 singupMap["gender"] = gender_editText.text.toString()
                 singupMap["religion"] = Religion_editText.text.toString()
                 singupMap["createDate"] = date

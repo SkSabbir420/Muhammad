@@ -46,15 +46,17 @@
         app:layout_constraintTop_toBottomOf="@+id/ivImagePerson"
         />
 
-    <EditText
+    <TextView
         android:id="@+id/dateOfBirth"
         android:layout_width="260dp"
         android:layout_height="55dp"
         android:layout_marginTop="14dp"
         android:ems="10"
+        android:textSize="20dp"
+        android:paddingTop="10dp"
         android:hint="@string/DateOfBirth"
         android:importantForAutofill="no"
-        android:inputType="date"
+        android:onClick="clickDataPicker"
         app:layout_constraintEnd_toEndOf="@+id/personName"
         app:layout_constraintStart_toStartOf="@+id/personName"
         app:layout_constraintTop_toBottomOf="@+id/personName" />
